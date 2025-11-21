@@ -3,58 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NET.TITAN V17 // STABLE</title>
+    <title>NET.TITAN V18 // FIXED</title>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
-        /* --- THEME VARIABLES --- */
+        /* --- VARIABLES --- */
         :root {
             /* DARK MODE (DEFAULT) */
-            --bg-core: #000000;
-            --bg-panel: #080b14;
-            --bg-sidebar: #050505;
+            --bg-core: #050505;
+            --bg-sidebar: #000000;
+            --bg-panel: #0a0a0a;
             --text-main: #ffffff;
-            --text-sec: #e0e0e0; /* Putih agak redup dikit, bukan abu gelap */
-            --primary: #00f2ff;
-            --border: #1f2937;
-            --input-bg: #000000;
-            --shadow: rgba(0, 242, 255, 0.1);
+            --text-sec: #cccccc;
+            --primary: #00f2ff; /* Cyan Neon */
+            --border: #333333;
+            --input-bg: #111111; 
+            --input-border: #00f2ff; /* Border input terang agar terlihat */
         }
 
-        /* LIGHT MODE CLASS */
+        /* LIGHT MODE */
         .light-mode {
-            --bg-core: #f0f2f5;
-            --bg-panel: #ffffff;
+            --bg-core: #f4f6f8;
             --bg-sidebar: #ffffff;
+            --bg-panel: #ffffff;
             --text-main: #000000;
             --text-sec: #333333;
-            --primary: #0066cc; /* Biru lebih gelap agar terbaca di putih */
-            --border: #ccc;
-            --input-bg: #f8f9fa;
-            --shadow: rgba(0, 0, 0, 0.1);
+            --primary: #0066cc;
+            --border: #e0e0e0;
+            --input-bg: #ffffff;
+            --input-border: #ccc;
         }
 
         body {
             background-color: var(--bg-core);
             color: var(--text-main);
             font-family: 'Rajdhani', sans-serif;
-            height: 100vh;
-            overflow: hidden; /* Sidebar fixed, content scroll */
+            overflow: hidden;
             transition: 0.3s;
         }
 
-        /* TYPOGRAPHY */
-        h1, h2, h3, h4 {
-            text-transform: uppercase;
-            font-weight: 800;
-            letter-spacing: 1px;
-            color: var(--text-main);
-        }
-        .mono { font-family: 'JetBrains Mono', monospace; }
-        .text-primary-custom { color: var(--primary) !important; }
-
-        /* SIDEBAR (KIRI) */
+        /* SIDEBAR */
         .sidebar {
             width: 260px;
             height: 100vh;
@@ -65,7 +54,6 @@
             display: flex;
             flex-direction: column;
             z-index: 1000;
-            transition: 0.3s;
         }
 
         .brand {
@@ -75,7 +63,7 @@
             color: var(--primary);
             text-align: center;
             border-bottom: 1px solid var(--border);
-            text-shadow: 0 0 10px var(--shadow);
+            text-shadow: 0 0 10px var(--primary);
         }
 
         .nav-btn {
@@ -83,25 +71,19 @@
             cursor: pointer;
             color: var(--text-sec);
             font-weight: 700;
-            transition: 0.2s;
             display: flex;
             align-items: center;
             gap: 15px;
             border-left: 4px solid transparent;
+            transition: 0.2s;
         }
-
-        .nav-btn:hover {
+        .nav-btn:hover, .nav-btn.active {
             background: rgba(0, 242, 255, 0.1);
-            color: var(--text-main);
-        }
-
-        .nav-btn.active {
-            background: linear-gradient(90deg, rgba(0, 242, 255, 0.15), transparent);
-            border-left: 4px solid var(--primary);
             color: var(--primary);
+            border-left: 4px solid var(--primary);
         }
 
-        /* MAIN CONTENT */
+        /* CONTENT */
         .main-content {
             margin-left: 260px;
             padding: 30px;
@@ -110,83 +92,67 @@
             padding-bottom: 100px;
         }
 
-        /* PANEL KOTAK */
+        /* PANEL */
         .titan-panel {
             background: var(--bg-panel);
             border: 1px solid var(--border);
             padding: 20px;
             border-radius: 8px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 15px var(--shadow);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
-        /* INPUTS & BUTTONS */
+        /* --- FIX INPUT CSS --- */
         .form-control, .form-select {
-            background: var(--input-bg);
-            border: 1px solid var(--border);
-            color: var(--text-main) !important;
+            background-color: var(--input-bg) !important;
+            border: 1px solid var(--input-border) !important;
+            color: var(--text-main) !important; /* Pastikan teks kontras */
             border-radius: 4px;
-            padding: 10px;
+            padding: 12px;
+            font-weight: bold;
         }
-        .form-control:focus { border-color: var(--primary); box-shadow: none; }
+        /* Placeholder color fix */
+        .form-control::placeholder {
+            color: var(--text-sec);
+            opacity: 0.6;
+        }
+        .form-control:focus {
+            box-shadow: 0 0 10px var(--primary);
+            border-color: var(--primary);
+        }
 
+        /* BUTTONS */
         .btn-tech {
             background: var(--primary);
-            color: #000; /* Teks tombol selalu hitam agar kontras dgn background cyan */
+            color: #000;
             border: none;
             font-weight: 800;
             padding: 12px;
-            text-transform: uppercase;
             width: 100%;
+            text-transform: uppercase;
             transition: 0.2s;
-            border-radius: 4px;
         }
-        .btn-tech:hover:not(:disabled) { filter: brightness(1.1); transform: scale(1.01); }
-        .btn-tech:disabled { background: #555; cursor: not-allowed; }
-        
-        .btn-danger-tech { background: #ff0055; color: white; }
+        .btn-tech:hover:not(:disabled) { transform: scale(1.02); filter: brightness(1.1); }
+        .btn-tech:disabled { background: #555; color: #888; cursor: not-allowed; }
+        .btn-danger-tech { background: #ff0055; color: #fff; }
 
-        /* LOG BOX */
-        .log-box {
-            background: #000;
-            border: 1px solid var(--border);
-            height: 200px;
-            overflow-y: auto;
-            padding: 10px;
-            font-family: 'JetBrains Mono';
-            font-size: 0.85rem;
-            color: #00ff9d; /* Green Terminal Text */
-        }
-
-        /* MODE TOGGLE BUTTON */
-        .mode-toggle {
-            background: var(--bg-panel);
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            padding: 8px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        /* MOBILE RESPONSIVE */
+        /* RESPONSIVE */
         @media (max-width: 768px) {
-            /* Sidebar jadi kecil (ikon saja) di HP agar muat */
             .sidebar { width: 70px; }
             .brand span, .nav-btn span { display: none; }
-            .brand { font-size: 1rem; padding: 20px 5px; }
+            .brand { font-size: 1.2rem; padding: 20px 0; }
             .nav-btn { justify-content: center; padding: 20px 0; }
-            
             .main-content { margin-left: 70px; padding: 15px; }
         }
+        
+        .mono { font-family: 'JetBrains Mono', monospace; }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
-        <div class="brand">
-            <i class="bi bi-cpu-fill"></i> <span>TITAN</span>
-        </div>
+        <div class="brand"><i class="bi bi-cpu-fill"></i> <span>TITAN</span></div>
+        
         <div class="nav-btn active" onclick="nav('dash', this)">
             <i class="bi bi-grid-1x2-fill fs-4"></i> <span>SYSTEM</span>
         </div>
@@ -209,13 +175,13 @@
 
     <div class="main-content">
         
-        <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom border-secondary">
+        <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom" style="border-color: var(--border) !important;">
             <div>
-                <h3 class="m-0 fw-bold">NET.TITAN V17</h3>
-                <small class="text-primary-custom fw-bold">STATUS: ONLINE</small>
+                <h3 class="m-0 fw-bold">NET.TITAN V18</h3>
+                <small style="color:var(--primary)">SYSTEM STATUS: ONLINE</small>
             </div>
-            <button class="mode-toggle" onclick="toggleTheme()">
-                <i class="bi bi-moon-stars-fill" id="theme-icon"></i> <span id="theme-text">DARK</span>
+            <button class="btn btn-outline-secondary btn-sm fw-bold" onclick="toggleTheme()">
+                <i class="bi bi-circle-half"></i> MODE
             </button>
         </div>
 
@@ -223,38 +189,35 @@
             <div class="row g-3">
                 <div class="col-6 col-md-3">
                     <div class="titan-panel text-center py-4">
-                        <small>FRAMERATE</small>
+                        <small>FPS</small>
                         <h1 class="m-0 fw-bold mono" id="fps-val">60</h1>
-                        <span class="badge bg-success">FPS</span>
                     </div>
                 </div>
                 <div class="col-6 col-md-3">
                     <div class="titan-panel text-center py-4">
-                        <small>LATENCY</small>
+                        <small>PING</small>
                         <h1 class="m-0 fw-bold mono" id="ping-val">0</h1>
                         <span class="badge bg-warning text-dark">MS</span>
                     </div>
                 </div>
                 <div class="col-6 col-md-3">
                     <div class="titan-panel text-center py-4">
-                        <small>MEMORY</small>
+                        <small>RAM</small>
                         <h1 class="m-0 fw-bold mono" id="sys-ram">...</h1>
                         <span class="badge bg-primary">GB</span>
                     </div>
                 </div>
                 <div class="col-6 col-md-3">
                     <div class="titan-panel text-center py-4">
-                        <small>CPU CORE</small>
+                        <small>CPU</small>
                         <h1 class="m-0 fw-bold mono" id="sys-cpu">...</h1>
-                        <span class="badge bg-info text-dark">LOGICAL</span>
+                        <span class="badge bg-info text-dark">CORE</span>
                     </div>
                 </div>
-
                 <div class="col-12">
                     <div class="titan-panel">
-                        <h4><i class="bi bi-activity"></i> LIVE MONITOR</h4>
-                        <div id="monitor-graph" style="height: 100px; display: flex; align-items: flex-end; gap: 2px; border-bottom: 1px solid #333; overflow: hidden;">
-                            </div>
+                        <h4>LIVE MONITOR</h4>
+                        <div id="monitor-graph" style="height: 100px; display: flex; align-items: flex-end; gap: 2px; border-bottom: 1px solid var(--border); overflow: hidden;"></div>
                     </div>
                 </div>
             </div>
@@ -263,60 +226,57 @@
         <div id="waster" class="section" style="display:none">
             <div class="titan-panel">
                 <h4><i class="bi bi-trash3-fill"></i> PACKET WASTER</h4>
-                <p>Menghabiskan kuota dengan request data dummy.</p>
+                <p class="text-sec">Menghabiskan kuota internet dengan cepat.</p>
+                
                 <div class="row g-3 mb-3">
                     <div class="col-md-6">
-                        <label>Threads (Kekuatan)</label>
+                        <label class="mb-1">KEKUATAN (THREADS)</label>
                         <select id="w-threads" class="form-select">
-                            <option value="10">10 Threads</option>
-                            <option value="30" selected>30 Threads</option>
-                            <option value="60">60 Threads</option>
+                            <option value="10">Normal (10)</option>
+                            <option value="30" selected>Cepat (30)</option>
+                            <option value="60">Turbo (60)</option>
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label>Limit (MB)</label>
-                        <input type="number" id="w-limit" class="form-control" placeholder="0 = Tanpa Batas">
+                        <label class="mb-1">LIMIT DATA (MB)</label>
+                        <input type="number" id="w-limit" class="form-control" placeholder="Contoh: 100 (0 = Unlimited)">
                     </div>
                 </div>
-                <div class="d-flex gap-2 mb-3">
-                    <button class="btn-tech" id="btn-w-start" onclick="runWaster(true)">START BURN</button>
+
+                <div class="d-flex gap-2 mb-4">
+                    <button class="btn-tech" id="btn-w-start" onclick="runWaster(true)">MULAI</button>
                     <button class="btn-tech btn-danger-tech" id="btn-w-stop" onclick="runWaster(false)" disabled>STOP</button>
                 </div>
-                <div class="row text-center mb-2">
+
+                <div class="row text-center">
                     <div class="col-6">
-                        <h3 id="w-total">0.00 MB</h3>
-                        <small>TOTAL BURNED</small>
+                        <h2 id="w-total">0.00 MB</h2>
+                        <small>TERBUANG</small>
                     </div>
                     <div class="col-6">
-                        <h3 class="text-primary-custom" id="w-speed">0.00 MB/s</h3>
-                        <small>SPEED</small>
+                        <h2 style="color:var(--primary)" id="w-speed">0.00 MB/s</h2>
+                        <small>KECEPATAN</small>
                     </div>
                 </div>
-                <div class="log-box" id="w-log"></div>
+                <div class="mt-3 p-2 border border-secondary mono small" style="height:150px; overflow-y:auto;" id="w-log"></div>
             </div>
         </div>
 
         <div id="flood" class="section" style="display:none">
             <div class="titan-panel">
-                <h4 class="text-danger"><i class="bi bi-lightning-fill"></i> HTTP FLOOD</h4>
-                <label class="mb-2">Target URL</label>
+                <h4 class="text-danger">HTTP FLOOD</h4>
                 <input type="text" id="flood-url" class="form-control mb-3" value="https://speed.hetzner.de/100MB.bin">
-                
-                <div class="row text-center mb-4">
-                    <div class="col-4 border-end">
-                        <h3 id="f-sent">0</h3>
-                        <small>SENT</small>
-                    </div>
-                    <div class="col-4 border-end">
-                        <h3 class="text-danger" id="f-err">0</h3>
-                        <small>ERRORS</small>
+                <div class="row text-center mb-3">
+                    <div class="col-4">
+                        <h3 id="f-sent">0</h3><small>SENT</small>
                     </div>
                     <div class="col-4">
-                        <h3 class="text-warning" id="f-stat">IDLE</h3>
-                        <small>STATUS</small>
+                        <h3 class="text-danger" id="f-err">0</h3><small>ERROR</small>
+                    </div>
+                    <div class="col-4">
+                        <h3 class="text-warning" id="f-stat">IDLE</h3><small>STATUS</small>
                     </div>
                 </div>
-
                 <button class="btn-tech btn-danger-tech mb-2" id="btn-f-start" onclick="runFlood(true)">START ATTACK</button>
                 <button class="btn-tech" id="btn-f-stop" onclick="runFlood(false)" disabled>STOP</button>
             </div>
@@ -324,16 +284,15 @@
 
         <div id="myip" class="section" style="display:none">
             <div class="titan-panel text-center">
-                <h4><i class="bi bi-fingerprint"></i> INFORMASI IP SAYA</h4>
-                <button class="btn-tech w-50 mx-auto my-4" onclick="getMyIP()">SCAN IP</button>
+                <h4><i class="bi bi-fingerprint"></i> MY IP IDENTITY</h4>
+                <button class="btn-tech w-50 mx-auto my-4" id="btn-ip-scan" onclick="getMyIP()">SCAN SEKARANG</button>
                 
                 <div id="ip-res" style="display:none">
                     <h1 class="display-4 fw-bold mono" id="my-ip">...</h1>
                     <table class="table mt-3 text-start" style="color: var(--text-main); border-color: var(--border);">
-                        <tr><td>ISP</td><td class="fw-bold text-primary-custom" id="my-isp">...</td></tr>
+                        <tr><td>ISP / Provider</td><td class="fw-bold text-primary" id="my-isp">...</td></tr>
                         <tr><td>Lokasi</td><td class="fw-bold" id="my-loc">...</td></tr>
-                        <tr><td>Koordinat</td><td class="fw-bold" id="my-coor">...</td></tr>
-                        <tr><td>Timezone</td><td class="fw-bold" id="my-tz">...</td></tr>
+                        <tr><td>Tipe Koneksi</td><td class="fw-bold" id="my-type">...</td></tr>
                     </table>
                 </div>
             </div>
@@ -342,16 +301,12 @@
         <div id="host" class="section" style="display:none">
             <div class="titan-panel">
                 <h4><i class="bi bi-search"></i> HOST DIGGER (DNS)</h4>
-                <p>Cari IP asli dari nama domain website.</p>
                 <div class="input-group mb-3">
-                    <input type="text" id="host-in" class="form-control" placeholder="Contoh: tiktok.com">
+                    <input type="text" id="host-in" class="form-control" placeholder="Contoh: google.com">
                     <button class="btn-tech" style="width:auto" onclick="digHost()">CARI IP</button>
                 </div>
-                <table class="table table-bordered" style="color: var(--text-main); border-color: var(--border);">
-                    <thead><tr><th>TYPE</th><th>NAME</th><th>DATA (IP)</th></tr></thead>
-                    <tbody id="host-out">
-                        <tr><td colspan="3" class="text-center">Hasil akan muncul di sini.</td></tr>
-                    </tbody>
+                <table class="table table-bordered" style="color:var(--text-main); border-color:var(--border);">
+                    <tbody id="host-out"><tr><td class="text-center">Hasil scan akan muncul disini</td></tr></tbody>
                 </table>
             </div>
         </div>
@@ -365,60 +320,42 @@
     </div>
 
     <script>
-        // --- 1. THEME TOGGLE ---
-        function toggleTheme() {
-            document.body.classList.toggle('light-mode');
-            const isLight = document.body.classList.contains('light-mode');
-            document.getElementById('theme-text').innerText = isLight ? "LIGHT" : "DARK";
-            document.getElementById('theme-icon').className = isLight ? "bi bi-sun-fill" : "bi bi-moon-stars-fill";
-        }
-
-        // --- 2. NAVIGATION ---
+        // NAV & THEME
         function nav(id, el) {
             document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
             document.getElementById(id).style.display = 'block';
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             el.classList.add('active');
         }
+        function toggleTheme() { document.body.classList.toggle('light-mode'); }
 
-        // --- 3. SYSTEM INFO & FPS (STABILIZED) ---
+        // SYSTEM INFO (FPS & PING)
         document.getElementById('sys-ram').innerText = navigator.deviceMemory || 4;
         document.getElementById('sys-cpu').innerText = navigator.hardwareConcurrency || 4;
-
+        
         let frameCount = 0;
-        // Hitung frame setiap render
-        requestAnimationFrame(function loop() {
-            frameCount++;
-            requestAnimationFrame(loop);
-        });
-        // Update tampilan HANYA setiap 500ms (Setengah detik) agar tidak berkedip
-        setInterval(() => {
-            const fps = frameCount * 2; // Approx FPS
-            document.getElementById('fps-val').innerText = fps > 60 ? 60 : fps; // Cap display at 60 to look clean
-            frameCount = 0;
+        requestAnimationFrame(function loop() { frameCount++; requestAnimationFrame(loop); });
+        setInterval(() => { 
+            document.getElementById('fps-val').innerText = (frameCount * 2) > 60 ? 60 : (frameCount * 2); 
+            frameCount = 0; 
         }, 500);
 
-        // Ping Monitor
         setInterval(async () => {
-            const start = performance.now();
+            const s = performance.now();
             try {
                 await fetch('https://www.google.com/favicon.ico', {mode:'no-cors', cache:'no-store'});
-                const ms = Math.round(performance.now() - start);
+                const ms = Math.round(performance.now() - s);
                 document.getElementById('ping-val').innerText = ms;
-                
-                // Update Graphic
                 const chart = document.getElementById('monitor-graph');
                 const bar = document.createElement('div');
-                bar.style.width = '8px';
-                bar.style.height = Math.min(ms, 100) + '%';
-                bar.style.backgroundColor = ms < 100 ? 'var(--primary)' : 'red';
-                bar.style.marginRight = '2px';
+                bar.style.width='8px'; bar.style.height=Math.min(ms,100)+'%';
+                bar.style.background= ms<100?'var(--primary)':'red'; bar.style.marginRight='2px';
                 chart.appendChild(bar);
-                if(chart.children.length > 50) chart.removeChild(chart.children[0]);
+                if(chart.children.length>50) chart.removeChild(chart.children[0]);
             } catch(e){}
         }, 1000);
 
-        // --- 4. WASTER ---
+        // 2. WASTER
         let wTimer, wTot=0, wStart=0;
         function runWaster(st) {
             const log = document.getElementById('w-log');
@@ -428,16 +365,12 @@
                 document.getElementById('btn-w-stop').disabled=false;
                 const th = document.getElementById('w-threads').value;
                 const lim = document.getElementById('w-limit').value;
-                
-                log.innerHTML += `<div>> Memulai ${th} threads...</div>`;
-
-                wTimer = setInterval(() => {
+                log.innerHTML += '<div>> Memulai proses...</div>';
+                wTimer = setInterval(()=>{
                     if(lim>0 && (wTot/1024/1024)>=lim) { runWaster(false); return; }
                     for(let i=0; i<th; i++) {
-                        fetch('https://picsum.photos/200/300?r='+Math.random(), {mode:'no-cors'})
-                        .then(()=>{
-                            wTot+=60000;
-                            updateWUI();
+                        fetch('https://picsum.photos/200/300?r='+Math.random(), {mode:'no-cors'}).then(()=>{
+                            wTot+=60000; updateWUI();
                         });
                     }
                 }, 200);
@@ -445,7 +378,7 @@
                 clearInterval(wTimer);
                 document.getElementById('btn-w-start').disabled=false;
                 document.getElementById('btn-w-stop').disabled=true;
-                log.innerHTML += `<div style="color:red">> Berhenti.</div>`;
+                log.innerHTML += '<div class="text-danger">> Berhenti.</div>';
             }
         }
         function updateWUI() {
@@ -454,38 +387,7 @@
             document.getElementById('w-speed').innerText = (mb/((Date.now()-wStart)/1000)).toFixed(2) + " MB/s";
         }
 
-        // --- 5. MY IP ---
-        function getMyIP() {
-            fetch('http://ip-api.com/json/')
-            .then(r=>r.json())
-            .then(d=>{
-                document.getElementById('my-ip').innerText = d.query;
-                document.getElementById('my-isp').innerText = d.isp;
-                document.getElementById('my-loc').innerText = d.city + ", " + d.country;
-                document.getElementById('my-coor').innerText = d.lat + ", " + d.lon;
-                document.getElementById('my-tz').innerText = d.timezone;
-                document.getElementById('ip-res').style.display = 'block';
-            });
-        }
-
-        // --- 6. HOST DIGGER ---
-        function digHost() {
-            const dom = document.getElementById('host-in').value;
-            const out = document.getElementById('host-out');
-            out.innerHTML = '<tr><td colspan="3">Scanning...</td></tr>';
-            fetch(`https://cloudflare-dns.com/dns-query?name=${dom}&type=A`, {headers:{'accept':'application/dns-json'}})
-            .then(r=>r.json())
-            .then(d=>{
-                out.innerHTML = '';
-                if(d.Answer) {
-                    d.Answer.forEach(a => {
-                        out.innerHTML += `<tr><td>A</td><td>${a.name}</td><td class="text-primary-custom fw-bold">${a.data}</td></tr>`;
-                    });
-                } else { out.innerHTML = '<tr><td colspan="3" style="color:red">Tidak ditemukan.</td></tr>'; }
-            });
-        }
-
-        // --- 7. FLOOD ---
+        // 3. FLOOD
         let fTimer, fSent=0;
         function runFlood(st) {
             if(st) {
@@ -497,8 +399,8 @@
                 fTimer = setInterval(()=>{
                     let img = new Image();
                     img.src = url + "?x=" + Math.random();
-                    img.onload = ()=>{ fSent++; document.getElementById('f-sent').innerText=fSent; };
-                    img.onerror = ()=>{ fSent++; document.getElementById('f-err').innerText = parseInt(document.getElementById('f-err').innerText)+1; document.getElementById('f-sent').innerText=fSent; };
+                    img.onload=()=>{fSent++; document.getElementById('f-sent').innerText=fSent;};
+                    img.onerror=()=>{fSent++; document.getElementById('f-err').innerText = parseInt(document.getElementById('f-err').innerText)+1; document.getElementById('f-sent').innerText=fSent;};
                 }, 10);
             } else {
                 clearInterval(fTimer);
@@ -506,6 +408,48 @@
                 document.getElementById('btn-f-stop').disabled=true;
                 document.getElementById('f-stat').innerText="IDLE";
             }
+        }
+
+        // 4. MY IP (HTTPS FIXED)
+        function getMyIP() {
+            const btn = document.getElementById('btn-ip-scan');
+            btn.innerHTML = "SCANNING...";
+            btn.disabled = true;
+            
+            // Menggunakan IPWHO.IS yang support HTTPS dan CORS
+            fetch('https://ipwho.is/')
+            .then(r => r.json())
+            .then(d => {
+                document.getElementById('my-ip').innerText = d.ip;
+                document.getElementById('my-isp').innerText = d.connection.isp || d.isp;
+                document.getElementById('my-loc').innerText = `${d.city}, ${d.country}`;
+                document.getElementById('my-type').innerText = d.type;
+                document.getElementById('ip-res').style.display = 'block';
+                btn.innerHTML = "SCAN SEKARANG";
+                btn.disabled = false;
+            })
+            .catch(e => {
+                alert("Gagal mengambil IP. Pastikan koneksi aman.");
+                btn.innerHTML = "RETRY";
+                btn.disabled = false;
+            });
+        }
+
+        // 5. HOST DIGGER
+        function digHost() {
+            const dom = document.getElementById('host-in').value;
+            const out = document.getElementById('host-out');
+            out.innerHTML = '<tr><td colspan="3">Scanning...</td></tr>';
+            fetch(`https://cloudflare-dns.com/dns-query?name=${dom}&type=A`, {headers:{'accept':'application/dns-json'}})
+            .then(r=>r.json())
+            .then(d=>{
+                out.innerHTML = '';
+                if(d.Answer) {
+                    d.Answer.forEach(a => {
+                        out.innerHTML += `<tr><td>A</td><td>${a.name}</td><td class="text-primary fw-bold">${a.data}</td></tr>`;
+                    });
+                } else { out.innerHTML = '<tr><td colspan="3" class="text-danger">Tidak ditemukan.</td></tr>'; }
+            });
         }
     </script>
 </body>
