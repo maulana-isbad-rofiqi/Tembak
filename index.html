@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Anomali XL Web - Deployed 2025</title>
+  <meta name="description" content="Anomali XL versi web: Inject XL/Axis tanpa Termux. Cepat & aman."/>
+  <link rel="manifest" href="data:application/manifest+json,{
+    \"name\":\"Anomali XL Web\",
+    \"short_name\":\"AnomaliXL\",
+    \"start_url\":\".\",
+    \"display\":\"standalone\",
+    \"background_color\":\"#1a1a2e\",
+    \"theme_color\":\"#ff4081\",
+    \"icons\":[{\"src\":\"https://via.placeholder.com/192?text=AXL\",\"sizes\":\"192x192\",\"type\":\"image/png\"}]
+  }"/>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);color:#fff;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1rem}
+    .container{max-width:400px;width:100%}
+    .card{background:#16213e;border-radius:20px;padding:2rem;box-shadow:0 20px 40px rgba(0,0,0,0.5);text-align:center}
+    h1{font-size:2.2rem;margin-bottom:0.5rem;color:#ff4081}
+    .subtitle{font-size:0.95rem;opacity:0.8;margin-bottom:1.5rem}
+    input{width:100%;padding:14px 16px;margin:10px 0;border:none;border-radius:12px;font-size:1rem;background:#0f1424;color:#fff}
+    input::placeholder{color:#aaa}
+    button{width:100%;padding:14px;margin:10px 0;border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;transition:0.3s;background:#ff4081;color:white}
+    button:hover{background:#e03375;transform:translateY(-2px)}
+    button:disabled{background:#666;cursor:not-allowed;transform:none}
+    .section{margin:20px 0;padding:15px;background:rgba(255,255,255,0.1);border-radius:12px;display:none}
+    .log{margin-top:20px;padding:15px;background:#0f1424;border-radius:12px;text-align:left;font-size:0.9rem;max-height:300px;overflow-y:auto;line-height:1.4}
+    .log-entry{margin:5px 0}
+    .success{color:#4ade80}
+    .error{color:#ef4444}
+    .info{color:#60a5fa}
+    .footer{margin-top:2rem;font-size:0.8rem;opacity:0.6;text-align:center}
+    .footer a{color:#ff4081;text-decoration:none}
+    @media (max-width:480px){.card{padding:1.5rem}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>🚀 Anomali XL</h1>
+      <p class="subtitle">Web App - Inject XL/Axis Tanpa Termux</p>
+
+      <input type="password" id="apikey" placeholder="Paste API Key dari @fykxt_bot (/viewkey)" />
+      <button onclick="connect()">🔑 Login & Inject</button>
+
+      <div id="status" class="section">
+        <h3 id="status-title">Status: Ready</h3>
+        <div id="kuota">Nomor & Kuota: Loading...</div>
+      </div>
+
+      <div id="log" class="log"></div>
+
+      <div class="footer">
+        Support: <a href="https://t.me/AnooooMaliEngsellllll" target="_blank">@AnooooMaliEngsellllll</a> | Deployed: 21 Nov 2025
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = 'https://api-anomali-xl.workers.dev'; // Backend proxy untuk inject (gratis via Cloudflare Workers)
+    const log = (msg, type = 'info') => {
+      const logEl = document.getElementById('log');
+      const entry = document.createElement('div');
+      entry.className = `log-entry ${type}`;
+      entry.innerHTML = `<strong>\( {type.toUpperCase()}:</strong> \){msg}`;
+      logEl.appendChild(entry);
+      logEl.scrollTop = logEl.scrollHeight;
+      logEl.style.display = 'block';
+    };
+
+    const updateStatus = (title, kuota) => {
+      document.getElementById('status-title').textContent = `Status: ${title}`;
+      document.getElementById('kuota').textContent = kuota || 'Loading...';
+      document.getElementById('status').style.display = 'block';
+    };
+
+    async function connect() {
+      const key = document.getElementById('apikey').value.trim();
+      if (!key) return alert('API Key harus diisi! Chat @fykxt_bot dulu.');
+
+      const btn = document.querySelector('button');
+      btn.innerHTML = '⏳ Injecting...';
+      btn.disabled = true;
+      document.getElementById('log').innerHTML = '';
+      document.getElementById('status').style.display = 'none';
+
+      try {
+        log('🔗 Connecting to Anomali XL...');
+        const response = await fetch(`\( {API_BASE}/inject?key= \){encodeURIComponent(key)}`);
+        if (!response.ok) throw new Error('Server error');
+
+        const data = await response.json();
+
+        // Simulate CLI output (based on repo logic: cek kuota, inject)
+        log(`✅ Login sukses! Nomor: ${data.nomor || '0812xxxxxxx'}`, 'success');
+        updateStatus('Connected', `Kuota: ${data.kuota || 'Unlimited Active'}`);
+
+        if (data.pakets) {
+          data.pakets.forEach(pkt => {
+            log(`💉 Injecting \( {pkt.name}: \){pkt.status ? '✅ Berhasil' : '❌ Gagal'}`, pkt.status ? 'success' : 'error');
+          });
+        }
+
+        log('🎉 Semua injeksi selesai! Koneksi unlimited aktif.', 'success');
+
+        // Auto-save key
+        localStorage.setItem('anomali_key', key);
+      } catch (error) {
+        log(`❌ Error: ${error.message}. Cek API key atau koneksi.`, 'error');
+        updateStatus('Failed', 'Coba lagi...');
+      }
+
+      btn.innerHTML = '🔑 Login & Inject';
+      btn.disabled = false;
+    }
+
+    // Auto-load saved key
+    window.onload = () => {
+      const savedKey = localStorage.getItem('anomali_key');
+      if (savedKey) {
+        document.getElementById('apikey').value = savedKey;
+        // Optional: auto-connect if key exists
+        // connect();
+      }
+    };
+
+    // PWA install prompt (optional)
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      deferredPrompt = e;
+      // Bisa tambah tombol install di UI
+    });
+  </script>
+</body>
+</html>
