@@ -2,323 +2,378 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>NET.TITAN V16 // FPS EDITION</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NET.TITAN V17 // STABLE</title>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
+        /* --- THEME VARIABLES --- */
         :root {
+            /* DARK MODE (DEFAULT) */
             --bg-core: #000000;
-            --bg-panel: #0e121b;
-            --primary: #00f2ff;       /* Cyan */
-            --secondary: #ffffff;
-            --danger: #ff0055;
-            --success: #00ff9d;
+            --bg-panel: #080b14;
+            --bg-sidebar: #050505;
+            --text-main: #ffffff;
+            --text-sec: #e0e0e0; /* Putih agak redup dikit, bukan abu gelap */
+            --primary: #00f2ff;
+            --border: #1f2937;
+            --input-bg: #000000;
+            --shadow: rgba(0, 242, 255, 0.1);
+        }
+
+        /* LIGHT MODE CLASS */
+        .light-mode {
+            --bg-core: #f0f2f5;
+            --bg-panel: #ffffff;
+            --bg-sidebar: #ffffff;
+            --text-main: #000000;
+            --text-sec: #333333;
+            --primary: #0066cc; /* Biru lebih gelap agar terbaca di putih */
+            --border: #ccc;
+            --input-bg: #f8f9fa;
+            --shadow: rgba(0, 0, 0, 0.1);
         }
 
         body {
             background-color: var(--bg-core);
-            color: var(--secondary);
+            color: var(--text-main);
             font-family: 'Rajdhani', sans-serif;
-            min-height: 100vh;
-            /* PERBAIKAN SCROLL: Hapus overflow hidden agar bisa discroll */
-            overflow-x: hidden; 
-            padding-bottom: 50px; /* Space bawah agar tidak mentok */
+            height: 100vh;
+            overflow: hidden; /* Sidebar fixed, content scroll */
+            transition: 0.3s;
         }
 
-        /* Typography */
+        /* TYPOGRAPHY */
         h1, h2, h3, h4 {
             text-transform: uppercase;
             font-weight: 800;
             letter-spacing: 1px;
+            color: var(--text-main);
         }
         .mono { font-family: 'JetBrains Mono', monospace; }
+        .text-primary-custom { color: var(--primary) !important; }
 
-        /* SIDEBAR / NAVBAR CONFIG */
+        /* SIDEBAR (KIRI) */
         .sidebar {
             width: 260px;
             height: 100vh;
             position: fixed;
             left: 0; top: 0;
-            background: #050505;
-            border-right: 1px solid #333;
-            z-index: 999;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border);
             display: flex;
             flex-direction: column;
+            z-index: 1000;
+            transition: 0.3s;
         }
 
-        .main-content {
-            margin-left: 260px;
-            padding: 30px;
-            /* PERBAIKAN POSISI: Agar konten tidak tertutup status bar */
-            padding-top: env(safe-area-inset-top); 
-        }
-
-        /* Nav Items */
         .brand {
             padding: 25px;
             font-size: 1.8rem;
+            font-weight: 900;
             color: var(--primary);
             text-align: center;
-            border-bottom: 1px solid #222;
-            font-weight: 900;
-            text-shadow: 0 0 10px var(--primary);
+            border-bottom: 1px solid var(--border);
+            text-shadow: 0 0 10px var(--shadow);
         }
-        
+
         .nav-btn {
-            padding: 15px 25px;
+            padding: 18px 20px;
             cursor: pointer;
-            color: #888;
-            font-weight: 600;
+            color: var(--text-sec);
+            font-weight: 700;
             transition: 0.2s;
-            border-bottom: 1px solid #111;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
+            border-left: 4px solid transparent;
         }
-        .nav-btn:hover, .nav-btn.active {
-            background: #111;
-            color: #fff;
-            border-left: 5px solid var(--primary);
-        }
-        .nav-btn.active i { color: var(--primary); }
 
-        /* PANELS */
+        .nav-btn:hover {
+            background: rgba(0, 242, 255, 0.1);
+            color: var(--text-main);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(90deg, rgba(0, 242, 255, 0.15), transparent);
+            border-left: 4px solid var(--primary);
+            color: var(--primary);
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            margin-left: 260px;
+            padding: 30px;
+            height: 100vh;
+            overflow-y: auto;
+            padding-bottom: 100px;
+        }
+
+        /* PANEL KOTAK */
         .titan-panel {
             background: var(--bg-panel);
-            border: 1px solid #333;
+            border: 1px solid var(--border);
             padding: 20px;
-            border-radius: 0;
+            border-radius: 8px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            position: relative;
-        }
-        /* Hiasan Sudut Tech */
-        .titan-panel::after {
-            content: ''; position: absolute; top: 0; right: 0;
-            width: 0; height: 0;
-            border-style: solid;
-            border-width: 0 30px 30px 0;
-            border-color: transparent var(--primary) transparent transparent;
+            box-shadow: 0 4px 15px var(--shadow);
         }
 
-        /* Buttons & Inputs */
+        /* INPUTS & BUTTONS */
         .form-control, .form-select {
-            background: #000; border: 1px solid #444; color: #fff !important;
-            border-radius: 0; padding: 10px;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            color: var(--text-main) !important;
+            border-radius: 4px;
+            padding: 10px;
         }
         .form-control:focus { border-color: var(--primary); box-shadow: none; }
 
         .btn-tech {
-            background: var(--primary); color: #000; border: none;
-            font-weight: 800; padding: 10px 20px; text-transform: uppercase;
-            width: 100%; transition: 0.2s;
+            background: var(--primary);
+            color: #000; /* Teks tombol selalu hitam agar kontras dgn background cyan */
+            border: none;
+            font-weight: 800;
+            padding: 12px;
+            text-transform: uppercase;
+            width: 100%;
+            transition: 0.2s;
+            border-radius: 4px;
         }
-        .btn-tech:hover:not(:disabled) { transform: scale(1.02); box-shadow: 0 0 15px var(--primary); }
-        .btn-tech:disabled { background: #333; color: #555; }
+        .btn-tech:hover:not(:disabled) { filter: brightness(1.1); transform: scale(1.01); }
+        .btn-tech:disabled { background: #555; cursor: not-allowed; }
+        
+        .btn-danger-tech { background: #ff0055; color: white; }
 
-        .btn-danger-tech { background: var(--danger); color: #fff; }
-        .btn-danger-tech:hover:not(:disabled) { box-shadow: 0 0 15px var(--danger); }
-
-        /* Log Box */
+        /* LOG BOX */
         .log-box {
-            background: #000; border: 1px solid #333; height: 200px;
-            overflow-y: auto; padding: 10px; font-family: 'JetBrains Mono';
-            font-size: 0.8rem; color: #ccc;
+            background: #000;
+            border: 1px solid var(--border);
+            height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+            font-family: 'JetBrains Mono';
+            font-size: 0.85rem;
+            color: #00ff9d; /* Green Terminal Text */
         }
 
-        /* FPS & PING GRAPH */
-        .live-graph {
-            display: flex; align-items: flex-end; height: 60px; gap: 2px;
+        /* MODE TOGGLE BUTTON */
+        .mode-toggle {
+            background: var(--bg-panel);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
         }
-        .bar { width: 5px; background: var(--primary); opacity: 0.7; }
 
-        /* MOBILE RESPONSIVE (PENTING AGAR TIDAK TERPOTONG) */
+        /* MOBILE RESPONSIVE */
         @media (max-width: 768px) {
-            .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative; /* Tidak fixed lagi di mobile */
-                flex-direction: row;
-                overflow-x: auto; /* Bisa scroll menu ke samping */
-                white-space: nowrap;
-                padding: 10px;
-                border-bottom: 1px solid var(--primary);
-            }
-            .brand { display: none; } /* Sembunyikan brand besar di mobile */
-            .nav-btn { 
-                border: 1px solid #333; 
-                margin-right: 10px; 
-                padding: 8px 15px; 
-                border-radius: 5px;
-                flex-shrink: 0;
-            }
-            .nav-btn.active { border-left: 1px solid #333; background: var(--primary); color: #000; }
-            .nav-btn.active i { color: #000; }
+            /* Sidebar jadi kecil (ikon saja) di HP agar muat */
+            .sidebar { width: 70px; }
+            .brand span, .nav-btn span { display: none; }
+            .brand { font-size: 1rem; padding: 20px 5px; }
+            .nav-btn { justify-content: center; padding: 20px 0; }
             
-            .main-content {
-                margin-left: 0;
-                padding: 15px;
-            }
+            .main-content { margin-left: 70px; padding: 15px; }
         }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
-        <div class="brand">NET.TITAN</div>
-        <div class="nav-btn active" onclick="nav('dash', this)"><i class="bi bi-grid-fill"></i> DASHBOARD</div>
-        <div class="nav-btn" onclick="nav('myip', this)"><i class="bi bi-globe"></i> MY IP</div>
-        <div class="nav-btn" onclick="nav('host', this)"><i class="bi bi-search"></i> HOST DIG</div>
-        <div class="nav-btn" onclick="nav('waster', this)"><i class="bi bi-fire"></i> WASTER</div>
-        <div class="nav-btn" onclick="nav('flood', this)"><i class="bi bi-lightning-fill"></i> STRESS</div>
+        <div class="brand">
+            <i class="bi bi-cpu-fill"></i> <span>TITAN</span>
+        </div>
+        <div class="nav-btn active" onclick="nav('dash', this)">
+            <i class="bi bi-grid-1x2-fill fs-4"></i> <span>SYSTEM</span>
+        </div>
+        <div class="nav-btn" onclick="nav('waster', this)">
+            <i class="bi bi-trash3-fill fs-4"></i> <span>BUANG PAKET</span>
+        </div>
+        <div class="nav-btn" onclick="nav('flood', this)">
+            <i class="bi bi-lightning-fill fs-4"></i> <span>STRESS TEST</span>
+        </div>
+        <div class="nav-btn" onclick="nav('myip', this)">
+            <i class="bi bi-fingerprint fs-4"></i> <span>MY IP INFO</span>
+        </div>
+        <div class="nav-btn" onclick="nav('host', this)">
+            <i class="bi bi-search fs-4"></i> <span>HOST IP</span>
+        </div>
+        <div class="nav-btn" onclick="nav('speed', this)">
+            <i class="bi bi-speedometer fs-4"></i> <span>SPEEDTEST</span>
+        </div>
     </div>
 
     <div class="main-content">
-
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        
+        <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom border-secondary">
             <div>
-                <h3 class="m-0 text-white">SYSTEM V16</h3>
-                <span class="badge bg-dark border border-primary text-info">UNLOCKED EDITION</span>
+                <h3 class="m-0 fw-bold">NET.TITAN V17</h3>
+                <small class="text-primary-custom fw-bold">STATUS: ONLINE</small>
             </div>
-            <button class="btn btn-outline-light btn-sm" onclick="window.location.reload()">
-                <i class="bi bi-arrow-clockwise"></i> REFRESH APP
+            <button class="mode-toggle" onclick="toggleTheme()">
+                <i class="bi bi-moon-stars-fill" id="theme-icon"></i> <span id="theme-text">DARK</span>
             </button>
         </div>
 
         <div id="dash" class="section">
             <div class="row g-3">
                 <div class="col-6 col-md-3">
-                    <div class="titan-panel text-center p-3">
-                        <small class="text-muted">FRAMERATE</small>
-                        <h1 class="m-0 text-white mono" id="fps-val">0</h1>
+                    <div class="titan-panel text-center py-4">
+                        <small>FRAMERATE</small>
+                        <h1 class="m-0 fw-bold mono" id="fps-val">60</h1>
                         <span class="badge bg-success">FPS</span>
                     </div>
                 </div>
                 <div class="col-6 col-md-3">
-                    <div class="titan-panel text-center p-3">
-                        <small class="text-muted">LATENCY</small>
-                        <h1 class="m-0 text-white mono" id="ping-val">0</h1>
+                    <div class="titan-panel text-center py-4">
+                        <small>LATENCY</small>
+                        <h1 class="m-0 fw-bold mono" id="ping-val">0</h1>
                         <span class="badge bg-warning text-dark">MS</span>
                     </div>
                 </div>
                 <div class="col-6 col-md-3">
-                    <div class="titan-panel text-center p-3">
-                        <small class="text-muted">MEMORY</small>
-                        <h1 class="m-0 text-white mono" id="sys-ram">...</h1>
-                        <span class="badge bg-primary text-dark">GB</span>
+                    <div class="titan-panel text-center py-4">
+                        <small>MEMORY</small>
+                        <h1 class="m-0 fw-bold mono" id="sys-ram">...</h1>
+                        <span class="badge bg-primary">GB</span>
                     </div>
                 </div>
                 <div class="col-6 col-md-3">
-                    <div class="titan-panel text-center p-3">
-                        <small class="text-muted">CPU</small>
-                        <h1 class="m-0 text-white mono" id="sys-cpu">...</h1>
-                        <span class="badge bg-info text-dark">CORES</span>
+                    <div class="titan-panel text-center py-4">
+                        <small>CPU CORE</small>
+                        <h1 class="m-0 fw-bold mono" id="sys-cpu">...</h1>
+                        <span class="badge bg-info text-dark">LOGICAL</span>
                     </div>
                 </div>
 
                 <div class="col-12">
                     <div class="titan-panel">
-                        <h5 class="mb-3"><i class="bi bi-graph-up"></i> LIVE MONITOR (PING & FPS)</h5>
-                        <div id="monitor-graph" class="live-graph border-bottom border-secondary">
+                        <h4><i class="bi bi-activity"></i> LIVE MONITOR</h4>
+                        <div id="monitor-graph" style="height: 100px; display: flex; align-items: flex-end; gap: 2px; border-bottom: 1px solid #333; overflow: hidden;">
                             </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <div id="waster" class="section" style="display:none">
+            <div class="titan-panel">
+                <h4><i class="bi bi-trash3-fill"></i> PACKET WASTER</h4>
+                <p>Menghabiskan kuota dengan request data dummy.</p>
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label>Threads (Kekuatan)</label>
+                        <select id="w-threads" class="form-select">
+                            <option value="10">10 Threads</option>
+                            <option value="30" selected>30 Threads</option>
+                            <option value="60">60 Threads</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Limit (MB)</label>
+                        <input type="number" id="w-limit" class="form-control" placeholder="0 = Tanpa Batas">
+                    </div>
+                </div>
+                <div class="d-flex gap-2 mb-3">
+                    <button class="btn-tech" id="btn-w-start" onclick="runWaster(true)">START BURN</button>
+                    <button class="btn-tech btn-danger-tech" id="btn-w-stop" onclick="runWaster(false)" disabled>STOP</button>
+                </div>
+                <div class="row text-center mb-2">
+                    <div class="col-6">
+                        <h3 id="w-total">0.00 MB</h3>
+                        <small>TOTAL BURNED</small>
+                    </div>
+                    <div class="col-6">
+                        <h3 class="text-primary-custom" id="w-speed">0.00 MB/s</h3>
+                        <small>SPEED</small>
+                    </div>
+                </div>
+                <div class="log-box" id="w-log"></div>
+            </div>
+        </div>
+
+        <div id="flood" class="section" style="display:none">
+            <div class="titan-panel">
+                <h4 class="text-danger"><i class="bi bi-lightning-fill"></i> HTTP FLOOD</h4>
+                <label class="mb-2">Target URL</label>
+                <input type="text" id="flood-url" class="form-control mb-3" value="https://speed.hetzner.de/100MB.bin">
+                
+                <div class="row text-center mb-4">
+                    <div class="col-4 border-end">
+                        <h3 id="f-sent">0</h3>
+                        <small>SENT</small>
+                    </div>
+                    <div class="col-4 border-end">
+                        <h3 class="text-danger" id="f-err">0</h3>
+                        <small>ERRORS</small>
+                    </div>
+                    <div class="col-4">
+                        <h3 class="text-warning" id="f-stat">IDLE</h3>
+                        <small>STATUS</small>
+                    </div>
+                </div>
+
+                <button class="btn-tech btn-danger-tech mb-2" id="btn-f-start" onclick="runFlood(true)">START ATTACK</button>
+                <button class="btn-tech" id="btn-f-stop" onclick="runFlood(false)" disabled>STOP</button>
+            </div>
+        </div>
+
         <div id="myip" class="section" style="display:none">
             <div class="titan-panel text-center">
-                <h2><i class="bi bi-fingerprint"></i> IDENTITAS PUBLIK</h2>
-                <button class="btn-tech w-50 mx-auto my-3" onclick="getMyIP()">SCAN SEKARANG</button>
+                <h4><i class="bi bi-fingerprint"></i> INFORMASI IP SAYA</h4>
+                <button class="btn-tech w-50 mx-auto my-4" onclick="getMyIP()">SCAN IP</button>
                 
                 <div id="ip-res" style="display:none">
-                    <h1 class="display-4 fw-bold text-white mono" id="my-ip">...</h1>
-                    <div class="row mt-3 text-start">
-                        <div class="col-md-6 offset-md-3">
-                            <ul class="list-group list-group-flush bg-transparent">
-                                <li class="list-group-item bg-transparent text-white border-secondary d-flex justify-content-between">
-                                    <span>PROVIDER (ISP)</span> <span class="fw-bold text-info" id="my-isp">...</span>
-                                </li>
-                                <li class="list-group-item bg-transparent text-white border-secondary d-flex justify-content-between">
-                                    <span>LOKASI</span> <span class="fw-bold" id="my-loc">...</span>
-                                </li>
-                                <li class="list-group-item bg-transparent text-white border-secondary d-flex justify-content-between">
-                                    <span>KOORDINAT</span> <span class="fw-bold text-warning" id="my-coor">...</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                    <h1 class="display-4 fw-bold mono" id="my-ip">...</h1>
+                    <table class="table mt-3 text-start" style="color: var(--text-main); border-color: var(--border);">
+                        <tr><td>ISP</td><td class="fw-bold text-primary-custom" id="my-isp">...</td></tr>
+                        <tr><td>Lokasi</td><td class="fw-bold" id="my-loc">...</td></tr>
+                        <tr><td>Koordinat</td><td class="fw-bold" id="my-coor">...</td></tr>
+                        <tr><td>Timezone</td><td class="fw-bold" id="my-tz">...</td></tr>
+                    </table>
                 </div>
             </div>
         </div>
 
         <div id="host" class="section" style="display:none">
             <div class="titan-panel">
-                <h4><i class="bi bi-search"></i> DOMAIN TO IP (DIGGER)</h4>
+                <h4><i class="bi bi-search"></i> HOST DIGGER (DNS)</h4>
+                <p>Cari IP asli dari nama domain website.</p>
                 <div class="input-group mb-3">
-                    <input type="text" id="host-in" class="form-control" placeholder="Contoh: google.com">
-                    <button class="btn-tech" style="width: auto;" onclick="digHost()">CARI IP</button>
+                    <input type="text" id="host-in" class="form-control" placeholder="Contoh: tiktok.com">
+                    <button class="btn-tech" style="width:auto" onclick="digHost()">CARI IP</button>
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-dark table-bordered">
-                        <thead><tr><th>TYPE</th><th>DOMAIN</th><th>IP ADDRESS</th></tr></thead>
-                        <tbody id="host-out">
-                            <tr><td colspan="3" class="text-center text-muted">Menunggu input...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
+                <table class="table table-bordered" style="color: var(--text-main); border-color: var(--border);">
+                    <thead><tr><th>TYPE</th><th>NAME</th><th>DATA (IP)</th></tr></thead>
+                    <tbody id="host-out">
+                        <tr><td colspan="3" class="text-center">Hasil akan muncul di sini.</td></tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <div id="waster" class="section" style="display:none">
-            <div class="titan-panel">
-                <h4><i class="bi bi-fire"></i> PACKET WASTER (BURNER)</h4>
-                <div class="row g-3 mb-3">
-                    <div class="col-6">
-                        <label>Threads</label>
-                        <select id="w-threads" class="form-select">
-                            <option value="10">Normal</option>
-                            <option value="30" selected>Cepat</option>
-                            <option value="60">Turbo</option>
-                        </select>
-                    </div>
-                    <div class="col-6">
-                        <label>Limit (MB)</label>
-                        <input type="number" id="w-limit" class="form-control" placeholder="0 = Unlimited">
-                    </div>
-                </div>
-                <div class="d-flex gap-2 mb-3">
-                    <button class="btn-tech" id="btn-w-start" onclick="runWaster(true)">START</button>
-                    <button class="btn-tech btn-danger-tech" id="btn-w-stop" onclick="runWaster(false)" disabled>STOP</button>
-                </div>
-                <div class="row text-center">
-                    <div class="col-6"><h3 class="text-white" id="w-total">0.00 MB</h3></div>
-                    <div class="col-6"><h3 class="text-info" id="w-speed">0.00 MB/s</h3></div>
-                </div>
-                <div class="log-box mt-2" id="w-log"></div>
-            </div>
-        </div>
-
-        <div id="flood" class="section" style="display:none">
-            <div class="titan-panel">
-                <h4 class="text-danger">HTTP FLOOD TEST</h4>
-                <input type="text" id="flood-url" class="form-control mb-3" value="https://speed.hetzner.de/100MB.bin">
-                <div class="row text-center mb-3">
-                    <div class="col-4"><h4 id="f-sent">0</h4><small>SENT</small></div>
-                    <div class="col-4"><h4 class="text-danger" id="f-err">0</h4><small>ERRORS</small></div>
-                    <div class="col-4"><h4 class="text-warning" id="f-stat">IDLE</h4><small>STATUS</small></div>
-                </div>
-                <button class="btn-tech btn-danger-tech" id="btn-f-start" onclick="runFlood(true)">START ATTACK</button>
-                <button class="btn-tech mt-2" id="btn-f-stop" onclick="runFlood(false)" disabled>STOP</button>
+        <div id="speed" class="section" style="display:none">
+            <div class="titan-panel p-0 overflow-hidden" style="height: 80vh;">
+                <iframe src="https://openspeedtest.com/Get-widget.php" style="width:100%; height:100%; border:none;"></iframe>
             </div>
         </div>
 
     </div>
 
     <script>
-        // --- NAVIGASI & SYSTEM ---
+        // --- 1. THEME TOGGLE ---
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            document.getElementById('theme-text').innerText = isLight ? "LIGHT" : "DARK";
+            document.getElementById('theme-icon').className = isLight ? "bi bi-sun-fill" : "bi bi-moon-stars-fill";
+        }
+
+        // --- 2. NAVIGATION ---
         function nav(id, el) {
             document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
             document.getElementById(id).style.display = 'block';
@@ -326,116 +381,115 @@
             el.classList.add('active');
         }
 
-        // --- FPS COUNTER LOGIC ---
-        let lastLoop = new Date();
-        function countFPS() {
-            let thisLoop = new Date();
-            let fps = 1000 / (thisLoop - lastLoop);
-            lastLoop = thisLoop;
-            
-            // Update UI
-            const fpsElem = document.getElementById('fps-val');
-            if(fpsElem) fpsElem.innerText = Math.round(fps);
+        // --- 3. SYSTEM INFO & FPS (STABILIZED) ---
+        document.getElementById('sys-ram').innerText = navigator.deviceMemory || 4;
+        document.getElementById('sys-cpu').innerText = navigator.hardwareConcurrency || 4;
 
-            requestAnimationFrame(countFPS);
-        }
-        requestAnimationFrame(countFPS); // Start loop
+        let frameCount = 0;
+        // Hitung frame setiap render
+        requestAnimationFrame(function loop() {
+            frameCount++;
+            requestAnimationFrame(loop);
+        });
+        // Update tampilan HANYA setiap 500ms (Setengah detik) agar tidak berkedip
+        setInterval(() => {
+            const fps = frameCount * 2; // Approx FPS
+            document.getElementById('fps-val').innerText = fps > 60 ? 60 : fps; // Cap display at 60 to look clean
+            frameCount = 0;
+        }, 500);
 
-        // --- SYSTEM INFO & PING GRAPH ---
-        document.getElementById('sys-ram').innerText = (navigator.deviceMemory || 4);
-        document.getElementById('sys-cpu').innerText = (navigator.hardwareConcurrency || 4);
-
+        // Ping Monitor
         setInterval(async () => {
             const start = performance.now();
             try {
                 await fetch('https://www.google.com/favicon.ico', {mode:'no-cors', cache:'no-store'});
                 const ms = Math.round(performance.now() - start);
                 document.getElementById('ping-val').innerText = ms;
-
-                // Draw Graph Bar
+                
+                // Update Graphic
                 const chart = document.getElementById('monitor-graph');
                 const bar = document.createElement('div');
-                bar.className = 'bar';
-                // Warna berubah jika ping tinggi
-                bar.style.background = ms < 100 ? '#00f2ff' : (ms < 300 ? '#ffcc00' : '#ff0055');
-                bar.style.height = Math.min(ms, 100) + "%";
+                bar.style.width = '8px';
+                bar.style.height = Math.min(ms, 100) + '%';
+                bar.style.backgroundColor = ms < 100 ? 'var(--primary)' : 'red';
+                bar.style.marginRight = '2px';
                 chart.appendChild(bar);
                 if(chart.children.length > 50) chart.removeChild(chart.children[0]);
             } catch(e){}
         }, 1000);
 
-        // --- MY IP ---
-        function getMyIP() {
-            fetch('http://ip-api.com/json/')
-            .then(r => r.json())
-            .then(d => {
-                document.getElementById('my-ip').innerText = d.query;
-                document.getElementById('my-isp').innerText = d.isp;
-                document.getElementById('my-loc').innerText = `${d.city}, ${d.country}`;
-                document.getElementById('my-coor').innerText = `${d.lat}, ${d.lon}`;
-                document.getElementById('ip-res').style.display = 'block';
-            });
-        }
-
-        // --- HOST DIGGER ---
-        function digHost() {
-            const domain = document.getElementById('host-in').value;
-            const out = document.getElementById('host-out');
-            out.innerHTML = '<tr><td colspan="3">Scanning...</td></tr>';
-            
-            fetch(`https://cloudflare-dns.com/dns-query?name=${domain}&type=A`, {
-                headers: {'accept': 'application/dns-json'}
-            })
-            .then(r => r.json())
-            .then(d => {
-                out.innerHTML = '';
-                if(d.Answer) {
-                    d.Answer.forEach(a => {
-                        out.innerHTML += `<tr><td>A</td><td>${a.name}</td><td class="text-info fw-bold">${a.data}</td></tr>`;
-                    });
-                } else {
-                    out.innerHTML = '<tr><td colspan="3" class="text-danger">Tidak ditemukan.</td></tr>';
-                }
-            });
-        }
-
-        // --- WASTER ---
+        // --- 4. WASTER ---
         let wTimer, wTot=0, wStart=0;
         function runWaster(st) {
-            const btnS = document.getElementById('btn-w-start');
-            const btnE = document.getElementById('btn-w-stop');
             const log = document.getElementById('w-log');
             if(st) {
                 wTot=0; wStart=Date.now(); log.innerHTML='';
-                btnS.disabled=true; btnE.disabled=false;
+                document.getElementById('btn-w-start').disabled=true;
+                document.getElementById('btn-w-stop').disabled=false;
                 const th = document.getElementById('w-threads').value;
                 const lim = document.getElementById('w-limit').value;
                 
+                log.innerHTML += `<div>> Memulai ${th} threads...</div>`;
+
                 wTimer = setInterval(() => {
                     if(lim>0 && (wTot/1024/1024)>=lim) { runWaster(false); return; }
                     for(let i=0; i<th; i++) {
                         fetch('https://picsum.photos/200/300?r='+Math.random(), {mode:'no-cors'})
                         .then(()=>{
                             wTot+=60000;
-                            let mb = (wTot/1024/1024).toFixed(2);
-                            document.getElementById('w-total').innerText = mb + " MB";
-                            document.getElementById('w-speed').innerText = (mb/((Date.now()-wStart)/1000)).toFixed(2) + " MB/s";
+                            updateWUI();
                         });
                     }
                 }, 200);
-                log.innerHTML += `<div>> Started with ${th} threads</div>`;
             } else {
                 clearInterval(wTimer);
-                btnS.disabled=false; btnE.disabled=true;
-                log.innerHTML += `<div class="text-danger">> Stopped.</div>`;
+                document.getElementById('btn-w-start').disabled=false;
+                document.getElementById('btn-w-stop').disabled=true;
+                log.innerHTML += `<div style="color:red">> Berhenti.</div>`;
             }
         }
+        function updateWUI() {
+            let mb = (wTot/1024/1024).toFixed(2);
+            document.getElementById('w-total').innerText = mb + " MB";
+            document.getElementById('w-speed').innerText = (mb/((Date.now()-wStart)/1000)).toFixed(2) + " MB/s";
+        }
 
-        // --- FLOOD ---
-        let fTimer, fSent=0, fErr=0;
+        // --- 5. MY IP ---
+        function getMyIP() {
+            fetch('http://ip-api.com/json/')
+            .then(r=>r.json())
+            .then(d=>{
+                document.getElementById('my-ip').innerText = d.query;
+                document.getElementById('my-isp').innerText = d.isp;
+                document.getElementById('my-loc').innerText = d.city + ", " + d.country;
+                document.getElementById('my-coor').innerText = d.lat + ", " + d.lon;
+                document.getElementById('my-tz').innerText = d.timezone;
+                document.getElementById('ip-res').style.display = 'block';
+            });
+        }
+
+        // --- 6. HOST DIGGER ---
+        function digHost() {
+            const dom = document.getElementById('host-in').value;
+            const out = document.getElementById('host-out');
+            out.innerHTML = '<tr><td colspan="3">Scanning...</td></tr>';
+            fetch(`https://cloudflare-dns.com/dns-query?name=${dom}&type=A`, {headers:{'accept':'application/dns-json'}})
+            .then(r=>r.json())
+            .then(d=>{
+                out.innerHTML = '';
+                if(d.Answer) {
+                    d.Answer.forEach(a => {
+                        out.innerHTML += `<tr><td>A</td><td>${a.name}</td><td class="text-primary-custom fw-bold">${a.data}</td></tr>`;
+                    });
+                } else { out.innerHTML = '<tr><td colspan="3" style="color:red">Tidak ditemukan.</td></tr>'; }
+            });
+        }
+
+        // --- 7. FLOOD ---
+        let fTimer, fSent=0;
         function runFlood(st) {
             if(st) {
-                fSent=0; fErr=0;
+                fSent=0;
                 document.getElementById('btn-f-start').disabled=true;
                 document.getElementById('btn-f-stop').disabled=false;
                 document.getElementById('f-stat').innerText="ACTIVE";
@@ -444,7 +498,7 @@
                     let img = new Image();
                     img.src = url + "?x=" + Math.random();
                     img.onload = ()=>{ fSent++; document.getElementById('f-sent').innerText=fSent; };
-                    img.onerror = ()=>{ fSent++; fErr++; document.getElementById('f-sent').innerText=fSent; document.getElementById('f-err').innerText=fErr; };
+                    img.onerror = ()=>{ fSent++; document.getElementById('f-err').innerText = parseInt(document.getElementById('f-err').innerText)+1; document.getElementById('f-sent').innerText=fSent; };
                 }, 10);
             } else {
                 clearInterval(fTimer);
