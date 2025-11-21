@@ -3,437 +3,496 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NET.DESTROYER V9 // SYSTEM ROOT</title>
+    <title>NET.DESTROYER V10 // GOD MODE</title>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
         :root {
-            --bg: #050505;
-            --panel: rgba(10, 20, 10, 0.85);
-            --primary: #00ff41; /* Matrix Green */
+            --bg: #020202;
+            --panel: rgba(20, 20, 20, 0.95);
+            --primary: #00ff41; /* Hacker Green */
+            --dim: #005c16;
+            --danger: #ff3333;
+            --warn: #ffcc00;
             --accent: #008F11;
-            --danger: #ff2a2a;
-            --grid-color: rgba(0, 255, 65, 0.05);
         }
 
         body {
             background-color: var(--bg);
-            background-image: 
-                linear-gradient(var(--grid-color) 1px, transparent 1px),
-                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-            background-size: 30px 30px;
             color: var(--primary);
             font-family: 'Share Tech Mono', monospace;
             height: 100vh;
             overflow: hidden;
+            user-select: none;
         }
 
-        /* Scanline Effect */
-        body::before {
+        /* CRT Effect */
+        body::after {
             content: " ";
             display: block;
             position: absolute;
             top: 0; left: 0; bottom: 0; right: 0;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 2;
+            z-index: 999;
             background-size: 100% 2px, 3px 100%;
             pointer-events: none;
         }
 
+        /* Sidebar */
         .sidebar {
-            width: 80px;
+            width: 240px;
             height: 100vh;
             position: fixed;
             left: 0; top: 0;
-            border-right: 1px solid var(--accent);
-            background: #000;
+            background: #050505;
+            border-right: 1px solid var(--dim);
             z-index: 10;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding-top: 20px;
+            padding: 20px 0;
         }
 
-        .nav-btn {
-            width: 50px;
-            height: 50px;
-            margin-bottom: 20px;
-            background: transparent;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.5rem;
+        .brand {
+            font-size: 1.4rem;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px var(--primary);
+            border-bottom: 1px solid var(--dim);
+            padding-bottom: 20px;
+        }
+
+        .menu-item {
+            padding: 15px 25px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            border-left: 3px solid transparent;
+            color: #666;
+        }
+
+        .menu-item:hover {
+            background: rgba(0, 255, 65, 0.05);
+            color: #fff;
+        }
+
+        .menu-item.active {
+            background: linear-gradient(90deg, rgba(0, 255, 65, 0.1), transparent);
+            border-left: 3px solid var(--primary);
+            color: var(--primary);
+            text-shadow: 0 0 8px var(--primary);
+        }
+
+        .menu-item i { width: 30px; font-size: 1.2rem; }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 240px;
+            padding: 25px;
+            height: 100vh;
+            overflow-y: auto;
+            background: radial-gradient(circle at center, #0a0a0a 0%, #000 100%);
+        }
+
+        .panel {
+            border: 1px solid var(--dim);
+            background: rgba(0,0,0,0.8);
+            padding: 20px;
+            margin-bottom: 20px;
             position: relative;
         }
+        
+        .panel::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
 
-        .nav-btn:hover, .nav-btn.active {
+        h2 {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            border-bottom: 1px dashed var(--dim);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        /* UI Elements */
+        .btn-cyber {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 10px 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+            transition: 0.3s;
+        }
+        .btn-cyber:hover:not(:disabled) {
             background: var(--primary);
             color: #000;
             box-shadow: 0 0 15px var(--primary);
         }
+        .btn-cyber:disabled { border-color: #333; color: #333; cursor: not-allowed; }
+        
+        .btn-danger-cyber { border-color: var(--danger); color: var(--danger); }
+        .btn-danger-cyber:hover:not(:disabled) { background: var(--danger); color: white; box-shadow: 0 0 15px var(--danger); }
 
-        .nav-btn.active::after {
-            content: '';
-            position: absolute;
-            right: -15px;
-            border-top: 10px solid transparent;
-            border-bottom: 10px solid transparent;
-            border-left: 10px solid var(--primary);
-        }
-
-        .main-content {
-            margin-left: 80px;
-            padding: 20px;
-            height: 100vh;
-            overflow-y: auto;
-        }
-
-        .hud-panel {
-            background: var(--panel);
-            border: 1px solid var(--primary);
-            padding: 20px;
-            position: relative;
-            box-shadow: 0 0 10px rgba(0, 255, 65, 0.1);
-            margin-bottom: 20px;
-        }
-
-        /* Corner Decor */
-        .hud-panel::after {
-            content: "";
-            position: absolute;
-            bottom: -1px; right: -1px;
-            width: 20px; height: 20px;
-            border-bottom: 3px solid var(--primary);
-            border-right: 3px solid var(--primary);
-        }
-        .hud-panel::before {
-            content: "";
-            position: absolute;
-            top: -1px; left: -1px;
-            width: 20px; height: 20px;
-            border-top: 3px solid var(--primary);
-            border-left: 3px solid var(--primary);
-        }
-
-        h2 {
-            text-transform: uppercase;
-            border-bottom: 1px dashed var(--primary);
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-            text-shadow: 0 0 5px var(--primary);
-        }
-
-        /* Inputs */
         .form-control, .form-select {
-            background: #000;
-            border: 1px solid var(--accent);
+            background: #050505;
+            border: 1px solid var(--dim);
             color: var(--primary);
-            font-family: 'Share Tech Mono', monospace;
             border-radius: 0;
         }
         .form-control:focus, .form-select:focus {
-            background: #000;
-            color: #fff;
-            border-color: var(--primary);
-            box-shadow: none;
-        }
-        ::placeholder { color: #005500; }
-
-        /* Buttons */
-        .btn-hack {
-            background: transparent;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            width: 100%;
-            padding: 10px;
-            border-radius: 0;
-            position: relative;
-            overflow: hidden;
-            transition: 0.3s;
-        }
-        .btn-hack:hover {
-            background: var(--primary);
-            color: #000;
-            box-shadow: 0 0 20px var(--primary);
-        }
-        .btn-stop {
-            border-color: var(--danger);
-            color: var(--danger);
-        }
-        .btn-stop:hover {
-            background: var(--danger);
-            color: #fff;
-            box-shadow: 0 0 20px var(--danger);
+            background: #000; border-color: var(--primary); color: #fff; box-shadow: none;
         }
 
-        /* Terminal Log */
-        .terminal-window {
+        /* Log Box */
+        .terminal {
             background: #000;
             border: 1px solid #333;
-            height: 300px;
-            overflow-y: hidden; /* Auto scroll handled by JS */
+            height: 250px;
+            overflow-y: auto;
             padding: 10px;
             font-size: 0.8rem;
-            position: relative;
+            font-family: 'Courier New', Courier, monospace;
         }
-        .terminal-content {
+        .log-line { margin-bottom: 2px; }
+
+        /* Ping Graph */
+        .ping-graph {
             display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            min-height: 100%;
+            align-items: flex-end;
+            height: 100px;
+            gap: 2px;
+            margin-top: 20px;
+            background: rgba(0,255,65,0.05);
+            padding: 5px;
+            overflow: hidden;
         }
-        .log-entry {
-            margin-bottom: 2px;
-            border-left: 2px solid transparent;
-            padding-left: 5px;
+        .bar {
+            flex: 1;
+            background: var(--dim);
+            transition: height 0.2s;
         }
-        .log-entry.new {
-            border-left-color: var(--primary);
-            animation: fadeIn 0.2s ease;
-        }
-        @keyframes fadeIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+        .bar.high { background: var(--danger); }
+        .bar.med { background: var(--warn); }
+        .bar.low { background: var(--primary); }
 
-        /* Progress Bar */
-        .cyber-progress {
-            height: 20px;
-            background: #111;
-            border: 1px solid #333;
-            margin-top: 15px;
-            position: relative;
-        }
-        .cyber-bar {
-            height: 100%;
-            background: repeating-linear-gradient(
-                45deg,
-                var(--primary),
-                var(--primary) 10px,
-                var(--accent) 10px,
-                var(--accent) 20px
-            );
-            width: 0%;
-            transition: width 0.2s;
-            box-shadow: 0 0 10px var(--primary);
-        }
-
-        /* Iframe Speedtest */
-        .speedtest-frame {
-            width: 100%;
-            height: 500px;
-            border: none;
-            filter: invert(1) hue-rotate(180deg); /* Invert colors to match dark theme */
-            opacity: 0.9;
+        /* Mobile */
+        @media(max-width: 768px) {
+            .sidebar { width: 60px; }
+            .sidebar .brand, .menu-item span { display: none; }
+            .menu-item { justify-content: center; padding: 15px 0; }
+            .main-content { margin-left: 60px; }
         }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
-        <div class="nav-btn active" onclick="setMode('buang', this)" title="Packet Waster"><i class="bi bi-radioactive"></i></div>
-        <div class="nav-btn" onclick="setMode('speed', this)" title="Speedtest"><i class="bi bi-speedometer2"></i></div>
-        <div style="flex-grow:1"></div>
-        <div class="text-center mb-3" style="font-size: 0.7rem; writing-mode: vertical-rl; transform: rotate(180deg);">SYS.V9.0</div>
+        <div class="brand">V10.0</div>
+        <div class="menu-item active" onclick="nav('waster', this)">
+            <i class="bi bi-radioactive"></i> <span>PACKET WASTER</span>
+        </div>
+        <div class="menu-item" onclick="nav('flood', this)">
+            <i class="bi bi-lightning-charge"></i> <span>HTTP FLOOD</span>
+        </div>
+        <div class="menu-item" onclick="nav('ping', this)">
+            <i class="bi bi-activity"></i> <span>PING MONITOR</span>
+        </div>
+        <div class="menu-item" onclick="nav('recon', this)">
+            <i class="bi bi-cpu"></i> <span>DEVICE RECON</span>
+        </div>
+        <div class="menu-item" onclick="nav('speed', this)">
+            <i class="bi bi-speedometer2"></i> <span>SPEEDTEST</span>
+        </div>
     </div>
 
     <div class="main-content">
         
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center border-bottom border-secondary pb-2">
-                    <div><i class="bi bi-terminal-fill me-2"></i>TERMINAL ACCESS GRANTED</div>
-                    <div id="clock">00:00:00</div>
-                </div>
-            </div>
+        <div class="d-flex justify-content-between mb-4 border-bottom border-secondary pb-2">
+            <div>SYSTEM STATUS: <span class="text-success blink">ONLINE</span></div>
+            <div id="clock">00:00:00</div>
         </div>
 
-        <div id="buang" class="section">
+        <div id="waster" class="section">
             <div class="row">
-                <div class="col-md-5">
-                    <div class="hud-panel">
-                        <h2><i class="bi bi-trash3-fill"></i> DATA DUMP CONFIG</h2>
+                <div class="col-md-6">
+                    <div class="panel">
+                        <h2><i class="bi bi-trash"></i> DATA DRAIN CONFIG</h2>
+                        <label class="small text-muted">THREADS</label>
+                        <select id="waster-threads" class="form-select mb-3">
+                            <option value="10">Level 1 (Standard)</option>
+                            <option value="30" selected>Level 2 (Aggressive)</option>
+                            <option value="60">Level 3 (Extreme)</option>
+                        </select>
+                        <label class="small text-muted">LIMIT (MB)</label>
+                        <input type="number" id="waster-limit" class="form-control mb-4" placeholder="0 = Unlimited">
                         
-                        <div class="mb-3">
-                            <label class="small text-muted">THREADS (KEKUATAN)</label>
-                            <select id="waster-threads" class="form-select">
-                                <option value="5">LEVEL 1 - STEALTH (5 Threads)</option>
-                                <option value="20" selected>LEVEL 2 - ASSAULT (20 Threads)</option>
-                                <option value="50">LEVEL 3 - NUKE (50 Threads)</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="small text-muted">TARGET LIMIT (MB)</label>
-                            <input type="number" id="waster-limit" class="form-control" placeholder="0 = INFINITE">
-                        </div>
-
-                        <div class="row g-2 mt-4">
-                            <div class="col-6">
-                                <button class="btn btn-hack" id="btn-start" onclick="startWaster()">INITIATE</button>
-                            </div>
-                            <div class="col-6">
-                                <button class="btn btn-hack btn-stop" id="btn-stop" onclick="stopWaster()" disabled>ABORT</button>
-                            </div>
-                        </div>
-
-                        <div class="mt-4 pt-3 border-top border-secondary">
-                            <div class="d-flex justify-content-between mb-1">
-                                <span>DATA WASTED:</span>
-                                <span id="stat-total" class="fw-bold">0.00 MB</span>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <span>SPEED:</span>
-                                <span id="stat-speed" class="text-white">0.00 MB/s</span>
-                            </div>
-                            <div class="cyber-progress">
-                                <div class="cyber-bar" id="prog-bar"></div>
-                            </div>
+                        <div class="row g-2">
+                            <div class="col-6"><button class="btn btn-cyber" id="btn-start-waste" onclick="toggleWaster(true)">INITIATE</button></div>
+                            <div class="col-6"><button class="btn btn-cyber btn-danger-cyber" id="btn-stop-waste" onclick="toggleWaster(false)" disabled>ABORT</button></div>
                         </div>
                     </div>
                 </div>
-
-                <div class="col-md-7">
-                    <div class="hud-panel" style="height: 100%;">
-                        <h2><i class="bi bi-code-square"></i> LIVE TRAFFIC LOG</h2>
-                        <div class="terminal-window" id="terminal">
-                            <div class="terminal-content" id="log-content">
-                                <div class="text-muted">System ready... Waiting for command.</div>
-                            </div>
+                <div class="col-md-6">
+                    <div class="panel">
+                        <h2>STATS</h2>
+                        <h1 id="waste-total" class="display-4 fw-bold">0.00 <span class="fs-6">MB</span></h1>
+                        <div class="text-muted">CURRENT SPEED: <span id="waste-speed" class="text-white">0.00 MB/s</span></div>
+                        <div class="progress mt-3 bg-dark" style="height: 5px;">
+                            <div id="waste-bar" class="progress-bar bg-success" style="width: 0%"></div>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel mt-3">
+                <h2>LOG OUTPUT</h2>
+                <div class="terminal" id="log-waster"></div>
+            </div>
+        </div>
+
+        <div id="flood" class="section" style="display:none">
+            <div class="panel">
+                <h2 class="text-danger"><i class="bi bi-exclamation-triangle"></i> HTTP FLOOD (STRESS TEST)</h2>
+                <p class="small text-muted">WARNING: USE ON YOUR OWN NETWORK ONLY. BROWSER BASED LOAD TESTING.</p>
+                <div class="row g-3">
+                    <div class="col-md-8">
+                        <input type="text" id="flood-url" class="form-control" value="https://speed.hetzner.de/100MB.bin">
+                    </div>
+                    <div class="col-md-4">
+                         <select id="flood-mode" class="form-select">
+                            <option value="100">Slow (10 req/s)</option>
+                            <option value="10">Fast (100 req/s)</option>
+                            <option value="1">Turbo (Max Speed)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mt-3 d-flex gap-2">
+                    <button class="btn btn-cyber btn-danger-cyber" id="btn-flood-start" onclick="toggleFlood(true)">ATTACK TARGET</button>
+                    <button class="btn btn-cyber" id="btn-flood-stop" onclick="toggleFlood(false)" disabled>CEASE FIRE</button>
+                </div>
+                <div class="row mt-4 text-center">
+                    <div class="col-4">
+                        <div class="h2 text-white" id="flood-sent">0</div>
+                        <div class="small text-muted">REQ SENT</div>
+                    </div>
+                    <div class="col-4">
+                        <div class="h2 text-danger" id="flood-fail">0</div>
+                        <div class="small text-muted">ERRORS (CORS)</div>
+                    </div>
+                    <div class="col-4">
+                        <div class="h2 text-warning" id="flood-status">IDLE</div>
+                        <div class="small text-muted">STATUS</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="speed" class="section" style="display: none;">
-            <div class="hud-panel">
-                <h2><i class="bi bi-speedometer"></i> GLOBAL NETWORK TEST</h2>
-                <p class="small text-muted mb-3">> CONNECTING TO OPEN SPEEDTEST SERVER (HTML5 ENGINE)...</p>
-                <div style="position:relative; width:100%; height:0; padding-bottom:56.25%; background:#000;">
-                    <iframe 
-                        src="https://openspeedtest.com/Get-widget.php" 
-                        style="position:absolute; top:0; left:0; width:100%; height:100%; border:none; border: 1px solid var(--primary);" 
-                        allow="fullscreen">
-                    </iframe>
+        <div id="ping" class="section" style="display:none">
+            <div class="panel">
+                <h2><i class="bi bi-activity"></i> LATENCY MONITOR</h2>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">TARGET: Google Global Cache</span>
+                    <span class="h3 mb-0" id="ping-val">0 ms</span>
                 </div>
+                <div class="ping-graph" id="ping-chart">
+                    </div>
+                <button class="btn btn-cyber mt-3" id="btn-ping" onclick="togglePing()">TOGGLE MONITOR</button>
+            </div>
+        </div>
+
+        <div id="recon" class="section" style="display:none">
+            <div class="panel">
+                <h2><i class="bi bi-cpu"></i> SYSTEM INTELLIGENCE</h2>
+                <table class="table table-dark table-borderless" style="font-family: 'Share Tech Mono';">
+                    <tbody>
+                        <tr><td class="text-muted">PLATFORM</td><td id="info-os">...</td></tr>
+                        <tr><td class="text-muted">CPU CORES</td><td id="info-core" class="text-success">...</td></tr>
+                        <tr><td class="text-muted">MEMORY (RAM)</td><td id="info-ram">...</td></tr>
+                        <tr><td class="text-muted">SCREEN RES</td><td id="info-res">...</td></tr>
+                        <tr><td class="text-muted">BATTERY</td><td id="info-batt">Scanning...</td></tr>
+                        <tr><td class="text-muted">CONNECTION</td><td id="info-conn">...</td></tr>
+                    </tbody>
+                </table>
+                <button class="btn btn-cyber" onclick="getRecon()">REFRESH DATA</button>
+            </div>
+        </div>
+
+        <div id="speed" class="section" style="display:none">
+            <div class="panel" style="height: 80vh; padding: 0;">
+                <iframe src="https://openspeedtest.com/Get-widget.php" style="width:100%; height:100%; border:none; opacity: 0.8;"></iframe>
             </div>
         </div>
 
     </div>
 
     <script>
-        // Clock
+        // --- SYSTEM CORE ---
         setInterval(() => {
-            const now = new Date();
-            document.getElementById('clock').innerText = now.toLocaleTimeString() + " UTC+7";
+            document.getElementById('clock').innerText = new Date().toLocaleTimeString();
         }, 1000);
 
-        // Navigation
-        function setMode(mode, btn) {
-            document.querySelectorAll('.section').forEach(el => el.style.display = 'none');
-            document.getElementById(mode).style.display = 'block';
-            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-            btn.classList.add('active');
+        function nav(id, el) {
+            document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+            document.getElementById(id).style.display = 'block';
+            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+            el.classList.add('active');
         }
 
-        // --- LOGIC BUANG PAKET ---
-        let wasterId = null;
-        let totalBytes = 0;
-        let startTime = 0;
-        let logs = [];
-
-        function addLog(msg, type="INFO") {
-            const content = document.getElementById('log-content');
-            const time = new Date().toLocaleTimeString([], {hour12: false, hour: '2-digit', minute:'2-digit', second:'2-digit'});
-            
-            const div = document.createElement('div');
-            div.className = 'log-entry new';
-            
-            let color = 'var(--primary)';
-            if(type === 'ERR') color = 'var(--danger)';
-            
-            div.innerHTML = `<span style="color:#555">[${time}]</span> <span style="color:${color}">[${type}]</span> ${msg}`;
-            
-            content.appendChild(div);
-            
-            // Auto scroll logic
-            const terminal = document.getElementById('terminal');
-            terminal.scrollTop = terminal.scrollHeight;
-
-            // Limit log lines to prevent memory leak
-            if(content.children.length > 50) {
-                content.removeChild(content.children[0]);
-            }
+        function log(id, msg, color='white') {
+            const box = document.getElementById(id);
+            const time = new Date().toLocaleTimeString().split(' ')[0];
+            box.innerHTML += `<div class="log-line" style="color:${color}">[${time}] ${msg}</div>`;
+            box.scrollTop = box.scrollHeight;
         }
 
-        function startWaster() {
-            const limitMB = parseFloat(document.getElementById('waster-limit').value) || 0;
-            const threads = parseInt(document.getElementById('waster-threads').value);
-            const url = "https://picsum.photos/1000/1000?random="; // URL target (gambar random)
+        // --- 1. PACKET WASTER ---
+        let wasteTimer;
+        let wasteTotal = 0;
+        let wasteStart = 0;
 
-            document.getElementById('btn-start').disabled = true;
-            document.getElementById('btn-stop').disabled = false;
+        function toggleWaster(on) {
+            const btnStart = document.getElementById('btn-start-waste');
+            const btnStop = document.getElementById('btn-stop-waste');
             
-            totalBytes = 0;
-            startTime = Date.now();
-            addLog(`INITIALIZING ATTACK SEQUENCE WITH ${threads} THREADS...`, "SYS");
+            if(on) {
+                wasteTotal = 0;
+                wasteStart = Date.now();
+                document.getElementById('log-waster').innerHTML = '';
+                btnStart.disabled = true; btnStop.disabled = false;
+                
+                const threads = parseInt(document.getElementById('waster-threads').value);
+                const limit = parseInt(document.getElementById('waster-limit').value) || 0;
+                
+                log('log-waster', `INITIALIZING ${threads} THREADS...`, 'cyan');
 
-            wasterId = setInterval(() => {
-                // Check Limit
-                if (limitMB > 0 && (totalBytes / 1024 / 1024) >= limitMB) {
-                    stopWaster();
-                    addLog("TARGET DATA LIMIT REACHED. STOPPING.", "SYS");
-                    return;
-                }
+                wasteTimer = setInterval(() => {
+                    if(limit > 0 && (wasteTotal/1024/1024) >= limit) {
+                        toggleWaster(false);
+                        log('log-waster', 'LIMIT REACHED', 'lime');
+                        return;
+                    }
 
-                // Spawn Threads
-                for (let i = 0; i < (threads / 2); i++) { // Optimization: spawn batch
-                    const randID = Math.floor(Math.random() * 99999);
-                    fetch(url + Math.random(), { mode: 'no-cors', cache: 'no-store' })
+                    for(let i=0; i<threads; i++) {
+                        fetch('https://picsum.photos/200/300?r='+Math.random(), {mode: 'no-cors'})
                         .then(() => {
-                            const chunkSize = 350 * 1024; // Estimasi 350KB per request
-                            totalBytes += chunkSize;
-                            updateStats(limitMB);
-                            
-                            // Visual Log (Hanya 1 dari 5 request agar tidak lag)
-                            if(Math.random() > 0.8) {
-                                addLog(`PACKET #${randID} DUMPED >> ${(chunkSize/1024).toFixed(0)}KB OK`, "OUT");
-                            }
-                        })
-                        .catch(e => {});
-                }
-            }, 200); // Interval loop
-        }
-
-        function updateStats(limitMB) {
-            const mb = (totalBytes / 1024 / 1024).toFixed(2);
-            const duration = (Date.now() - startTime) / 1000;
-            const speed = (mb / duration).toFixed(2);
-
-            document.getElementById('stat-total').innerText = mb + " MB";
-            document.getElementById('stat-speed').innerText = speed + " MB/s";
-
-            if(limitMB > 0) {
-                const pct = Math.min((mb / limitMB) * 100, 100);
-                document.getElementById('prog-bar').style.width = pct + "%";
+                            wasteTotal += 50000; // Est 50kb
+                            updateWasteUI(limit);
+                        });
+                    }
+                }, 100);
             } else {
-                document.getElementById('prog-bar').style.width = "100%";
-                document.getElementById('prog-bar').classList.add('progress-bar-striped', 'progress-bar-animated');
+                clearInterval(wasteTimer);
+                btnStart.disabled = false; btnStop.disabled = true;
+                log('log-waster', 'PROCESS ABORTED', 'red');
             }
         }
 
-        function stopWaster() {
-            clearInterval(wasterId);
-            document.getElementById('btn-start').disabled = false;
-            document.getElementById('btn-stop').disabled = true;
-            addLog("PROCESS ABORTED BY USER.", "ERR");
+        function updateWasteUI(limit) {
+            const mb = (wasteTotal/1024/1024).toFixed(2);
+            document.getElementById('waste-total').innerText = mb;
+            
+            const dur = (Date.now() - wasteStart) / 1000;
+            document.getElementById('waste-speed').innerText = (mb/dur).toFixed(2) + " MB/s";
+
+            if(limit > 0) {
+                document.getElementById('waste-bar').style.width = ((mb/limit)*100) + "%";
+            }
         }
+
+        // --- 2. HTTP FLOOD ---
+        let floodTimer;
+        let sent = 0;
+        let err = 0;
+
+        function toggleFlood(on) {
+            if(on) {
+                sent = 0; err = 0;
+                const url = document.getElementById('flood-url').value;
+                const delay = parseInt(document.getElementById('flood-mode').value);
+                
+                document.getElementById('btn-flood-start').disabled = true;
+                document.getElementById('btn-flood-stop').disabled = false;
+                document.getElementById('flood-status').innerText = "ATTACKING";
+                document.getElementById('flood-status').classList.add('blink');
+
+                floodTimer = setInterval(() => {
+                    const img = new Image();
+                    img.src = url + "?r=" + Math.random();
+                    img.onerror = () => { sent++; err++; updateFloodUI(); };
+                    img.onload = () => { sent++; updateFloodUI(); };
+                }, delay);
+            } else {
+                clearInterval(floodTimer);
+                document.getElementById('btn-flood-start').disabled = false;
+                document.getElementById('btn-flood-stop').disabled = true;
+                document.getElementById('flood-status').innerText = "IDLE";
+                document.getElementById('flood-status').classList.remove('blink');
+            }
+        }
+
+        function updateFloodUI() {
+            document.getElementById('flood-sent').innerText = sent;
+            document.getElementById('flood-fail').innerText = err;
+        }
+
+        // --- 3. PING MONITOR ---
+        let pingTimer = null;
+        function togglePing() {
+            if(pingTimer) {
+                clearInterval(pingTimer);
+                pingTimer = null;
+                return;
+            }
+            
+            const chart = document.getElementById('ping-chart');
+            pingTimer = setInterval(async () => {
+                const start = performance.now();
+                try {
+                    await fetch('https://www.google.com/favicon.ico', {mode:'no-cors', cache:'no-store'});
+                    const ms = Math.round(performance.now() - start);
+                    document.getElementById('ping-val').innerText = ms + " ms";
+                    
+                    // Add Bar
+                    const bar = document.createElement('div');
+                    bar.className = `bar ${ms < 100 ? 'low' : (ms < 300 ? 'med' : 'high')}`;
+                    bar.style.height = Math.min(ms, 100) + "%";
+                    chart.appendChild(bar);
+                    
+                    if(chart.children.length > 50) chart.removeChild(chart.children[0]);
+                } catch(e) {}
+            }, 1000);
+        }
+
+        // --- 4. RECON ---
+        function getRecon() {
+            document.getElementById('info-os').innerText = navigator.platform;
+            document.getElementById('info-core').innerText = navigator.hardwareConcurrency + " Logical Cores";
+            document.getElementById('info-ram').innerText = (navigator.deviceMemory || "N/A") + " GB";
+            document.getElementById('info-res').innerText = `${window.screen.width} x ${window.screen.height}`;
+            document.getElementById('info-conn').innerText = navigator.connection ? navigator.connection.effectiveType : "Unknown";
+            
+            if(navigator.getBattery) {
+                navigator.getBattery().then(b => {
+                    document.getElementById('info-batt').innerText = `${(b.level*100).toFixed(0)}% ${b.charging ? '(Charging)' : ''}`;
+                });
+            }
+        }
+        
+        // Auto Init
+        getRecon();
+
+        // Blink Animation
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes blink { 50% { opacity: 0; } }
+            .blink { animation: blink 1s infinite; }
+        `;
+        document.head.appendChild(style);
+
     </script>
 </body>
 </html>
