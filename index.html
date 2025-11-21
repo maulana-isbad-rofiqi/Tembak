@@ -10,23 +10,18 @@
     <style>
         /* --- VARIABLES --- */
         :root {
-            /* DARK MODE (DEFAULT) */
             --bg-core: #020204;
             --bg-sidebar: rgba(5, 5, 10, 0.85);
             --bg-panel: rgba(10, 15, 25, 0.7);
-            
             --text-main: #ffffff;
-            --text-sec: #e0f7fa; /* Putih Kebiruan (Sangat Jelas) */
-            
-            --primary: #00f2ff; /* Cyan Neon */
-            --accent: #ff0055;  /* Pink Neon */
+            --text-sec: #e0f7fa; 
+            --primary: #00f2ff; 
+            --accent: #ff0055;
             --border: 1px solid rgba(0, 242, 255, 0.3);
-            
-            --input-bg: rgba(0, 0, 0, 0.8); 
+            --input-bg: rgba(0, 0, 0, 0.9); 
             --input-border: #00f2ff;
         }
 
-        /* LIGHT MODE */
         .light-mode {
             --bg-core: #eef2f6;
             --bg-sidebar: rgba(255, 255, 255, 0.95);
@@ -53,174 +48,104 @@
             transition: 0.3s;
         }
 
-        /* OVERRIDE TEXT MUTED (Hapus Abu-abu Total) */
-        .text-muted {
-            color: var(--text-sec) !important;
-            font-weight: 600;
-            opacity: 1;
-        }
-        
-        h1, h2, h3, h4 {
-            text-transform: uppercase;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-shadow: 0 0 15px rgba(0, 242, 255, 0.1);
-        }
+        h1, h2, h3, h4 { text-transform: uppercase; font-weight: 800; letter-spacing: 1px; text-shadow: 0 0 15px rgba(0, 242, 255, 0.1); }
 
-        /* SIDEBAR GLASS */
+        /* SIDEBAR */
         .sidebar {
-            width: 260px;
-            height: 100vh;
-            position: fixed;
-            left: 0; top: 0;
-            background: var(--bg-sidebar);
-            backdrop-filter: blur(20px);
-            border-right: var(--border);
-            display: flex;
-            flex-direction: column;
-            z-index: 1000;
-            box-shadow: 5px 0 30px rgba(0,0,0,0.4);
+            width: 260px; height: 100vh; position: fixed; left: 0; top: 0;
+            background: var(--bg-sidebar); backdrop-filter: blur(20px);
+            border-right: var(--border); display: flex; flex-direction: column;
+            z-index: 1000; box-shadow: 5px 0 30px rgba(0,0,0,0.4);
         }
 
         .brand {
-            padding: 30px 20px;
-            font-size: 2rem;
-            font-weight: 900;
-            color: var(--primary);
-            text-align: center;
-            border-bottom: var(--border);
-            text-shadow: 0 0 20px var(--primary);
-            font-family: 'JetBrains Mono', monospace;
-            letter-spacing: 3px;
+            padding: 30px 20px; font-size: 2rem; font-weight: 900;
+            color: var(--primary); text-align: center; border-bottom: var(--border);
+            text-shadow: 0 0 20px var(--primary); font-family: 'JetBrains Mono'; letter-spacing: 3px;
         }
 
         .nav-btn {
-            padding: 18px 25px;
-            cursor: pointer;
-            color: var(--text-sec);
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            border-left: 4px solid transparent;
-            transition: all 0.3s;
-            font-size: 1.05rem;
+            padding: 18px 25px; cursor: pointer; color: var(--text-sec); font-weight: 700;
+            display: flex; align-items: center; gap: 15px; border-left: 4px solid transparent;
+            transition: all 0.3s; font-size: 1.05rem;
         }
-        .nav-btn:hover {
-            background: linear-gradient(90deg, rgba(0, 242, 255, 0.15), transparent);
-            color: var(--text-main);
-            padding-left: 30px;
-        }
-        .nav-btn.active {
-            background: linear-gradient(90deg, rgba(0, 242, 255, 0.25), transparent);
-            border-left: 4px solid var(--primary);
-            color: var(--primary);
-            text-shadow: 0 0 10px var(--primary);
-        }
+        .nav-btn:hover { background: linear-gradient(90deg, rgba(0, 242, 255, 0.15), transparent); padding-left: 30px; color: var(--text-main); }
+        .nav-btn.active { background: linear-gradient(90deg, rgba(0, 242, 255, 0.25), transparent); border-left: 4px solid var(--primary); color: var(--primary); }
 
         /* CONTENT */
-        .main-content {
-            margin-left: 260px;
-            padding: 30px;
-            height: 100vh;
-            overflow-y: auto;
-            padding-bottom: 100px;
-        }
+        .main-content { margin-left: 260px; padding: 30px; height: 100vh; overflow-y: auto; padding-bottom: 100px; }
 
-        /* PANEL GLASS */
+        /* PANEL */
         .titan-panel {
-            background: var(--bg-panel);
-            backdrop-filter: blur(10px);
-            border: var(--border);
-            padding: 25px;
-            border-radius: 12px;
-            margin-bottom: 25px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .titan-panel:hover {
-            transform: translateY(-3px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 40px rgba(0, 242, 255, 0.2);
+            background: var(--bg-panel); backdrop-filter: blur(10px); border: var(--border);
+            padding: 25px; border-radius: 12px; margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); transition: 0.3s;
         }
 
-        /* INPUTS & BUTTONS */
+        /* INPUTS */
         .form-control, .form-select {
             background-color: var(--input-bg) !important;
             border: 1px solid var(--input-border) !important;
             color: var(--text-main) !important;
-            border-radius: 6px;
-            padding: 12px;
-            font-weight: bold;
-            font-family: 'JetBrains Mono';
+            border-radius: 6px; padding: 12px; font-weight: bold; font-family: 'JetBrains Mono';
         }
         .form-control:focus { box-shadow: 0 0 15px var(--primary); }
-        ::placeholder { color: var(--text-sec) !important; opacity: 0.8; }
+        ::placeholder { color: var(--text-sec) !important; opacity: 0.6; }
 
+        /* BUTTONS */
         .btn-tech {
-            background: transparent;
-            border: 2px solid var(--primary);
-            color: var(--primary);
-            font-weight: 900;
-            padding: 12px;
-            width: 100%;
-            text-transform: uppercase;
-            transition: 0.3s;
-            letter-spacing: 1px;
-            border-radius: 6px;
+            background: transparent; border: 2px solid var(--primary); color: var(--primary);
+            font-weight: 900; padding: 12px; width: 100%; text-transform: uppercase;
+            transition: 0.3s; letter-spacing: 1px; border-radius: 6px;
         }
         .btn-tech:hover:not(:disabled) { background: var(--primary); color: #000; box-shadow: 0 0 25px var(--primary); }
         .btn-tech:disabled { border-color: #555; color: #555; cursor: not-allowed; }
-
         .btn-danger-tech { border-color: var(--accent); color: var(--accent); }
         .btn-danger-tech:hover:not(:disabled) { background: var(--accent); color: #fff; box-shadow: 0 0 25px var(--accent); }
-
-        /* HEADER CONTROLS */
         .control-btn {
-            background: rgba(0,0,0,0.4);
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            width: 40px; height: 40px;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: 0.3s;
+            background: rgba(0,0,0,0.4); border: 1px solid var(--primary); color: var(--primary);
+            width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; border-radius: 8px; transition: 0.3s;
         }
-        .control-btn:hover { background: var(--primary); color: #000; box-shadow: 0 0 15px var(--primary); }
 
         /* LOG BOX */
         .log-box {
-            background: #000;
-            border: 1px solid var(--primary);
-            height: 200px;
-            overflow-y: auto;
-            padding: 15px;
-            font-family: 'JetBrains Mono';
-            font-size: 0.9rem;
-            color: #00ff9d;
-            border-radius: 6px;
+            background: #000; border: 1px solid var(--primary); height: 200px;
+            overflow-y: auto; padding: 15px; font-family: 'JetBrains Mono'; font-size: 0.9rem; color: #00ff9d; border-radius: 6px;
         }
 
-        /* FIX IP TEXT OVERFLOW */
-        .ip-text {
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 700;
-            color: var(--primary);
-            font-size: 2.5rem; /* Ukuran pas, tidak terlalu besar */
-            word-break: break-word; /* Kunci: Agar turun ke bawah kalau kepanjangan */
-            line-height: 1.2;
+        /* FIX: TABLE STYLE AGAR TIDAK PUTIH */
+        .clean-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .clean-table td {
+            padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-main);
         }
+        .clean-table td:first-child { font-weight: bold; color: var(--text-sec); width: 40%; }
+        .clean-table td:last-child { text-align: right; font-weight: bold; font-family: 'JetBrains Mono'; }
+
+        /* FIX: IP TEXT SIZE FOR MOBILE */
+        .ip-display {
+            font-family: 'JetBrains Mono'; font-weight: 800; color: var(--primary);
+            font-size: 2.5rem; word-break: break-word; line-height: 1.1;
+        }
+
+        /* LIVE GRAPH BAR STYLE */
+        .waster-graph-container {
+            height: 80px; display: flex; align-items: flex-end; gap: 2px; 
+            border-bottom: 1px solid var(--primary); overflow: hidden; margin-top: 15px;
+        }
+        .w-bar { width: 6px; background: var(--primary); opacity: 0.8; border-top-right-radius: 2px; border-top-left-radius: 2px; }
 
         .mono { font-family: 'JetBrains Mono', monospace; }
 
-        /* RESPONSIVE */
         @media (max-width: 768px) {
             .sidebar { width: 70px; }
             .brand span, .nav-btn span { display: none; }
             .brand { font-size: 1.2rem; padding: 20px 0; }
             .nav-btn { justify-content: center; padding: 20px 0; }
             .main-content { margin-left: 70px; padding: 15px; }
-            .ip-text { font-size: 1.8rem; } /* Lebih kecil di HP */
+            /* FIX FONT SIZE DI HP */
+            .ip-display { font-size: 1.6rem; } 
         }
     </style>
 </head>
@@ -241,28 +166,27 @@
         <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom" style="border-color: var(--border) !important;">
             <div>
                 <h2 class="m-0 fw-bold">NET.TITAN</h2>
-                <small style="color:var(--primary); font-weight:bold; letter-spacing:1px;">SYSTEM ONLINE</small>
+                <small style="color:var(--primary); font-weight:bold;">SYSTEM ONLINE</small>
             </div>
             <div class="d-flex gap-3">
-                <button class="control-btn" onclick="window.location.reload()" title="Refresh System"><i class="bi bi-arrow-clockwise fs-5"></i></button>
-                <button class="control-btn" style="width:auto; padding:0 20px;" onclick="toggleTheme()"><i class="bi bi-circle-half me-2"></i> MODE</button>
+                <button class="control-btn" onclick="window.location.reload()"><i class="bi bi-arrow-clockwise fs-5"></i></button>
+                <button class="control-btn" style="width:auto; padding:0 20px;" onclick="toggleTheme()">MODE</button>
             </div>
         </div>
 
         <div id="dash" class="section">
             <div class="row g-4">
-                <div class="col-6 col-md-3"><div class="titan-panel text-center"><small class="text-muted d-block mb-2">FRAMERATE</small><h1 class="m-0 fw-bold mono" id="fps-val">60</h1><span class="badge bg-success text-white">FPS</span></div></div>
-                <div class="col-6 col-md-3"><div class="titan-panel text-center"><small class="text-muted d-block mb-2">LATENCY</small><h1 class="m-0 fw-bold mono" id="ping-val">0</h1><span class="badge bg-warning text-dark">MS</span></div></div>
-                <div class="col-6 col-md-3"><div class="titan-panel text-center"><small class="text-muted d-block mb-2">MEMORY RAM</small><h1 class="m-0 fw-bold mono" id="sys-ram">...</h1><span class="badge bg-primary text-white">GB</span></div></div>
-                <div class="col-6 col-md-3"><div class="titan-panel text-center"><small class="text-muted d-block mb-2">CPU THREADS</small><h1 class="m-0 fw-bold mono" id="sys-cpu">...</h1><span class="badge bg-info text-dark">CORES</span></div></div>
-                <div class="col-12"><div class="titan-panel"><h4 class="mb-3" style="color:var(--primary)"><i class="bi bi-activity"></i> LIVE MONITOR</h4><div id="monitor-graph" style="height: 120px; display: flex; align-items: flex-end; gap: 3px; border-bottom: 2px solid var(--primary); overflow: hidden;"></div></div></div>
+                <div class="col-6 col-md-3"><div class="titan-panel text-center"><small class="text-muted">FPS</small><h1 class="m-0 fw-bold mono" id="fps-val">60</h1></div></div>
+                <div class="col-6 col-md-3"><div class="titan-panel text-center"><small class="text-muted">PING</small><h1 class="m-0 fw-bold mono" id="ping-val">0</h1><span class="badge bg-warning text-dark">MS</span></div></div>
+                <div class="col-6 col-md-3"><div class="titan-panel text-center"><small class="text-muted">RAM</small><h1 class="m-0 fw-bold mono" id="sys-ram">...</h1><span class="badge bg-primary">GB</span></div></div>
+                <div class="col-6 col-md-3"><div class="titan-panel text-center"><small class="text-muted">CPU</small><h1 class="m-0 fw-bold mono" id="sys-cpu">...</h1><span class="badge bg-info text-dark">CORE</span></div></div>
+                <div class="col-12"><div class="titan-panel"><h4>LIVE MONITOR</h4><div id="monitor-graph" style="height: 80px; display: flex; align-items: flex-end; gap: 2px; border-bottom: 1px solid var(--primary); overflow: hidden;"></div></div></div>
             </div>
         </div>
 
         <div id="waster" class="section" style="display:none">
             <div class="titan-panel">
                 <h4 class="mb-3 text-white"><i class="bi bi-trash3-fill"></i> PACKET WASTER</h4>
-                
                 <div class="row g-3 mb-4">
                     <div class="col-md-6">
                         <label class="text-muted mb-2">KEKUATAN</label>
@@ -293,10 +217,12 @@
                         <small class="text-muted">KECEPATAN</small>
                     </div>
                 </div>
+
+                <div class="waster-graph-container" id="w-graph"></div>
                 
                 <div class="d-flex justify-content-between align-items-end mt-4 mb-1">
-                    <small class="text-muted">ACTIVITY LOG</small>
-                    <button class="btn btn-sm btn-outline-danger" style="font-size:0.7rem; border-radius:4px;" onclick="clearLog()"><i class="bi bi-trash"></i> HAPUS LOG</button>
+                    <small class="text-muted">LOG AKTIVITAS</small>
+                    <button class="btn btn-sm btn-outline-danger" style="font-size:0.7rem;" onclick="clearLog()">HAPUS LOG</button>
                 </div>
                 <div class="log-box" id="w-log"></div>
             </div>
@@ -304,15 +230,14 @@
 
         <div id="flood" class="section" style="display:none">
             <div class="titan-panel">
-                <h4 style="color:var(--accent)" class="mb-3">HTTP FLOOD</h4>
-                <label class="text-muted mb-2">TARGET URL</label>
-                <input type="text" id="flood-url" class="form-control mb-4" value="https://speed.hetzner.de/100MB.bin">
-                <div class="row text-center mb-4">
-                    <div class="col-4"><h3 id="f-sent">0</h3><small class="text-muted">SENT</small></div>
-                    <div class="col-4"><h3 style="color:var(--accent)" id="f-err">0</h3><small class="text-muted">ERROR</small></div>
-                    <div class="col-4"><h3 class="text-warning" id="f-stat">IDLE</h3><small class="text-muted">STATUS</small></div>
+                <h4 style="color:var(--accent)">HTTP FLOOD</h4>
+                <input type="text" id="flood-url" class="form-control my-3" value="https://speed.hetzner.de/100MB.bin">
+                <div class="row text-center mb-3">
+                    <div class="col-4"><h3 id="f-sent">0</h3><small>SENT</small></div>
+                    <div class="col-4"><h3 style="color:var(--accent)" id="f-err">0</h3><small>ERROR</small></div>
+                    <div class="col-4"><h3 class="text-warning" id="f-stat">IDLE</h3><small>STATUS</small></div>
                 </div>
-                <button class="btn-tech btn-danger-tech mb-3" id="btn-f-start" onclick="runFlood(true)">START ATTACK</button>
+                <button class="btn-tech btn-danger-tech mb-3" id="btn-f-start" onclick="runFlood(true)">START</button>
                 <button class="btn-tech" id="btn-f-stop" onclick="runFlood(false)" disabled>STOP</button>
             </div>
         </div>
@@ -324,19 +249,16 @@
                 
                 <div id="ip-res" style="display:none">
                     <div class="mb-4">
-                        <h1 class="ip-text" id="my-ip">...</h1>
+                        <div class="ip-display" id="my-ip">...</div>
                         <small class="text-muted">PUBLIC IP ADDRESS</small>
                     </div>
-                    <div class="table-responsive">
-                        <table class="table table-bordered" style="color: var(--text-main); border-color: var(--border); background: transparent;">
-                            <tbody>
-                                <tr><td class="w-50 fw-bold text-muted">PROVIDER (ISP)</td><td class="fw-bold" id="my-isp">...</td></tr>
-                                <tr><td class="fw-bold text-muted">LOKASI</td><td class="fw-bold" id="my-loc">...</td></tr>
-                                <tr><td class="fw-bold text-muted">TIPE KONEKSI</td><td class="fw-bold" id="my-type">...</td></tr>
-                                <tr><td class="fw-bold text-muted">KOORDINAT</td><td class="fw-bold" id="my-coor">...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    
+                    <table class="clean-table">
+                        <tr><td>PROVIDER</td><td id="my-isp">...</td></tr>
+                        <tr><td>LOKASI</td><td id="my-loc">...</td></tr>
+                        <tr><td>TIPE</td><td id="my-type">...</td></tr>
+                        <tr><td>KOORDINAT</td><td id="my-coor" style="color:var(--accent)">...</td></tr>
+                    </table>
                 </div>
             </div>
         </div>
@@ -346,10 +268,10 @@
                 <h4 class="mb-3"><i class="bi bi-search"></i> HOST DIGGER</h4>
                 <div class="input-group mb-4">
                     <input type="text" id="host-in" class="form-control" placeholder="Contoh: google.com">
-                    <button class="btn-tech" style="width:auto" onclick="digHost()">CARI IP</button>
+                    <button class="btn-tech" style="width:auto" onclick="digHost()">CARI</button>
                 </div>
-                <table class="table table-bordered" style="color:var(--text-main); border-color:var(--border);">
-                    <tbody id="host-out"><tr><td class="text-center text-muted">Hasil scan akan muncul disini</td></tr></tbody>
+                <table class="clean-table">
+                    <tbody id="host-out"><tr><td colspan="2" class="text-center text-muted">Hasil scan...</td></tr></tbody>
                 </table>
             </div>
         </div>
@@ -363,7 +285,6 @@
     </div>
 
     <script>
-        // --- NAV & THEME ---
         function nav(id, el) {
             document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
             document.getElementById(id).style.display = 'block';
@@ -372,9 +293,9 @@
         }
         function toggleTheme() { document.body.classList.toggle('light-mode'); }
 
-        // --- SYSTEM INFO ---
         document.getElementById('sys-ram').innerText = navigator.deviceMemory || 4;
         document.getElementById('sys-cpu').innerText = navigator.hardwareConcurrency || 4;
+        
         let frameCount = 0;
         requestAnimationFrame(function loop() { frameCount++; requestAnimationFrame(loop); });
         setInterval(() => { document.getElementById('fps-val').innerText = (frameCount * 2) > 60 ? 60 : (frameCount * 2); frameCount = 0; }, 500);
@@ -389,87 +310,63 @@
                 const bar = document.createElement('div');
                 bar.style.width='6px'; bar.style.height=Math.min(ms,100)+'%';
                 bar.style.background= ms<100?'var(--primary)':'var(--accent)'; bar.style.marginRight='2px';
-                bar.style.borderRadius='2px';
                 chart.appendChild(bar);
                 if(chart.children.length>60) chart.removeChild(chart.children[0]);
             } catch(e){}
         }, 1000);
 
-        // --- WASTER (ACCURATE & STABLE) ---
+        // --- WASTER & LIVE GRAPH ---
         let wTimer, wUpd, wTot=0, wStart=0;
         function startWaster(st) {
             if(st) {
-                wTot=0; wStart=Date.now();
+                wTot=0; wStart=Date.now(); 
                 document.getElementById('w-log').innerHTML = '<div class="text-info">> System Initialized.</div>';
                 document.getElementById('btn-w-start').disabled=true;
                 document.getElementById('btn-w-stop').disabled=false;
-                
                 const th = document.getElementById('w-threads').value;
                 const lim = document.getElementById('w-limit').value;
                 
-                // Request Loop (Run as fast as possible)
                 wTimer = setInterval(()=>{
                     if(lim>0 && (wTot/1024/1024)>=lim) { startWaster(false); return; }
                     for(let i=0; i<th; i++) {
-                        fetch('https://picsum.photos/200/300?r='+Math.random(), {mode:'no-cors'}).then(()=>{
-                            // Asumsi rata-rata 100KB per request agar hitungan 'Real'
-                            wTot+=102400; 
-                        });
+                        fetch('https://picsum.photos/200/300?r='+Math.random(), {mode:'no-cors'}).then(()=>{ wTot+=102400; });
                     }
                 }, 100);
 
-                // UI Update Loop (Slowed down to prevent flickering)
                 wUpd = setInterval(() => {
-                    updateWUI();
+                    let mb = (wTot/1024/1024).toFixed(2);
+                    let elapsed = (Date.now() - wStart) / 1000;
+                    let speed = elapsed > 0 ? (mb / elapsed) : 0;
+                    
+                    document.getElementById('w-total').innerText = mb + " MB";
+                    document.getElementById('w-speed').innerText = speed.toFixed(2) + " MB/s";
+                    
+                    // UPDATE WASTER GRAPH
+                    const wGraph = document.getElementById('w-graph');
+                    const wBar = document.createElement('div');
+                    wBar.className = 'w-bar';
+                    // Normalisasi grafik: Anggap max speed 50MB/s = 100% height
+                    let h = Math.min((speed / 50) * 100, 100);
+                    wBar.style.height = (h < 5 ? 5 : h) + "%"; 
+                    wGraph.appendChild(wBar);
+                    if(wGraph.children.length > 60) wGraph.removeChild(wGraph.children[0]);
+
                     const log = document.getElementById('w-log');
-                    log.innerHTML += `<div>> Chunk [${Math.floor(Math.random()*9999)}] DOWNLOADED.</div>`;
+                    log.innerHTML += `<div>> Chunk sent. Speed: ${speed.toFixed(1)} MB/s</div>`;
                     log.scrollTop = log.scrollHeight;
                     if(log.children.length > 50) log.removeChild(log.children[0]);
-                }, 200);
+                }, 500);
 
             } else {
                 clearInterval(wTimer); clearInterval(wUpd);
                 document.getElementById('btn-w-start').disabled=false;
                 document.getElementById('btn-w-stop').disabled=true;
-                document.getElementById('w-log').innerHTML += '<div style="color:var(--accent)">> PROCESS TERMINATED.</div>';
+                document.getElementById('w-log').innerHTML += '<div style="color:var(--accent)">> STOPPED.</div>';
             }
-        }
-
-        function updateWUI() {
-            let mb = (wTot/1024/1024).toFixed(2);
-            let elapsed = (Date.now() - wStart) / 1000;
-            // Hitung speed berdasarkan total data / total waktu (Average Stabil)
-            let speed = elapsed > 0 ? (mb / elapsed).toFixed(2) : 0;
-            
-            document.getElementById('w-total').innerText = mb + " MB";
-            document.getElementById('w-speed').innerText = speed + " MB/s";
         }
         function clearLog() { document.getElementById('w-log').innerHTML = '<div class="text-muted">> Log cleared.</div>'; }
 
-        // --- FLOOD ---
-        let fTimer, fSent=0;
-        function runFlood(st) {
-            if(st) {
-                fSent=0;
-                document.getElementById('btn-f-start').disabled=true;
-                document.getElementById('btn-f-stop').disabled=false;
-                document.getElementById('f-stat').innerText="ACTIVE";
-                const url = document.getElementById('flood-url').value;
-                fTimer = setInterval(()=>{
-                    let img = new Image();
-                    img.src = url + "?x=" + Math.random();
-                    img.onload=()=>{fSent++; document.getElementById('f-sent').innerText=fSent;};
-                    img.onerror=()=>{fSent++; document.getElementById('f-err').innerText = parseInt(document.getElementById('f-err').innerText)+1; document.getElementById('f-sent').innerText=fSent;};
-                }, 10);
-            } else {
-                clearInterval(fTimer);
-                document.getElementById('btn-f-start').disabled=false;
-                document.getElementById('btn-f-stop').disabled=true;
-                document.getElementById('f-stat').innerText="IDLE";
-            }
-        }
-
-        // --- MY IP ---
+        // --- MY IP FIXED ---
         function getMyIP() {
             const btn = document.getElementById('btn-ip-scan');
             btn.innerHTML = "SCANNING..."; btn.disabled = true;
@@ -480,27 +377,44 @@
                 document.getElementById('my-isp').innerText = d.connection.isp || d.isp;
                 document.getElementById('my-loc').innerText = `${d.city}, ${d.country}`;
                 document.getElementById('my-type').innerText = d.type;
-                document.getElementById('my-coor').innerText = `${d.lat}, ${d.lon}`;
+                // FIX: Use latitude & longitude properti dari ipwho.is
+                document.getElementById('my-coor').innerText = `${d.latitude}, ${d.longitude}`;
                 document.getElementById('ip-res').style.display = 'block';
                 btn.innerHTML = "SCAN SEKARANG"; btn.disabled = false;
             })
             .catch(e => { alert("Connection Error"); btn.innerHTML = "RETRY"; btn.disabled = false; });
         }
 
-        // --- HOST DIGGER ---
+        // FLOOD & HOST
+        let fTimer, fSent=0;
+        function runFlood(st) {
+            if(st) {
+                fSent=0;
+                document.getElementById('btn-f-start').disabled=true;
+                document.getElementById('btn-f-stop').disabled=false;
+                document.getElementById('f-stat').innerText="ACTIVE";
+                const url = document.getElementById('flood-url').value;
+                fTimer = setInterval(()=>{
+                    let img = new Image(); img.src = url + "?x=" + Math.random();
+                    img.onload=()=>{fSent++; document.getElementById('f-sent').innerText=fSent;};
+                    img.onerror=()=>{fSent++; document.getElementById('f-err').innerText = parseInt(document.getElementById('f-err').innerText)+1; document.getElementById('f-sent').innerText=fSent;};
+                }, 10);
+            } else {
+                clearInterval(fTimer); document.getElementById('btn-f-start').disabled=false;
+                document.getElementById('btn-f-stop').disabled=true; document.getElementById('f-stat').innerText="IDLE";
+            }
+        }
+
         function digHost() {
             const dom = document.getElementById('host-in').value;
             const out = document.getElementById('host-out');
-            out.innerHTML = '<tr><td colspan="3" class="text-center">Scanning...</td></tr>';
+            out.innerHTML = '<tr><td colspan="2">Scanning...</td></tr>';
             fetch(`https://cloudflare-dns.com/dns-query?name=${dom}&type=A`, {headers:{'accept':'application/dns-json'}})
             .then(r=>r.json())
             .then(d=>{
                 out.innerHTML = '';
-                if(d.Answer) {
-                    d.Answer.forEach(a => {
-                        out.innerHTML += `<tr><td>A</td><td>${a.name}</td><td class="text-primary fw-bold">${a.data}</td></tr>`;
-                    });
-                } else { out.innerHTML = '<tr><td colspan="3" style="color:var(--accent)" class="text-center">Not Found.</td></tr>'; }
+                if(d.Answer) { d.Answer.forEach(a => { out.innerHTML += `<tr><td>${a.name}</td><td style="color:var(--primary)">${a.data}</td></tr>`; }); } 
+                else { out.innerHTML = '<tr><td colspan="2" style="color:var(--accent)">Not Found.</td></tr>'; }
             });
         }
     </script>
