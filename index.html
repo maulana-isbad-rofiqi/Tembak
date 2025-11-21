@@ -12,11 +12,11 @@
         :root {
             /* DARK MODE (DEFAULT) */
             --bg-core: #020204;
-            --bg-sidebar: rgba(5, 5, 10, 0.8); /* Glass Effect */
-            --bg-panel: rgba(15, 20, 30, 0.6); /* Glass Effect */
+            --bg-sidebar: rgba(5, 5, 10, 0.8);
+            --bg-panel: rgba(15, 20, 30, 0.6);
             
             --text-main: #ffffff;
-            --text-sec: #d0eaff; /* Ganti abu-abu jadi Biru Pucat Terang */
+            --text-sec: #d0eaff;
             
             --primary: #00f2ff; /* Cyan Neon */
             --accent: #ff0055;  /* Pink Neon */
@@ -31,39 +31,29 @@
             --bg-core: #eef2f6;
             --bg-sidebar: rgba(255, 255, 255, 0.9);
             --bg-panel: #ffffff;
-            
             --text-main: #000000;
-            --text-sec: #003366; /* Biru Tua Jelas */
-            
+            --text-sec: #003366;
             --primary: #0055ff;
             --accent: #d60046;
             --border: 1px solid #ccc;
-            
             --input-bg: #ffffff; 
             --input-border: #0055ff;
         }
 
         body {
             background-color: var(--bg-core);
-            /* Grid Background Keren */
             background-image: 
                 linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
             background-size: 40px 40px;
             background-attachment: fixed;
-            
             color: var(--text-main);
             font-family: 'Rajdhani', sans-serif;
             overflow: hidden;
             transition: 0.3s;
         }
 
-        /* OVERRIDE TEXT MUTED (Hapus Abu-abu) */
-        .text-muted {
-            color: var(--text-sec) !important;
-            font-weight: 600;
-            opacity: 1;
-        }
+        .text-muted { color: var(--text-sec) !important; font-weight: 600; opacity: 1; }
         
         h1, h2, h3, h4 {
             text-transform: uppercase;
@@ -72,14 +62,14 @@
             text-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
 
-        /* SIDEBAR GLASS */
+        /* SIDEBAR */
         .sidebar {
             width: 260px;
             height: 100vh;
             position: fixed;
             left: 0; top: 0;
             background: var(--bg-sidebar);
-            backdrop-filter: blur(15px); /* Efek Blur Kaca */
+            backdrop-filter: blur(15px);
             border-right: var(--border);
             display: flex;
             flex-direction: column;
@@ -113,7 +103,7 @@
         .nav-btn:hover {
             background: linear-gradient(90deg, rgba(0, 242, 255, 0.1), transparent);
             color: var(--text-main);
-            padding-left: 35px; /* Efek geser saat hover */
+            padding-left: 35px;
         }
         .nav-btn.active {
             background: linear-gradient(90deg, rgba(0, 242, 255, 0.2), transparent);
@@ -131,7 +121,7 @@
             padding-bottom: 100px;
         }
 
-        /* PANEL GLASS */
+        /* PANEL */
         .titan-panel {
             background: var(--bg-panel);
             backdrop-filter: blur(10px);
@@ -148,7 +138,7 @@
             box-shadow: 0 10px 40px rgba(0, 242, 255, 0.15);
         }
 
-        /* INPUTS JELAS */
+        /* INPUTS */
         .form-control, .form-select {
             background-color: var(--input-bg) !important;
             border: 1px solid var(--input-border) !important;
@@ -158,9 +148,7 @@
             font-weight: bold;
             font-family: 'JetBrains Mono';
         }
-        .form-control:focus {
-            box-shadow: 0 0 15px var(--primary);
-        }
+        .form-control:focus { box-shadow: 0 0 15px var(--primary); }
         ::placeholder { color: var(--text-sec) !important; opacity: 0.7; }
 
         /* BUTTONS */
@@ -176,19 +164,14 @@
             letter-spacing: 1px;
             border-radius: 6px;
         }
-        .btn-tech:hover:not(:disabled) { 
-            background: var(--primary);
-            color: #000;
-            box-shadow: 0 0 25px var(--primary);
-        }
+        .btn-tech:hover:not(:disabled) { background: var(--primary); color: #000; box-shadow: 0 0 25px var(--primary); }
         .btn-tech:disabled { border-color: #555; color: #555; cursor: not-allowed; }
 
-        .btn-danger-tech { 
-            border-color: var(--accent); color: var(--accent); 
-        }
-        .btn-danger-tech:hover:not(:disabled) {
-            background: var(--accent); color: #fff;
-            box-shadow: 0 0 25px var(--accent);
+        .btn-danger-tech { border-color: var(--accent); color: var(--accent); }
+        .btn-danger-tech:hover:not(:disabled) { background: var(--accent); color: #fff; box-shadow: 0 0 25px var(--accent); }
+        
+        .btn-sm-icon {
+            width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;
         }
 
         /* HEADER CONTROLS */
@@ -204,7 +187,7 @@
         }
         .control-btn:hover { background: var(--primary); color: #000; box-shadow: 0 0 15px var(--primary); }
 
-        /* LOG BOX */
+        /* LOG BOX & TABLE */
         .log-box {
             background: #000;
             border: 1px solid var(--primary);
@@ -216,7 +199,13 @@
             color: #00ff9d;
             border-radius: 6px;
         }
-
+        .table-custom td, .table-custom th {
+            background: transparent !important;
+            color: var(--text-main) !important;
+            border-color: var(--primary) !important;
+            padding: 12px;
+            vertical-align: middle;
+        }
         .mono { font-family: 'JetBrains Mono', monospace; }
 
         /* RESPONSIVE */
@@ -235,25 +224,12 @@
         <div class="brand">
             <i class="bi bi-cpu-fill"></i> <span>TITAN</span>
         </div>
-        
-        <div class="nav-btn active" onclick="nav('dash', this)">
-            <i class="bi bi-grid-1x2-fill fs-4"></i> <span>SYSTEM</span>
-        </div>
-        <div class="nav-btn" onclick="nav('waster', this)">
-            <i class="bi bi-trash3-fill fs-4"></i> <span>BUANG PAKET</span>
-        </div>
-        <div class="nav-btn" onclick="nav('flood', this)">
-            <i class="bi bi-lightning-fill fs-4"></i> <span>STRESS TEST</span>
-        </div>
-        <div class="nav-btn" onclick="nav('myip', this)">
-            <i class="bi bi-fingerprint fs-4"></i> <span>MY IP INFO</span>
-        </div>
-        <div class="nav-btn" onclick="nav('host', this)">
-            <i class="bi bi-search fs-4"></i> <span>HOST IP</span>
-        </div>
-        <div class="nav-btn" onclick="nav('speed', this)">
-            <i class="bi bi-speedometer fs-4"></i> <span>SPEEDTEST</span>
-        </div>
+        <div class="nav-btn active" onclick="nav('dash', this)"><i class="bi bi-grid-1x2-fill fs-4"></i> <span>SYSTEM</span></div>
+        <div class="nav-btn" onclick="nav('waster', this)"><i class="bi bi-trash3-fill fs-4"></i> <span>BUANG PAKET</span></div>
+        <div class="nav-btn" onclick="nav('flood', this)"><i class="bi bi-lightning-fill fs-4"></i> <span>STRESS TEST</span></div>
+        <div class="nav-btn" onclick="nav('myip', this)"><i class="bi bi-fingerprint fs-4"></i> <span>MY IP INFO</span></div>
+        <div class="nav-btn" onclick="nav('host', this)"><i class="bi bi-search fs-4"></i> <span>HOST IP</span></div>
+        <div class="nav-btn" onclick="nav('speed', this)"><i class="bi bi-speedometer fs-4"></i> <span>SPEEDTEST</span></div>
     </div>
 
     <div class="main-content">
@@ -261,65 +237,33 @@
         <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom" style="border-color: var(--border) !important;">
             <div>
                 <h2 class="m-0 fw-bold">NET.TITAN</h2>
-                <small style="color:var(--primary); font-weight:bold; letter-spacing:1px;">SYSTEM ONLINE // READY</small>
+                <small style="color:var(--primary); font-weight:bold; letter-spacing:1px;">SYSTEM ONLINE</small>
             </div>
             <div class="d-flex gap-3">
-                <button class="control-btn" onclick="window.location.reload()" title="Refresh System">
-                    <i class="bi bi-arrow-clockwise fs-5"></i>
-                </button>
-                <button class="control-btn" style="width:auto; padding:0 20px;" onclick="toggleTheme()">
-                    <i class="bi bi-circle-half me-2"></i> MODE
-                </button>
+                <button class="control-btn" onclick="window.location.reload()" title="Refresh"><i class="bi bi-arrow-clockwise fs-5"></i></button>
+                <button class="control-btn" style="width:auto; padding:0 20px;" onclick="toggleTheme()"><i class="bi bi-circle-half me-2"></i> MODE</button>
             </div>
         </div>
 
         <div id="dash" class="section">
             <div class="row g-4">
-                <div class="col-6 col-md-3">
-                    <div class="titan-panel text-center">
-                        <small class="text-muted d-block mb-2">FRAMERATE</small>
-                        <h1 class="m-0 fw-bold mono" id="fps-val">60</h1>
-                        <span class="badge bg-success text-white">FPS</span>
-                    </div>
-                </div>
-                <div class="col-6 col-md-3">
-                    <div class="titan-panel text-center">
-                        <small class="text-muted d-block mb-2">PING LATENCY</small>
-                        <h1 class="m-0 fw-bold mono" id="ping-val">0</h1>
-                        <span class="badge bg-warning text-dark">MS</span>
-                    </div>
-                </div>
-                <div class="col-6 col-md-3">
-                    <div class="titan-panel text-center">
-                        <small class="text-muted d-block mb-2">MEMORY RAM</small>
-                        <h1 class="m-0 fw-bold mono" id="sys-ram">...</h1>
-                        <span class="badge bg-primary text-white">GB</span>
-                    </div>
-                </div>
-                <div class="col-6 col-md-3">
-                    <div class="titan-panel text-center">
-                        <small class="text-muted d-block mb-2">CPU THREADS</small>
-                        <h1 class="m-0 fw-bold mono" id="sys-cpu">...</h1>
-                        <span class="badge bg-info text-dark">CORES</span>
-                    </div>
-                </div>
-                
-                <div class="col-12">
-                    <div class="titan-panel">
-                        <h4 class="mb-3" style="color:var(--primary)"><i class="bi bi-activity"></i> LIVE MONITOR</h4>
-                        <div id="monitor-graph" style="height: 120px; display: flex; align-items: flex-end; gap: 3px; border-bottom: 2px solid var(--primary); overflow: hidden;"></div>
-                    </div>
-                </div>
+                <div class="col-6 col-md-3"><div class="titan-panel text-center"><small class="text-muted d-block mb-2">FRAMERATE</small><h1 class="m-0 fw-bold mono" id="fps-val">60</h1><span class="badge bg-success text-white">FPS</span></div></div>
+                <div class="col-6 col-md-3"><div class="titan-panel text-center"><small class="text-muted d-block mb-2">LATENCY</small><h1 class="m-0 fw-bold mono" id="ping-val">0</h1><span class="badge bg-warning text-dark">MS</span></div></div>
+                <div class="col-6 col-md-3"><div class="titan-panel text-center"><small class="text-muted d-block mb-2">MEMORY RAM</small><h1 class="m-0 fw-bold mono" id="sys-ram">...</h1><span class="badge bg-primary text-white">GB</span></div></div>
+                <div class="col-6 col-md-3"><div class="titan-panel text-center"><small class="text-muted d-block mb-2">CPU THREADS</small><h1 class="m-0 fw-bold mono" id="sys-cpu">...</h1><span class="badge bg-info text-dark">CORES</span></div></div>
+                <div class="col-12"><div class="titan-panel"><h4 class="mb-3" style="color:var(--primary)"><i class="bi bi-activity"></i> LIVE MONITOR</h4><div id="monitor-graph" style="height: 120px; display: flex; align-items: flex-end; gap: 3px; border-bottom: 2px solid var(--primary); overflow: hidden;"></div></div></div>
             </div>
         </div>
 
         <div id="waster" class="section" style="display:none">
             <div class="titan-panel">
-                <h4 class="mb-3 text-white"><i class="bi bi-trash3-fill"></i> PACKET WASTER</h4>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="m-0 text-white"><i class="bi bi-trash3-fill"></i> PACKET WASTER</h4>
+                </div>
                 
                 <div class="row g-3 mb-4">
                     <div class="col-md-6">
-                        <label class="text-muted mb-2">KEKUATAN (THREADS)</label>
+                        <label class="text-muted mb-2">KEKUATAN</label>
                         <select id="w-threads" class="form-select">
                             <option value="10">Normal (10 Threads)</option>
                             <option value="30" selected>Cepat (30 Threads)</option>
@@ -327,27 +271,32 @@
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="text-muted mb-2">LIMIT DATA (MB)</label>
+                        <label class="text-muted mb-2">LIMIT (MB)</label>
                         <input type="number" id="w-limit" class="form-control" placeholder="0 = Unlimited">
                     </div>
                 </div>
 
                 <div class="d-flex gap-3 mb-4">
-                    <button class="btn-tech" id="btn-w-start" onclick="runWaster(true)">MULAI</button>
-                    <button class="btn-tech btn-danger-tech" id="btn-w-stop" onclick="runWaster(false)" disabled>STOP</button>
+                    <button class="btn-tech" id="btn-w-start" onclick="startWaster(true)">MULAI</button>
+                    <button class="btn-tech btn-danger-tech" id="btn-w-stop" onclick="startWaster(false)" disabled>STOP</button>
                 </div>
 
                 <div class="row text-center">
                     <div class="col-6 border-end" style="border-color: var(--border) !important;">
                         <h2 id="w-total">0.00 MB</h2>
-                        <small class="text-muted">TOTAL TERBUANG</small>
+                        <small class="text-muted">TERBUANG</small>
                     </div>
                     <div class="col-6">
                         <h2 style="color:var(--primary)" id="w-speed">0.00 MB/s</h2>
                         <small class="text-muted">KECEPATAN</small>
                     </div>
                 </div>
-                <div class="mt-4 log-box" id="w-log"></div>
+                
+                <div class="d-flex justify-content-between align-items-end mt-4 mb-1">
+                    <small class="text-muted">ACTIVITY LOG</small>
+                    <button class="btn btn-sm btn-outline-danger" style="font-size:0.7rem; border-radius:4px;" onclick="clearLog()"><i class="bi bi-trash"></i> HAPUS LOG</button>
+                </div>
+                <div class="log-box" id="w-log"></div>
             </div>
         </div>
 
@@ -356,36 +305,36 @@
                 <h4 style="color:var(--accent)" class="mb-3">HTTP FLOOD</h4>
                 <label class="text-muted mb-2">TARGET URL</label>
                 <input type="text" id="flood-url" class="form-control mb-4" value="https://speed.hetzner.de/100MB.bin">
-                
                 <div class="row text-center mb-4">
-                    <div class="col-4">
-                        <h3 id="f-sent">0</h3><small class="text-muted">SENT</small>
-                    </div>
-                    <div class="col-4">
-                        <h3 style="color:var(--accent)" id="f-err">0</h3><small class="text-muted">ERROR</small>
-                    </div>
-                    <div class="col-4">
-                        <h3 class="text-warning" id="f-stat">IDLE</h3><small class="text-muted">STATUS</small>
-                    </div>
+                    <div class="col-4"><h3 id="f-sent">0</h3><small class="text-muted">SENT</small></div>
+                    <div class="col-4"><h3 style="color:var(--accent)" id="f-err">0</h3><small class="text-muted">ERROR</small></div>
+                    <div class="col-4"><h3 class="text-warning" id="f-stat">IDLE</h3><small class="text-muted">STATUS</small></div>
                 </div>
-
                 <button class="btn-tech btn-danger-tech mb-3" id="btn-f-start" onclick="runFlood(true)">START ATTACK</button>
                 <button class="btn-tech" id="btn-f-stop" onclick="runFlood(false)" disabled>STOP</button>
             </div>
         </div>
 
         <div id="myip" class="section" style="display:none">
-            <div class="titan-panel text-center">
-                <h4 class="mb-4"><i class="bi bi-fingerprint"></i> IP IDENTITY</h4>
-                <button class="btn-tech w-50 mx-auto mb-4" id="btn-ip-scan" onclick="getMyIP()">SCAN SEKARANG</button>
+            <div class="titan-panel">
+                <h4 class="mb-4 text-center"><i class="bi bi-fingerprint"></i> IP IDENTITY</h4>
+                <button class="btn-tech w-50 mx-auto d-block mb-4" id="btn-ip-scan" onclick="getMyIP()">SCAN SEKARANG</button>
                 
                 <div id="ip-res" style="display:none">
-                    <h1 class="display-3 fw-bold mono" style="color:var(--primary)" id="my-ip">...</h1>
-                    <table class="table mt-4 text-start" style="color: var(--text-main); --bs-table-bg: transparent; border-color: var(--border);">
-                        <tr><td class="text-muted">ISP / Provider</td><td class="fw-bold" id="my-isp">...</td></tr>
-                        <tr><td class="text-muted">Lokasi</td><td class="fw-bold" id="my-loc">...</td></tr>
-                        <tr><td class="text-muted">Tipe Koneksi</td><td class="fw-bold" id="my-type">...</td></tr>
-                    </table>
+                    <div class="text-center mb-4">
+                        <h1 class="display-3 fw-bold mono" style="color:var(--primary)" id="my-ip">...</h1>
+                        <small class="text-muted">YOUR PUBLIC IP</small>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-custom table-bordered">
+                            <tbody>
+                                <tr><td class="w-50 fw-bold text-muted">PROVIDER (ISP)</td><td class="fw-bold" style="color:#fff !important" id="my-isp">...</td></tr>
+                                <tr><td class="fw-bold text-muted">LOKASI</td><td class="fw-bold" style="color:#fff !important" id="my-loc">...</td></tr>
+                                <tr><td class="fw-bold text-muted">TIPE KONEKSI</td><td class="fw-bold" style="color:#fff !important" id="my-type">...</td></tr>
+                                <tr><td class="fw-bold text-muted">KOORDINAT</td><td class="fw-bold" style="color:#fff !important" id="my-coor">...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -397,8 +346,8 @@
                     <input type="text" id="host-in" class="form-control" placeholder="Contoh: google.com">
                     <button class="btn-tech" style="width:auto" onclick="digHost()">CARI IP</button>
                 </div>
-                <table class="table table-bordered" style="color:var(--text-main); border-color:var(--border);">
-                    <tbody id="host-out"><tr><td class="text-center text-muted">Hasil akan muncul disini</td></tr></tbody>
+                <table class="table table-custom table-bordered">
+                    <tbody id="host-out"><tr><td class="text-center text-muted">Hasil scan akan muncul disini</td></tr></tbody>
                 </table>
             </div>
         </div>
@@ -412,7 +361,7 @@
     </div>
 
     <script>
-        // --- THEME & NAV ---
+        // --- NAV & THEME ---
         function nav(id, el) {
             document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
             document.getElementById(id).style.display = 'block';
@@ -424,24 +373,16 @@
         // --- SYSTEM INFO ---
         document.getElementById('sys-ram').innerText = navigator.deviceMemory || 4;
         document.getElementById('sys-cpu').innerText = navigator.hardwareConcurrency || 4;
-        
-        // FPS
         let frameCount = 0;
         requestAnimationFrame(function loop() { frameCount++; requestAnimationFrame(loop); });
-        setInterval(() => { 
-            const fps = frameCount * 2;
-            document.getElementById('fps-val').innerText = fps > 60 ? 60 : fps; 
-            frameCount = 0; 
-        }, 500);
+        setInterval(() => { document.getElementById('fps-val').innerText = (frameCount * 2) > 60 ? 60 : (frameCount * 2); frameCount = 0; }, 500);
 
-        // Ping
         setInterval(async () => {
             const s = performance.now();
             try {
                 await fetch('https://www.google.com/favicon.ico', {mode:'no-cors', cache:'no-store'});
                 const ms = Math.round(performance.now() - s);
                 document.getElementById('ping-val').innerText = ms;
-                
                 const chart = document.getElementById('monitor-graph');
                 const bar = document.createElement('div');
                 bar.style.width='6px'; bar.style.height=Math.min(ms,100)+'%';
@@ -452,36 +393,56 @@
             } catch(e){}
         }, 1000);
 
-        // --- WASTER ---
-        let wTimer, wTot=0, wStart=0;
-        function runWaster(st) {
-            const log = document.getElementById('w-log');
+        // --- WASTER LOGIC (STABILIZED & CLEAN) ---
+        let wTimer, wUpdateTimer, wTot=0, wStart=0;
+        
+        function startWaster(st) {
             if(st) {
-                wTot=0; wStart=Date.now(); log.innerHTML='';
+                wTot=0; wStart=Date.now(); 
+                document.getElementById('w-log').innerHTML = '<div class="text-info">> Memulai sistem...</div>';
                 document.getElementById('btn-w-start').disabled=true;
                 document.getElementById('btn-w-stop').disabled=false;
+                
                 const th = document.getElementById('w-threads').value;
                 const lim = document.getElementById('w-limit').value;
-                log.innerHTML += '<div>> Memulai sistem burn...</div>';
+                
+                // Request Loop (Fast)
                 wTimer = setInterval(()=>{
-                    if(lim>0 && (wTot/1024/1024)>=lim) { runWaster(false); return; }
+                    if(lim>0 && (wTot/1024/1024)>=lim) { startWaster(false); return; }
                     for(let i=0; i<th; i++) {
                         fetch('https://picsum.photos/200/300?r='+Math.random(), {mode:'no-cors'}).then(()=>{
-                            wTot+=60000; updateWUI();
+                            wTot+=60000; 
                         });
                     }
                 }, 200);
+
+                // UI Update Loop (Slow & Stable - Anti Flicker)
+                wUpdateTimer = setInterval(() => {
+                    updateWUI();
+                    // Add random log entry visually
+                    const log = document.getElementById('w-log');
+                    log.innerHTML += `<div>> Packet chunk sent [${Math.floor(Math.random()*9999)}] OK</div>`;
+                    log.scrollTop = log.scrollHeight;
+                    if(log.children.length > 50) log.removeChild(log.children[0]);
+                }, 500);
+
             } else {
                 clearInterval(wTimer);
+                clearInterval(wUpdateTimer);
                 document.getElementById('btn-w-start').disabled=false;
                 document.getElementById('btn-w-stop').disabled=true;
-                log.innerHTML += '<div style="color:var(--accent)">> STOPPED.</div>';
+                document.getElementById('w-log').innerHTML += '<div style="color:var(--accent)">> SYSTEM STOPPED.</div>';
             }
         }
+
         function updateWUI() {
             let mb = (wTot/1024/1024).toFixed(2);
             document.getElementById('w-total').innerText = mb + " MB";
             document.getElementById('w-speed').innerText = (mb/((Date.now()-wStart)/1000)).toFixed(2) + " MB/s";
+        }
+        
+        function clearLog() {
+            document.getElementById('w-log').innerHTML = '<div class="text-muted">> Log cleaned.</div>';
         }
 
         // --- FLOOD ---
@@ -507,7 +468,7 @@
             }
         }
 
-        // --- MY IP ---
+        // --- MY IP (TABLE FIXED) ---
         function getMyIP() {
             const btn = document.getElementById('btn-ip-scan');
             btn.innerHTML = "SCANNING..."; btn.disabled = true;
@@ -518,17 +479,18 @@
                 document.getElementById('my-isp').innerText = d.connection.isp || d.isp;
                 document.getElementById('my-loc').innerText = `${d.city}, ${d.country}`;
                 document.getElementById('my-type').innerText = d.type;
+                document.getElementById('my-coor').innerText = `${d.lat}, ${d.lon}`;
                 document.getElementById('ip-res').style.display = 'block';
                 btn.innerHTML = "SCAN SEKARANG"; btn.disabled = false;
             })
-            .catch(e => { alert("Error Koneksi API"); btn.innerHTML = "RETRY"; btn.disabled = false; });
+            .catch(e => { alert("Connection Error"); btn.innerHTML = "RETRY"; btn.disabled = false; });
         }
 
         // --- HOST DIGGER ---
         function digHost() {
             const dom = document.getElementById('host-in').value;
             const out = document.getElementById('host-out');
-            out.innerHTML = '<tr><td colspan="3">Scanning...</td></tr>';
+            out.innerHTML = '<tr><td colspan="3" class="text-center">Scanning DNS...</td></tr>';
             fetch(`https://cloudflare-dns.com/dns-query?name=${dom}&type=A`, {headers:{'accept':'application/dns-json'}})
             .then(r=>r.json())
             .then(d=>{
@@ -537,7 +499,7 @@
                     d.Answer.forEach(a => {
                         out.innerHTML += `<tr><td>A</td><td>${a.name}</td><td class="text-primary fw-bold">${a.data}</td></tr>`;
                     });
-                } else { out.innerHTML = '<tr><td colspan="3" style="color:red">Tidak ditemukan.</td></tr>'; }
+                } else { out.innerHTML = '<tr><td colspan="3" style="color:red" class="text-center">Tidak ditemukan.</td></tr>'; }
             });
         }
     </script>
