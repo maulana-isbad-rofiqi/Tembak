@@ -10,36 +10,42 @@
     <style>
         /* --- VARIABLES --- */
         :root {
+            /* DARK MODE (DEFAULT) */
             --bg-core: #020204;
-            --bg-sidebar: rgba(5, 5, 10, 0.85);
-            --bg-panel: rgba(10, 15, 25, 0.7);
+            --bg-sidebar: rgba(5, 5, 10, 0.9);
+            --bg-panel: rgba(10, 20, 30, 0.8);
+            
             --text-main: #ffffff;
-            --text-sec: #e0f7fa; 
-            --primary: #00f2ff; 
-            --accent: #ff0055;
-            --border: 1px solid rgba(0, 242, 255, 0.3);
-            --input-bg: rgba(0, 0, 0, 0.9); 
+            --text-sec: #caf0f8; /* Ganti Abu jadi Biru Es Terang */
+            
+            --primary: #00f2ff; /* Cyan Neon */
+            --accent: #ff0055;  /* Pink Neon */
+            --border: 1px solid rgba(0, 242, 255, 0.4);
+            
+            --input-bg: #000000; 
             --input-border: #00f2ff;
         }
 
+        /* LIGHT MODE */
         .light-mode {
-            --bg-core: #eef2f6;
-            --bg-sidebar: rgba(255, 255, 255, 0.95);
+            --bg-core: #f0f8ff;
+            --bg-sidebar: #ffffff;
             --bg-panel: #ffffff;
             --text-main: #000000;
-            --text-sec: #004488;
-            --primary: #0055ff;
+            --text-sec: #0044cc;
+            --primary: #0066ff;
             --accent: #d60046;
             --border: 1px solid #ccc;
-            --input-bg: #ffffff; 
-            --input-border: #0055ff;
+            --input-bg: #f0f0f0; 
+            --input-border: #0066ff;
         }
 
         body {
             background-color: var(--bg-core);
+            /* Grid Background */
             background-image: 
-                linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
+                linear-gradient(rgba(0, 242, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 255, 0.03) 1px, transparent 1px);
             background-size: 40px 40px;
             background-attachment: fixed;
             color: var(--text-main);
@@ -48,38 +54,94 @@
             transition: 0.3s;
         }
 
-        h1, h2, h3, h4 { text-transform: uppercase; font-weight: 800; letter-spacing: 1px; text-shadow: 0 0 15px rgba(0, 242, 255, 0.1); }
+        /* OVERRIDE TEXT MUTED (HAPUS ABU-ABU) */
+        .text-muted {
+            color: var(--text-sec) !important;
+            font-weight: 700;
+            opacity: 1;
+            letter-spacing: 0.5px;
+        }
+        
+        h1, h2, h3, h4 {
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(0, 242, 255, 0.2);
+        }
 
-        /* SIDEBAR */
+        /* SIDEBAR GLASS */
         .sidebar {
-            width: 260px; height: 100vh; position: fixed; left: 0; top: 0;
-            background: var(--bg-sidebar); backdrop-filter: blur(20px);
-            border-right: var(--border); display: flex; flex-direction: column;
-            z-index: 1000; box-shadow: 5px 0 30px rgba(0,0,0,0.4);
+            width: 260px;
+            height: 100vh;
+            position: fixed;
+            left: 0; top: 0;
+            background: var(--bg-sidebar);
+            backdrop-filter: blur(15px);
+            border-right: var(--border);
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            box-shadow: 5px 0 30px rgba(0,0,0,0.4);
         }
 
         .brand {
-            padding: 30px 20px; font-size: 2rem; font-weight: 900;
-            color: var(--primary); text-align: center; border-bottom: var(--border);
-            text-shadow: 0 0 20px var(--primary); font-family: 'JetBrains Mono'; letter-spacing: 3px;
+            padding: 30px 20px;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary);
+            text-align: center;
+            border-bottom: var(--border);
+            text-shadow: 0 0 20px var(--primary);
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 2px;
         }
 
         .nav-btn {
-            padding: 18px 25px; cursor: pointer; color: var(--text-sec); font-weight: 700;
-            display: flex; align-items: center; gap: 15px; border-left: 4px solid transparent;
-            transition: all 0.3s; font-size: 1.05rem;
+            padding: 18px 25px;
+            cursor: pointer;
+            color: var(--text-sec);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-left: 4px solid transparent;
+            transition: all 0.3s;
+            font-size: 1.1rem;
         }
-        .nav-btn:hover { background: linear-gradient(90deg, rgba(0, 242, 255, 0.15), transparent); padding-left: 30px; color: var(--text-main); }
-        .nav-btn.active { background: linear-gradient(90deg, rgba(0, 242, 255, 0.25), transparent); border-left: 4px solid var(--primary); color: var(--primary); }
+        .nav-btn:hover {
+            background: linear-gradient(90deg, rgba(0, 242, 255, 0.15), transparent);
+            color: var(--text-main);
+            padding-left: 30px;
+        }
+        .nav-btn.active {
+            background: linear-gradient(90deg, rgba(0, 242, 255, 0.25), transparent);
+            border-left: 4px solid var(--primary);
+            color: var(--primary);
+            text-shadow: 0 0 10px var(--primary);
+        }
 
         /* CONTENT */
-        .main-content { margin-left: 260px; padding: 30px; height: 100vh; overflow-y: auto; padding-bottom: 100px; }
+        .main-content {
+            margin-left: 260px;
+            padding: 30px;
+            height: 100vh;
+            overflow-y: auto;
+            padding-bottom: 100px;
+        }
 
         /* PANEL */
         .titan-panel {
-            background: var(--bg-panel); backdrop-filter: blur(10px); border: var(--border);
-            padding: 25px; border-radius: 12px; margin-bottom: 25px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); transition: 0.3s;
+            background: var(--bg-panel);
+            border: var(--border);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
+        }
+        .titan-panel:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.1);
         }
 
         /* INPUTS */
@@ -87,54 +149,93 @@
             background-color: var(--input-bg) !important;
             border: 1px solid var(--input-border) !important;
             color: var(--text-main) !important;
-            border-radius: 6px; padding: 12px; font-weight: bold; font-family: 'JetBrains Mono';
+            border-radius: 6px;
+            padding: 12px;
+            font-weight: bold;
+            font-family: 'JetBrains Mono';
         }
         .form-control:focus { box-shadow: 0 0 15px var(--primary); }
-        ::placeholder { color: var(--text-sec) !important; opacity: 0.6; }
+        ::placeholder { color: var(--text-sec) !important; opacity: 0.8; }
 
         /* BUTTONS */
         .btn-tech {
-            background: transparent; border: 2px solid var(--primary); color: var(--primary);
-            font-weight: 900; padding: 12px; width: 100%; text-transform: uppercase;
-            transition: 0.3s; letter-spacing: 1px; border-radius: 6px;
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            font-weight: 900;
+            padding: 12px;
+            width: 100%;
+            text-transform: uppercase;
+            transition: 0.3s;
+            letter-spacing: 1px;
+            border-radius: 6px;
         }
         .btn-tech:hover:not(:disabled) { background: var(--primary); color: #000; box-shadow: 0 0 25px var(--primary); }
-        .btn-tech:disabled { border-color: #555; color: #555; cursor: not-allowed; }
+        .btn-tech:disabled { border-color: #444; color: #666; cursor: not-allowed; }
         .btn-danger-tech { border-color: var(--accent); color: var(--accent); }
         .btn-danger-tech:hover:not(:disabled) { background: var(--accent); color: #fff; box-shadow: 0 0 25px var(--accent); }
+        
         .control-btn {
-            background: rgba(0,0,0,0.4); border: 1px solid var(--primary); color: var(--primary);
-            width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; border-radius: 8px; transition: 0.3s;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: 0.3s;
         }
+        .control-btn:hover { background: var(--primary); color: #000; box-shadow: 0 0 15px var(--primary); }
 
         /* LOG BOX */
         .log-box {
-            background: #000; border: 1px solid var(--primary); height: 200px;
-            overflow-y: auto; padding: 15px; font-family: 'JetBrains Mono'; font-size: 0.9rem; color: #00ff9d; border-radius: 6px;
+            background: #000;
+            border: 1px solid var(--primary);
+            height: 180px;
+            overflow-y: auto;
+            padding: 15px;
+            font-family: 'JetBrains Mono';
+            font-size: 0.9rem;
+            color: #00ff9d;
+            border-radius: 6px;
+            margin-top: 15px;
         }
 
-        /* FIX: TABLE STYLE AGAR TIDAK PUTIH */
+        /* TABLE CUSTOM */
         .clean-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         .clean-table td {
-            padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 12px; border-bottom: 1px solid rgba(0, 242, 255, 0.2);
             color: var(--text-main);
         }
         .clean-table td:first-child { font-weight: bold; color: var(--text-sec); width: 40%; }
         .clean-table td:last-child { text-align: right; font-weight: bold; font-family: 'JetBrains Mono'; }
 
-        /* FIX: IP TEXT SIZE FOR MOBILE */
+        /* IP DISPLAY FIX */
         .ip-display {
             font-family: 'JetBrains Mono'; font-weight: 800; color: var(--primary);
             font-size: 2.5rem; word-break: break-word; line-height: 1.1;
         }
 
-        /* LIVE GRAPH BAR STYLE */
-        .waster-graph-container {
-            height: 80px; display: flex; align-items: flex-end; gap: 2px; 
-            border-bottom: 1px solid var(--primary); overflow: hidden; margin-top: 15px;
+        /* --- LIVE GRAPH STYLES --- */
+        .graph-container {
+            height: 120px; 
+            display: flex; 
+            align-items: flex-end; 
+            gap: 3px; 
+            overflow: hidden; 
+            border-bottom: 2px solid var(--primary);
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+            padding-bottom: 1px;
         }
-        .w-bar { width: 6px; background: var(--primary); opacity: 0.8; border-top-right-radius: 2px; border-top-left-radius: 2px; }
+        .graph-bar {
+            width: 8px;
+            background: var(--primary);
+            opacity: 0.8;
+            border-top-right-radius: 2px;
+            border-top-left-radius: 2px;
+            transition: height 0.1s;
+        }
 
         .mono { font-family: 'JetBrains Mono', monospace; }
 
@@ -144,8 +245,7 @@
             .brand { font-size: 1.2rem; padding: 20px 0; }
             .nav-btn { justify-content: center; padding: 20px 0; }
             .main-content { margin-left: 70px; padding: 15px; }
-            /* FIX FONT SIZE DI HP */
-            .ip-display { font-size: 1.6rem; } 
+            .ip-display { font-size: 1.8rem; } 
         }
     </style>
 </head>
@@ -166,27 +266,28 @@
         <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom" style="border-color: var(--border) !important;">
             <div>
                 <h2 class="m-0 fw-bold">NET.TITAN</h2>
-                <small style="color:var(--primary); font-weight:bold;">SYSTEM ONLINE</small>
+                <small style="color:var(--primary); font-weight:bold; letter-spacing:1px;">SYSTEM ONLINE</small>
             </div>
             <div class="d-flex gap-3">
-                <button class="control-btn" onclick="window.location.reload()"><i class="bi bi-arrow-clockwise fs-5"></i></button>
+                <button class="control-btn" onclick="window.location.reload()" title="Refresh System"><i class="bi bi-arrow-clockwise fs-5"></i></button>
                 <button class="control-btn" style="width:auto; padding:0 20px;" onclick="toggleTheme()">MODE</button>
             </div>
         </div>
 
         <div id="dash" class="section">
             <div class="row g-4">
-                <div class="col-6 col-md-3"><div class="titan-panel text-center"><small class="text-muted">FPS</small><h1 class="m-0 fw-bold mono" id="fps-val">60</h1></div></div>
-                <div class="col-6 col-md-3"><div class="titan-panel text-center"><small class="text-muted">PING</small><h1 class="m-0 fw-bold mono" id="ping-val">0</h1><span class="badge bg-warning text-dark">MS</span></div></div>
+                <div class="col-6 col-md-3"><div class="titan-panel text-center"><small class="text-muted">FRAMERATE</small><h1 class="m-0 fw-bold mono" id="fps-val">60</h1></div></div>
+                <div class="col-6 col-md-3"><div class="titan-panel text-center"><small class="text-muted">LATENCY</small><h1 class="m-0 fw-bold mono" id="ping-val">0</h1><span class="badge bg-warning text-dark">MS</span></div></div>
                 <div class="col-6 col-md-3"><div class="titan-panel text-center"><small class="text-muted">RAM</small><h1 class="m-0 fw-bold mono" id="sys-ram">...</h1><span class="badge bg-primary">GB</span></div></div>
                 <div class="col-6 col-md-3"><div class="titan-panel text-center"><small class="text-muted">CPU</small><h1 class="m-0 fw-bold mono" id="sys-cpu">...</h1><span class="badge bg-info text-dark">CORE</span></div></div>
-                <div class="col-12"><div class="titan-panel"><h4>LIVE MONITOR</h4><div id="monitor-graph" style="height: 80px; display: flex; align-items: flex-end; gap: 2px; border-bottom: 1px solid var(--primary); overflow: hidden;"></div></div></div>
+                <div class="col-12"><div class="titan-panel"><h4>LIVE PING MONITOR</h4><div id="monitor-graph" class="graph-container"></div></div></div>
             </div>
         </div>
 
         <div id="waster" class="section" style="display:none">
             <div class="titan-panel">
                 <h4 class="mb-3 text-white"><i class="bi bi-trash3-fill"></i> PACKET WASTER</h4>
+                
                 <div class="row g-3 mb-4">
                     <div class="col-md-6">
                         <label class="text-muted mb-2">KEKUATAN</label>
@@ -218,7 +319,11 @@
                     </div>
                 </div>
 
-                <div class="waster-graph-container" id="w-graph"></div>
+                <div class="mt-4">
+                    <h5 class="text-muted mb-2"><i class="bi bi-graph-up"></i> GRAFIK LIVE SPEED</h5>
+                    <div id="waster-live-graph" class="graph-container">
+                        </div>
+                </div>
                 
                 <div class="d-flex justify-content-between align-items-end mt-4 mb-1">
                     <small class="text-muted">LOG AKTIVITAS</small>
@@ -233,9 +338,9 @@
                 <h4 style="color:var(--accent)">HTTP FLOOD</h4>
                 <input type="text" id="flood-url" class="form-control my-3" value="https://speed.hetzner.de/100MB.bin">
                 <div class="row text-center mb-3">
-                    <div class="col-4"><h3 id="f-sent">0</h3><small>SENT</small></div>
-                    <div class="col-4"><h3 style="color:var(--accent)" id="f-err">0</h3><small>ERROR</small></div>
-                    <div class="col-4"><h3 class="text-warning" id="f-stat">IDLE</h3><small>STATUS</small></div>
+                    <div class="col-4"><h3 id="f-sent">0</h3><small class="text-muted">SENT</small></div>
+                    <div class="col-4"><h3 style="color:var(--accent)" id="f-err">0</h3><small class="text-muted">ERROR</small></div>
+                    <div class="col-4"><h3 class="text-warning" id="f-stat">IDLE</h3><small class="text-muted">STATUS</small></div>
                 </div>
                 <button class="btn-tech btn-danger-tech mb-3" id="btn-f-start" onclick="runFlood(true)">START</button>
                 <button class="btn-tech" id="btn-f-stop" onclick="runFlood(false)" disabled>STOP</button>
@@ -252,7 +357,6 @@
                         <div class="ip-display" id="my-ip">...</div>
                         <small class="text-muted">PUBLIC IP ADDRESS</small>
                     </div>
-                    
                     <table class="clean-table">
                         <tr><td>PROVIDER</td><td id="my-isp">...</td></tr>
                         <tr><td>LOKASI</td><td id="my-loc">...</td></tr>
@@ -308,14 +412,15 @@
                 document.getElementById('ping-val').innerText = ms;
                 const chart = document.getElementById('monitor-graph');
                 const bar = document.createElement('div');
-                bar.style.width='6px'; bar.style.height=Math.min(ms,100)+'%';
-                bar.style.background= ms<100?'var(--primary)':'var(--accent)'; bar.style.marginRight='2px';
+                bar.className = 'graph-bar';
+                bar.style.height=Math.min(ms,100)+'%';
+                bar.style.background= ms<100?'var(--primary)':'var(--accent)';
                 chart.appendChild(bar);
                 if(chart.children.length>60) chart.removeChild(chart.children[0]);
             } catch(e){}
         }, 1000);
 
-        // --- WASTER & LIVE GRAPH ---
+        // --- WASTER & GRAPHIC ---
         let wTimer, wUpd, wTot=0, wStart=0;
         function startWaster(st) {
             if(st) {
@@ -341,20 +446,25 @@
                     document.getElementById('w-total').innerText = mb + " MB";
                     document.getElementById('w-speed').innerText = speed.toFixed(2) + " MB/s";
                     
-                    // UPDATE WASTER GRAPH
-                    const wGraph = document.getElementById('w-graph');
-                    const wBar = document.createElement('div');
-                    wBar.className = 'w-bar';
-                    // Normalisasi grafik: Anggap max speed 50MB/s = 100% height
-                    let h = Math.min((speed / 50) * 100, 100);
-                    wBar.style.height = (h < 5 ? 5 : h) + "%"; 
-                    wGraph.appendChild(wBar);
-                    if(wGraph.children.length > 60) wGraph.removeChild(wGraph.children[0]);
+                    // UPDATE GRAFIK BUANG PAKET
+                    const wGraph = document.getElementById('waster-live-graph');
+                    const bar = document.createElement('div');
+                    bar.className = 'graph-bar';
+                    
+                    // Visual scaling: Anggap 50MB/s = 100% height
+                    let h = (speed / 50) * 100;
+                    if(h > 100) h = 100;
+                    if(h < 5 && speed > 0) h = 5; // Minimum height jika ada speed
+                    
+                    bar.style.height = h + '%';
+                    wGraph.appendChild(bar);
+                    if(wGraph.children.length > 50) wGraph.removeChild(wGraph.children[0]);
 
+                    // Log Update
                     const log = document.getElementById('w-log');
                     log.innerHTML += `<div>> Chunk sent. Speed: ${speed.toFixed(1)} MB/s</div>`;
                     log.scrollTop = log.scrollHeight;
-                    if(log.children.length > 50) log.removeChild(log.children[0]);
+                    if(log.children.length > 40) log.removeChild(log.children[0]);
                 }, 500);
 
             } else {
@@ -366,7 +476,7 @@
         }
         function clearLog() { document.getElementById('w-log').innerHTML = '<div class="text-muted">> Log cleared.</div>'; }
 
-        // --- MY IP FIXED ---
+        // MY IP FIX
         function getMyIP() {
             const btn = document.getElementById('btn-ip-scan');
             btn.innerHTML = "SCANNING..."; btn.disabled = true;
@@ -377,7 +487,6 @@
                 document.getElementById('my-isp').innerText = d.connection.isp || d.isp;
                 document.getElementById('my-loc').innerText = `${d.city}, ${d.country}`;
                 document.getElementById('my-type').innerText = d.type;
-                // FIX: Use latitude & longitude properti dari ipwho.is
                 document.getElementById('my-coor').innerText = `${d.latitude}, ${d.longitude}`;
                 document.getElementById('ip-res').style.display = 'block';
                 btn.innerHTML = "SCAN SEKARANG"; btn.disabled = false;
@@ -385,14 +494,11 @@
             .catch(e => { alert("Connection Error"); btn.innerHTML = "RETRY"; btn.disabled = false; });
         }
 
-        // FLOOD & HOST
+        // OTHER TOOLS
         let fTimer, fSent=0;
         function runFlood(st) {
             if(st) {
-                fSent=0;
-                document.getElementById('btn-f-start').disabled=true;
-                document.getElementById('btn-f-stop').disabled=false;
-                document.getElementById('f-stat').innerText="ACTIVE";
+                fSent=0; document.getElementById('btn-f-start').disabled=true; document.getElementById('btn-f-stop').disabled=false; document.getElementById('f-stat').innerText="ACTIVE";
                 const url = document.getElementById('flood-url').value;
                 fTimer = setInterval(()=>{
                     let img = new Image(); img.src = url + "?x=" + Math.random();
@@ -400,8 +506,7 @@
                     img.onerror=()=>{fSent++; document.getElementById('f-err').innerText = parseInt(document.getElementById('f-err').innerText)+1; document.getElementById('f-sent').innerText=fSent;};
                 }, 10);
             } else {
-                clearInterval(fTimer); document.getElementById('btn-f-start').disabled=false;
-                document.getElementById('btn-f-stop').disabled=true; document.getElementById('f-stat').innerText="IDLE";
+                clearInterval(fTimer); document.getElementById('btn-f-start').disabled=false; document.getElementById('btn-f-stop').disabled=true; document.getElementById('f-stat').innerText="IDLE";
             }
         }
 
