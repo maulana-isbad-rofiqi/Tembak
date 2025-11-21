@@ -1,154 +1,362 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Anomali XL Web - Tanpa Login</title>
-  <meta name="description" content="Anomali XL versi web full fungsi: Inject XL/Axis tanpa Termux atau API key."/>
-  <link rel="manifest" href="data:application/manifest+json,{
-    &quot;name&quot;:&quot;Anomali XL Web&quot;,
-    &quot;short_name&quot;:&quot;AnomaliXL&quot;,
-    &quot;start_url&quot;:&quot;.&quot;,
-    &quot;display&quot;:&quot;standalone&quot;,
-    &quot;background_color&quot;:&quot;#1a1a2e&quot;,
-    &quot;theme_color&quot;:&quot;#ff4081&quot;,
-    &quot;icons&quot;:[{&quot;src&quot;:&quot;https://via.placeholder.com/192/ff4081/ffffff?text=AXL&quot;,&quot;sizes&quot;:&quot;192x192&quot;,&quot;type&quot;:&quot;image/png&quot;}]
-  }"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Network Toolkit V8 - Web Edition</title>
+  <meta name="description" content="Toolkit jaringan profesional untuk pengujian: Buang Paket, HTTP Stress Test, Speedtest. Hanya untuk edukasi.">
+  <link rel="icon" href="https://via.placeholder.com/64/00ff00/ffffff?text=NTK" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);color:#fff;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1rem}
-    .container{max-width:420px;width:100%}
-    .card{background:#16213e;border-radius:20px;padding:2rem;box-shadow:0 20px 40px rgba(0,0,0,0.5);text-align:center}
-    h1{font-size:2.2rem;margin-bottom:0.5rem;color:#ff4081}
-    .subtitle{font-size:0.95rem;opacity:0.8;margin-bottom:2rem}
-    button{width:100%;padding:16px;margin:10px 0;border:none;border-radius:12px;font-size:1.1rem;font-weight:600;cursor:pointer;transition:0.3s;background:#ff4081;color:white}
-    button:hover{background:#e03375;transform:translateY(-2px)}
-    button:disabled{background:#666;cursor:not-allowed;transform:none}
-    .status{margin:20px 0;padding:15px;background:rgba(255,255,255,0.1);border-radius:12px;display:none;text-align:left}
-    .kuota{font-weight:600;color:#4ade80}
-    .log{margin-top:20px;padding:15px;background:#0f1424;border-radius:12px;text-align:left;font-size:0.9rem;max-height:400px;overflow-y:auto;line-height:1.4;display:none}
-    .log-entry{margin:8px 0;padding:8px;border-radius:6px;background:rgba(255,255,255,0.05)}
-    .success{color:#4ade80;border-left:4px solid #4ade80}
-    .error{color:#ef4444;border-left:4px solid #ef4444}
-    .info{color:#60a5fa;border-left:4px solid #60a5fa}
-    .footer{margin-top:2rem;font-size:0.8rem;opacity:0.6;text-align:center}
-    .footer a{color:#ff4081;text-decoration:none}
-    @media (max-width:480px){.card{padding:1.5rem;h1{font-size:1.8rem}}}
+    :root {
+      --primary: #ff4081;
+      --secondary: #4ade80;
+      --dark-bg: #0f0f1b;
+      --card-bg: #16213e;
+      --text: #ffffff;
+      --subtext: #a0a0a0;
+      --accent: #667eea;
+      --error: #ef4444;
+      --success: #22c55e;
+      --warning: #eab308;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--dark-bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+    .container {
+      max-width: 900px;
+      width: 100%;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    h1 {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--subtext);
+      margin-bottom: 1rem;
+    }
+    .nav {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .nav-btn {
+      padding: 0.8rem 1.5rem;
+      background: var(--card-bg);
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .nav-btn:hover {
+      background: var(--accent);
+      transform: translateY(-2px);
+    }
+    .nav-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+    .section {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      margin-bottom: 2rem;
+      display: none;
+    }
+    .section.active {
+      display: block;
+    }
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      color: var(--secondary);
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    label {
+      display: block;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      color: var(--subtext);
+    }
+    input, select {
+      width: 100%;
+      padding: 0.8rem;
+      background: #0f1424;
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    button {
+      padding: 1rem 2rem;
+      background: var(--primary);
+      border: none;
+      border-radius: 8px;
+      color: var(--text);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      width: 100%;
+    }
+    button:hover {
+      background: #e03375;
+      transform: translateY(-2px);
+    }
+    button:disabled {
+      background: #666;
+      cursor: not-allowed;
+    }
+    .log-container {
+      background: #0f1424;
+      border-radius: 8px;
+      padding: 1rem;
+      max-height: 400px;
+      overflow-y: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      margin-top: 1rem;
+    }
+    .log-entry {
+      margin-bottom: 0.5rem;
+    }
+    .log-success { color: var(--success); }
+    .log-error { color: var(--error); }
+    .log-info { color: var(--accent); }
+    .progress-bar {
+      background: #0f1424;
+      border-radius: 8px;
+      height: 20px;
+      margin-top: 1rem;
+      overflow: hidden;
+    }
+    .progress-fill {
+      background: var(--secondary);
+      height: 100%;
+      width: 0;
+      transition: width 0.3s;
+    }
+    footer {
+      text-align: center;
+      color: var(--subtext);
+      font-size: 0.8rem;
+      margin-top: auto;
+      padding-top: 2rem;
+    }
+    @media (max-width: 768px) {
+      .container { padding: 1rem; }
+      h1 { font-size: 2rem; }
+      .nav { flex-wrap: wrap; }
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="card">
-      <h1>🚀 Anomali XL</h1>
-      <p class="subtitle">Web Full Fungsi - Tanpa API Key / Login</p>
-      
-      <button onclick="injectAll()">💉 START INJECT PAKET</button>
-      <button onclick="checkStatus()" style="background:#4ade80">📊 CEK KUOTA & STATUS</button>
-      
-      <div id="status" class="status">
-        <h3 id="status-title">Status: Siap Inject</h3>
-        <p class="kuota" id="kuota">Nomor: 0812xxxxxxx | Kuota: Unlimited Active</p>
+    <header>
+      <h1>Network Toolkit V8</h1>
+      <p class="subtitle">Web Edition - Untuk Pengujian Jaringan Edukasi (Profesional & Aman)</p>
+    </header>
+
+    <nav class="nav">
+      <button class="nav-btn active" data-section="buang-paket">Buang Paket</button>
+      <button class="nav-btn" data-section="stress-test">HTTP Stress Test</button>
+      <button class="nav-btn" data-section="speedtest">Speedtest</button>
+    </nav>
+
+    <section id="buang-paket" class="section active">
+      <h2>Buang Paket</h2>
+      <div class="form-group">
+        <label>Mode Kekuatan</label>
+        <select id="waster-mode">
+          <option value="10">Slow (10 Koneksi)</option>
+          <option value="30" selected>Stabil (30 Koneksi)</option>
+          <option value="60">Cepat (60 Koneksi)</option>
+          <option value="100">Agresif (100 Koneksi)</option>
+        </select>
       </div>
-      
-      <div id="log" class="log"></div>
-      
-      <div class="footer">
-        Support: <a href="https://t.me/AnooooMaliEngsellllll" target="_blank">@AnooooMaliEngsellllll</a> | Versi Web 2025
+      <div class="form-group">
+        <label>Jumlah Data (MB/GB) atau Tanpa Batas</label>
+        <input type="number" id="waster-amount" placeholder="Masukkan jumlah (kosong untuk tanpa batas)">
+        <select id="waster-unit">
+          <option value="MB">MB</option>
+          <option value="GB">GB</option>
+        </select>
       </div>
-    </div>
+      <button id="start-waster">🚀 Mulai Buang Paket</button>
+      <div class="progress-bar"><div class="progress-fill" id="waster-progress"></div></div>
+      <div class="log-container" id="waster-log"></div>
+    </section>
+
+    <section id="stress-test" class="section">
+      <h2>HTTP Stress Test</h2>
+      <div class="form-group">
+        <label>Mode Kekuatan</label>
+        <select id="stresser-mode">
+          <option value="50">Ringan (50 Pekerja)</option>
+          <option value="150" selected>Sedang (150 Pekerja)</option>
+          <option value="300">Kuat (300 Pekerja)</option>
+          <option value="500">Ekstrem (500 Pekerja)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Target URL (http/https)</label>
+        <input type="text" id="stresser-target" placeholder="Contoh: http://example.com">
+      </div>
+      <div class="form-group">
+        <label>Jumlah Request (kosong untuk tanpa batas)</label>
+        <input type="number" id="stresser-requests" placeholder="Masukkan jumlah">
+      </div>
+      <button id="start-stresser">🔥 Mulai Stress Test</button>
+      <div class="progress-bar"><div class="progress-fill" id="stresser-progress"></div></div>
+      <div class="log-container" id="stresser-log"></div>
+    </section>
+
+    <section id="speedtest" class="section">
+      <h2>Speedtest</h2>
+      <button id="start-speedtest">⏱️ Jalankan Speedtest</button>
+      <div class="log-container" id="speedtest-log"></div>
+    </section>
+
+    <footer>
+      &copy; 2025 Network Toolkit V8 | Hanya untuk Edukasi | Dibuat dengan ❤️ menggunakan Python & JS
+    </footer>
   </div>
 
   <script>
-    // Simulasi data XL/Axis (randomisasi untuk realisme)
-    const simData = {
-      nomor: '0812' + Math.floor(1000000 + Math.random() * 9000000),
-      kuota: ['1GB/1 Hari Unlimited', 'Unlimited Game Active', 'Sosmed 5GB', 'Streaming 2GB'][Math.floor(Math.random() * 4)],
-      paket: [
-        {name: 'Unlimited 1GB', status: true},
-        {name: 'Game (ML/PUBG)', status: true},
-        {name: 'Sosmed (IG/TikTok)', status: true},
-        {name: 'Streaming (YT/Netflix)', status: Math.random() > 0.2},
-        {name: 'Download 500MB', status: true},
-        {name: 'Hotspot Share', status: true}
-      ]
-    };
-
-    const log = (msg, type = 'info') => {
-      const logEl = document.getElementById('log');
-      const entry = document.createElement('div');
-      entry.className = `log-entry ${type}`;
-      entry.innerHTML = `<strong>\( {getEmoji(type)} \){type.toUpperCase()}:</strong> ${msg}`;
-      logEl.appendChild(entry);
-      logEl.scrollTop = logEl.scrollHeight;
-      logEl.style.display = 'block';
-    };
-
-    const getEmoji = (type) => {
-      if (type === 'success') return '✅';
-      if (type === 'error') return '❌';
-      return 'ℹ️';
-    };
-
-    const updateStatus = (title, kuota) => {
-      document.getElementById('status-title').textContent = `Status: ${title}`;
-      document.getElementById('kuota').innerHTML = `Nomor: \( {simData.nomor} | Kuota: \){kuota || simData.kuota}`;
-      document.getElementById('status').style.display = 'block';
-    };
-
-    async function injectAll() {
-      const btn = document.querySelector('button[onclick="injectAll()"]');
-      btn.innerHTML = '⏳ Injecting...';
-      btn.disabled = true;
-      document.getElementById('log').innerHTML = '';
-      document.getElementById('status').style.display = 'none';
-
-      // Simulasi proses CLI: cek koneksi, inject satu-satu
-      log('🔗 Menghubungkan ke server XL/Axis...');
-      await delay(1000);
-      log('✅ Koneksi berhasil. Mendeteksi nomor: ' + simData.nomor, 'success');
-
-      log('📊 Mengecek kuota saat ini...');
-      await delay(1500);
-      updateStatus('Checking', simData.kuota);
-      log(`✅ Kuota ditemukan: ${simData.kuota}`, 'success');
-
-      log('💉 Mulai inject paket unlimited...');
-      for (let pkt of simData.paket) {
-        await delay(800 + Math.random() * 1200); // Real-time feel
-        const statusMsg = pkt.status ? 'Berhasil diaktifkan!' : 'Gagal, coba lagi.';
-        log(`\( {pkt.name}: \){statusMsg}`, pkt.status ? 'success' : 'error');
-      }
-
-      log('🎉 Semua injeksi selesai! Unlimited aktif. Refresh browser untuk cek ulang.', 'success');
-      updateStatus('Injected Successfully', 'Semua Paket Active');
-
-      btn.innerHTML = '💉 START INJECT PAKET';
-      btn.disabled = false;
-    }
-
-    function checkStatus() {
-      document.getElementById('log').innerHTML = '';
-      log('🔄 Refresh status koneksi...');
-      updateStatus('Active', simData.kuota + ' (Updated)');
-      log('✅ Koneksi stabil. Kuota tersisa: ' + simData.kuota, 'success');
-      log('📱 Tips: Gunakan VPN off untuk test speed.', 'info');
-    }
-
-    function delay(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-    // PWA install
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-      deferredPrompt = e;
+    // Navigasi antar section
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+        document.getElementById(btn.dataset.section).classList.add('active');
+      });
     });
 
-    // Auto-check on load
-    window.onload = () => {
-      checkStatus();
-    };
+    // Fungsi logging umum
+    function logToContainer(containerId, msg, type = 'info') {
+      const logEl = document.getElementById(containerId);
+      const entry = document.createElement('div');
+      entry.className = `log-entry log-${type}`;
+      entry.textContent = msg;
+      logEl.appendChild(entry);
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    // Backend API calls (asumsi backend Flask di /api/*)
+    async function apiCall(endpoint, data) {
+      try {
+        const response = await fetch(`/api/${endpoint}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        if (!response.ok) throw new Error('API error');
+        return await response.json();
+      } catch (err) {
+        return { error: err.message };
+      }
+    }
+
+    // Handler Buang Paket
+    document.getElementById('start-waster').addEventListener('click', async () => {
+      const btn = document.getElementById('start-waster');
+      btn.disabled = true;
+      btn.textContent = '⏳ Memproses...';
+      const logId = 'waster-log';
+      document.getElementById(logId).innerHTML = '';
+      const progress = document.getElementById('waster-progress');
+      progress.style.width = '0%';
+
+      const numWorkers = document.getElementById('waster-mode').value;
+      const amount = parseFloat(document.getElementById('waster-amount').value) || Infinity;
+      const unit = document.getElementById('waster-unit').value;
+      const targetBytes = unit === 'GB' ? amount * 1024 * 1024 * 1024 : amount * 1024 * 1024;
+
+      const result = await apiCall('waster', { num_workers: numWorkers, target_bytes: targetBytes });
+      if (result.error) {
+        logToContainer(logId, `❌ Error: ${result.error}`, 'error');
+      } else {
+        // Simulasi progress & log (backend kirim updates via WebSocket atau polling, tapi untuk sederhana: tampil result)
+        result.logs.forEach(log => logToContainer(logId, log.msg, log.type));
+        progress.style.width = '100%';
+      }
+
+      btn.disabled = false;
+      btn.textContent = '🚀 Mulai Buang Paket';
+    });
+
+    // Handler Stress Test
+    document.getElementById('start-stresser').addEventListener('click', async () => {
+      const btn = document.getElementById('start-stresser');
+      btn.disabled = true;
+      btn.textContent = '⏳ Memproses...';
+      const logId = 'stresser-log';
+      document.getElementById(logId).innerHTML = '';
+      const progress = document.getElementById('stresser-progress');
+      progress.style.width = '0%';
+
+      const numWorkers = document.getElementById('stresser-mode').value;
+      const target = document.getElementById('stresser-target').value;
+      const totalRequests = parseInt(document.getElementById('stresser-requests').value) || Infinity;
+
+      if (!target) {
+        logToContainer(logId, '❌ Target URL wajib diisi!', 'error');
+        btn.disabled = false;
+        btn.textContent = '🔥 Mulai Stress Test';
+        return;
+      }
+
+      const result = await apiCall('stresser', { num_workers: numWorkers, url: target, total_requests: totalRequests });
+      if (result.error) {
+        logToContainer(logId, `❌ Error: ${result.error}`, 'error');
+      } else {
+        result.logs.forEach(log => logToContainer(logId, log.msg, log.type));
+        progress.style.width = '100%';
+      }
+
+      btn.disabled = false;
+      btn.textContent = '🔥 Mulai Stress Test';
+    });
+
+    // Handler Speedtest
+    document.getElementById('start-speedtest').addEventListener('click', async () => {
+      const btn = document.getElementById('start-speedtest');
+      btn.disabled = true;
+      btn.textContent = '⏳ Menguji...';
+      const logId = 'speedtest-log';
+      document.getElementById(logId).innerHTML = '';
+
+      const result = await apiCall('speedtest', {});
+      if (result.error) {
+        logToContainer(logId, `❌ Error: ${result.error}`, 'error');
+      } else {
+        logToContainer(logId, `⬇️ Download: ${result.download} Mbps`, 'success');
+        logToContainer(logId, `⬆️ Upload: ${result.upload} Mbps`, 'success');
+        logToContainer(logId, `⏱️ Ping: ${result.ping} ms`, 'success');
+      }
+
+      btn.disabled = false;
+      btn.textContent = '⏱️ Jalankan Speedtest';
+    });
   </script>
 </body>
 </html>
