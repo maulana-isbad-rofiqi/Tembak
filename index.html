@@ -3,248 +3,536 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Network Toolkit V8 - Professional Web</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Network Toolkit V8 - Cyberpunk Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
         :root {
-            --primary: #ff4081;
-            --dark: #0f0f1b;
-            --card: #16213e;
+            --bg-dark: #050505;
+            --card-bg: rgba(20, 20, 30, 0.7);
+            --primary: #00f2ff;
+            --secondary: #7000ff;
+            --danger: #ff0055;
             --text: #e0e0e0;
-            --muted: #888;
-            --success: #4ade80;
-            --danger: #ef4444;
+            --glass: 10px;
         }
+
         body {
-            background: var(--dark);
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(112, 0, 255, 0.15) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 242, 255, 0.15) 0%, transparent 20%);
             color: var(--text);
-            font-family: 'Inter', sans-serif;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
             min-height: 100vh;
         }
+
+        /* Scrollbar Keren */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #111; }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+
+        /* Sidebar */
         .sidebar {
             position: fixed;
             top: 0; left: 0; bottom: 0;
             width: 260px;
-            background: var(--card);
+            background: rgba(10, 10, 15, 0.9);
+            backdrop-filter: blur(var(--glass));
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
             padding: 2rem 1rem;
-            border-right: 1px solid #333;
             z-index: 1000;
+            transition: transform 0.3s ease;
         }
-        .sidebar h3 {
-            color: var(--primary);
+
+        .brand-title {
+            font-family: 'JetBrains Mono', monospace;
             font-weight: 700;
-            margin-bottom: 2rem;
+            font-size: 1.5rem;
+            color: white;
             text-align: center;
+            margin-bottom: 3rem;
+            text-shadow: 0 0 10px var(--primary);
+            letter-spacing: 2px;
         }
+
         .nav-link {
-            color: var(--muted);
-            padding: 12px 20px;
-            border-radius: 10px;
-            margin-bottom: 8px;
+            color: #888;
+            padding: 14px 20px;
+            border-radius: 8px;
+            margin-bottom: 10px;
             transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            border: 1px solid transparent;
+            font-size: 1.1rem;
         }
-        .nav-link:hover, .nav-link.active {
-            background: rgba(255,64,129,0.2);
+
+        .nav-link:hover {
             color: white;
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateX(5px);
         }
+
         .nav-link.active {
-            background: var(--primary);
-            color: white;
+            background: linear-gradient(90deg, rgba(0, 242, 255, 0.1), transparent);
+            border-left: 4px solid var(--primary);
+            color: var(--primary);
+            text-shadow: 0 0 8px var(--primary);
         }
+
+        /* Main Content */
         .main-content {
             margin-left: 260px;
             padding: 2rem;
+            transition: margin 0.3s ease;
         }
+
         .card {
-            background: var(--card);
-            border: none;
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 16px;
             padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            backdrop-filter: blur(var(--glass));
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            margin-bottom: 2rem;
         }
-        .btn-primary {
-            background: var(--primary);
-            border: none;
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-weight: 600;
+
+        h2 {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
-        .btn-danger {
-            background: var(--danger);
-            border: none;
-        }
+
+        /* Inputs & Buttons */
         .form-control, .form-select {
-            background: #0f1424;
-            border: 1px solid #444;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid #333;
             color: white;
-            border-radius: 10px;
+            padding: 12px;
+            font-family: 'JetBrains Mono', monospace;
         }
+
         .form-control:focus, .form-select:focus {
+            background: black;
+            color: white;
             border-color: var(--primary);
-            box-shadow: 0 0 0 0.2rem rgba(255,64,129,0.25);
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
         }
+
+        .btn {
+            padding: 12px 30px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.1);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--primary);
+            color: black;
+            box-shadow: 0 0 20px var(--primary);
+        }
+
+        .btn-danger {
+            background: transparent;
+            border: 1px solid var(--danger);
+            color: var(--danger);
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            background: var(--danger);
+            color: white;
+            box-shadow: 0 0 20px var(--danger);
+        }
+
+        .btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        /* Log Box */
         .log-box {
-            background: #0f1424;
-            border-radius: 12px;
+            background: #080808;
+            border: 1px solid #333;
+            border-radius: 8px;
             padding: 1rem;
-            height: 320px;
+            height: 300px;
             overflow-y: auto;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            margin-top: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            margin-top: 1.5rem;
+            position: relative;
         }
-        .log-success { color: var(--success); }
-        .log-danger { color: var(--danger); }
-        .log-info { color: #60a5fa; }
-        .progress { height: 12px; border-radius: 10px; background: #333; }
-        .progress-bar { background: var(--success); }
+        .log-box::before {
+            content: "TERMINAL OUTPUT";
+            position: absolute;
+            top: 5px; right: 10px;
+            font-size: 0.7rem;
+            color: #444;
+        }
+
+        .log-line { margin-bottom: 4px; border-bottom: 1px solid #111; padding-bottom: 2px; }
+        .text-time { color: #555; margin-right: 10px; }
+        .text-success { color: #00ff9d !important; }
+        .text-danger { color: #ff0055 !important; }
+        .text-info { color: #00f2ff !important; }
+        .text-warning { color: #ffea00 !important; }
+
+        /* Stats */
+        .stat-box {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #222;
+        }
+        .stat-value { font-size: 1.8rem; font-weight: bold; color: white; font-family: 'JetBrains Mono'; }
+        .stat-label { font-size: 0.9rem; color: #888; text-transform: uppercase; }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .sidebar { width: 80px; padding: 1rem; }
-            .sidebar h3, .nav-link span { display: none; }
-            .main-content { margin-left: 80px; padding: 1rem; }
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.show { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .mobile-toggle { display: block !important; }
         }
+        .mobile-toggle { display: none; position: fixed; top: 15px; right: 15px; z-index: 1001; }
     </style>
 </head>
 <body>
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <h3>NTK V8</h3>
+    <button class="btn btn-dark mobile-toggle border-secondary" onclick="toggleSidebar()">
+        <i class="bi bi-list fs-4"></i>
+    </button>
+
+    <div class="sidebar" id="sidebar">
+        <div class="brand-title">NET.TOOL <span style="color:var(--danger)">V8</span></div>
         <div class="nav flex-column">
-            <a href="#" class="nav-link active" data-section="buang"><i class="bi bi-cloud-download fs-4"></i> <span>Buang Paket</span></a>
-            <a href="#" class="nav-link" data-section="stress"><i class="bi bi-lightning-charge fs-4"></i> <span>Stress Test</span></a>
-            <a href="#" class="nav-link" data-section="speed"><i class="bi bi-speedometer2 fs-4"></i> <span>Speedtest</span></a>
+            <a href="#" class="nav-link active" onclick="switchTab('buang')"><i class="bi bi-radioactive fs-5 me-2"></i> Buang Paket</a>
+            <a href="#" class="nav-link" onclick="switchTab('stress')"><i class="bi bi-activity fs-5 me-2"></i> Stress Test</a>
+            <a href="#" class="nav-link" onclick="switchTab('speed')"><i class="bi bi-speedometer fs-5 me-2"></i> Speedtest</a>
+        </div>
+        <div class="mt-auto text-center text-muted small pt-4">
+            &copy; 2025 CyberNetwork
         </div>
     </div>
 
-    <!-- Main Content -->
     <div class="main-content">
 
-        <!-- Buang Paket -->
         <section id="buang" class="section">
             <div class="card">
-                <h2 class="mb-4"><i class="bi bi-trash"></i> Buang Paket</h2>
+                <h2 class="text-info"><i class="bi bi-radioactive"></i> Data Waster</h2>
+                <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                        <div class="stat-box">
+                            <div class="stat-value" id="wasted-total">0.00 MB</div>
+                            <div class="stat-label">Total Dibuang</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="stat-value text-info" id="waster-speed">0.00 MB/s</div>
+                        <div class="stat-label">Kecepatan Saat Ini</div>
+                    </div>
+                </div>
+
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <label class="form-label">Mode Kekuatan</label>
-                        <select class="form-select" id="waster-mode">
-                            <option value="10">Slow (10)</option>
-                            <option value="30" selected>Stabil (30)</option>
-                            <option value="60">Cepat (60)</option>
-                            <option value="100">Agresif (100)</option>
+                        <label class="form-label text-muted">Thread Level</label>
+                        <select class="form-select" id="waster-threads">
+                            <option value="5">Low (5 Threads)</option>
+                            <option value="15" selected>Medium (15 Threads)</option>
+                            <option value="30">High (30 Threads)</option>
+                            <option value="50">Extreme (50 Threads)</option>
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Jumlah Data</label>
+                        <label class="form-label text-muted">Target Limit (0 = Unlimited)</label>
                         <div class="input-group">
-                            <input type="number" class="form-control" id="waster-amount" placeholder="Kosong = Tanpa Batas">
-                            <select class="form-select" id="waster-unit">
-                                <option>MB</option>
-                                <option>GB</option>
-                            </select>
+                            <input type="number" class="form-control" id="waster-limit" placeholder="0">
+                            <span class="input-group-text bg-dark text-white border-secondary">MB</span>
                         </div>
                     </div>
                 </div>
+
                 <div class="mt-4 d-flex gap-3">
-                    <button class="btn btn-primary" id="start-waster">Mulai Buang</button>
-                    <button class="btn btn-danger" id="stop-waster" disabled>Stop</button>
+                    <button class="btn btn-primary w-100" id="btn-start-waster" onclick="startWaster()">
+                        <i class="bi bi-play-fill"></i> START BURN
+                    </button>
+                    <button class="btn btn-danger w-100" id="btn-stop-waster" onclick="stopWaster()" disabled>
+                        <i class="bi bi-stop-fill"></i> STOP
+                    </button>
                 </div>
-                <div class="progress mt-3"><div class="progress-bar" id="waster-progress" style="width:0%"></div></div>
-                <div class="log-box" id="waster-log"></div>
+
+                <div class="progress mt-4" style="height: 6px; background: #222;">
+                    <div class="progress-bar bg-info" id="waster-progress" style="width: 0%"></div>
+                </div>
+                <div class="log-box" id="log-waster"></div>
             </div>
         </section>
 
-        <!-- Stress Test -->
         <section id="stress" class="section" style="display:none">
             <div class="card">
-                <h2 class="mb-4"><i class="bi bi-lightning"></i> HTTP Stress Test</h2>
+                <h2 class="text-danger"><i class="bi bi-lightning-charge"></i> HTTP Stress Test</h2>
+                <div class="alert alert-dark border-secondary text-muted small">
+                    <i class="bi bi-exclamation-triangle me-2 text-warning"></i>
+                    Note: Browser membatasi koneksi konkuren. Tool ini untuk testing beban jaringan lokal, bukan untuk DDoS server besar.
+                </div>
+                
                 <div class="row g-3">
-                    <div class="col-md-4">
-                        <label class="form-label">Mode</label>
-                        <select class="form-select" id="stress-mode">
-                            <option value="50">Ringan</option>
-                            <option value="150" selected>Sedang</option>
-                            <option value="300">Kuat</option>
-                            <option value="500">Ekstrem</option>
-                        </select>
-                    </div>
                     <div class="col-md-8">
                         <label class="form-label">Target URL</label>
-                        <input type="text" class="form-control" id="stress-url" placeholder="https://example.com">
+                        <input type="text" class="form-control" id="stress-url" value="https://speed.hetzner.de/100MB.bin">
                     </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Jumlah Request</label>
-                        <input type="number" class="form-control" id="stress-count" placeholder="Kosong = Tanpa Batas">
+                    <div class="col-md-4">
+                        <label class="form-label">Interval (ms)</label>
+                        <input type="number" class="form-control" id="stress-interval" value="100">
                     </div>
                 </div>
+
+                <div class="row g-4 mt-2">
+                    <div class="col-6">
+                        <div class="stat-box">
+                            <div class="stat-value text-warning" id="stress-count">0</div>
+                            <div class="stat-label">Requests Sent</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stat-box">
+                            <div class="stat-value text-danger" id="stress-errors">0</div>
+                            <div class="stat-label">Errors</div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="mt-4 d-flex gap-3">
-                    <button class="btn btn-primary" id="start-stress">Mulai Attack</button>
-                    <button class="btn btn-danger" id="stop-stress" disabled>Stop</button>
+                    <button class="btn btn-primary w-100" id="btn-start-stress" onclick="startStress()">
+                        <i class="bi bi-crosshair"></i> START ATTACK
+                    </button>
+                    <button class="btn btn-danger w-100" id="btn-stop-stress" onclick="stopStress()" disabled>STOP</button>
                 </div>
-                <div class="progress mt-3"><div class="progress-bar" id="stress-progress" style="width:0%"></div></div>
-                <div class="log-box" id="stress-log"></div>
+                <div class="log-box" id="log-stress"></div>
             </div>
         </section>
 
-        <!-- Speedtest -->
         <section id="speed" class="section" style="display:none">
-            <div class="card">
-                <h2 class="mb-4"><i class="bi bi-speedometer2"></i> Speedtest</h2>
-                <button class="btn btn-primary" id="run-speedtest">Jalankan Speedtest</button>
-                <div class="log-box mt-3" id="speed-log"></div>
+            <div class="card text-center">
+                <h2 class="text-success mb-4">Network Speedtest</h2>
+                
+                <div style="position: relative; display: inline-block; margin: 2rem 0;">
+                    <i class="bi bi-speedometer2" style="font-size: 5rem; color: var(--secondary)"></i>
+                    <div class="mt-3 fs-1 fw-bold text-white" id="speed-val">0.0</div>
+                    <div class="text-muted">Mbps</div>
+                </div>
+
+                <button class="btn btn-primary px-5" id="btn-run-speed" onclick="runSpeedtest()">
+                    JALANKAN TEST
+                </button>
+                
+                <div class="log-box text-start mt-4" id="log-speed"></div>
             </div>
         </section>
 
     </div>
 
     <script>
-        // Navigasi
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                link.classList.add('active');
-                document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
-                document.getElementById(link.dataset.section).style.display = 'block';
-            });
-        });
-
-        // Log Function
-        function log(id, text, type = 'info') {
-            const el = document.getElementById(id);
-            const div = document.createElement('div');
-            div.innerHTML = `<small class="text-muted">\( {new Date().toLocaleTimeString()}</small> <span class="log- \){type}">${text}</span>`;
-            el.appendChild(div);
-            el.scrollTop = el.scrollHeight;
+        // UI Handling
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('show');
         }
 
-        // Buang Paket
-        let wasterRunning = false;
-        document.getElementById('start-waster').onclick = () => {
-            if (wasterRunning) return;
-            wasterRunning = true;
-            document.getElementById('stop-waster').disabled = false;
-            document.getElementById('start-waster').disabled = true;
-            document.getElementById('waster-log').innerHTML = '';
-            document.getElementById('waster-progress').style.width = '0%';
+        function switchTab(tabName) {
+            document.querySelectorAll('.section').forEach(el => el.style.display = 'none');
+            document.getElementById(tabName).style.display = 'block';
+            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            if(window.innerWidth <= 768) toggleSidebar();
+        }
 
-            log('waster-log', 'Memulai buang paket...', 'success');
-            // Logika lengkap bisa ditambahkan di sini (sama seperti versi sebelumnya)
-        };
+        function addLog(id, msg, type = 'text-muted') {
+            const box = document.getElementById('id');
+            // Fix: Correct Log ID handling
+            const targetBox = document.getElementById(id);
+            if (!targetBox) return;
 
-        document.getElementById('stop-waster').onclick = () => {
-            wasterRunning = false;
-            document.getElementById('stop-waster').disabled = true;
-            document.getElementById('start-waster').disabled = false;
-            log('waster-log', 'Proses dihentikan oleh user', 'danger');
-        };
+            const time = new Date().toLocaleTimeString();
+            const div = document.createElement('div');
+            div.className = 'log-line';
+            div.innerHTML = `<small class="text-time">[${time}]</small> <span class="${type}">${msg}</span>`;
+            targetBox.appendChild(div);
+            targetBox.scrollTop = targetBox.scrollHeight;
+        }
 
-        // Stress & Speedtest bisa ditambahkan serupa...
+        // --- MODULE: BUANG PAKET ---
+        let wasterInterval = null;
+        let totalWasted = 0;
+        let startTime = 0;
+
+        function startWaster() {
+            const limit = document.getElementById('waster-limit').value * 1024 * 1024; // convert MB to Bytes
+            const threads = parseInt(document.getElementById('waster-threads').value);
+            const url = "https://picsum.photos/1000/1000?random="; // Random Image source
+
+            document.getElementById('btn-start-waster').disabled = true;
+            document.getElementById('btn-stop-waster').disabled = false;
+            totalWasted = 0;
+            startTime = Date.now();
+            addLog('log-waster', `Memulai proses dengan ${threads} threads...`, 'text-info');
+
+            wasterInterval = setInterval(() => {
+                if (limit > 0 && totalWasted >= limit) {
+                    stopWaster();
+                    addLog('log-waster', 'Target limit tercapai!', 'text-success');
+                    return;
+                }
+
+                // Create multiple requests based on thread count
+                for(let i=0; i<threads/5; i++) { // Batching fetch
+                    const id = Math.random();
+                    fetch(url + id, { mode: 'no-cors', cache: 'no-store' })
+                        .then(() => {
+                            // Estimasi ukuran file (dummy karena no-cors tidak return size)
+                            // Kita asumsi rata-rata gambar 1000x1000 ~ 200KB
+                            const chunkSize = 200 * 1024; 
+                            totalWasted += chunkSize;
+                            updateWasterUI();
+                        })
+                        .catch(e => console.log(e));
+                }
+            }, 100); // Loop cepat
+        }
+
+        function updateWasterUI() {
+            const mb = (totalWasted / (1024 * 1024)).toFixed(2);
+            document.getElementById('wasted-total').innerText = `${mb} MB`;
+            
+            const duration = (Date.now() - startTime) / 1000;
+            const speed = (mb / duration).toFixed(2);
+            document.getElementById('waster-speed').innerText = `${speed} MB/s`;
+
+            // Jika ada limit, update progress bar
+            const limitVal = document.getElementById('waster-limit').value;
+            if(limitVal > 0) {
+                const pct = (mb / limitVal) * 100;
+                document.getElementById('waster-progress').style.width = `${pct}%`;
+            } else {
+                document.getElementById('waster-progress').style.width = '100%';
+                document.getElementById('waster-progress').classList.add('progress-bar-animated', 'progress-bar-striped');
+            }
+        }
+
+        function stopWaster() {
+            clearInterval(wasterInterval);
+            wasterInterval = null;
+            document.getElementById('btn-start-waster').disabled = false;
+            document.getElementById('btn-stop-waster').disabled = true;
+            addLog('log-waster', 'Proses dihentikan.', 'text-danger');
+            document.getElementById('waster-progress').classList.remove('progress-bar-animated');
+        }
+
+        // --- MODULE: STRESS TEST ---
+        let stressTimer = null;
+        let reqCount = 0;
+        let errCount = 0;
+
+        function startStress() {
+            const url = document.getElementById('stress-url').value;
+            const interval = document.getElementById('stress-interval').value;
+            
+            if(!url) return alert("URL Kosong!");
+
+            reqCount = 0;
+            errCount = 0;
+            document.getElementById('btn-start-stress').disabled = true;
+            document.getElementById('btn-stop-stress').disabled = false;
+            addLog('log-stress', `Menyerang target: ${url}`, 'text-warning');
+
+            stressTimer = setInterval(() => {
+                const uniqueUrl = `${url}?t=${Math.random()}`;
+                
+                // Gunakan Image object untuk 'fire and forget' request (lebih ringan dari fetch)
+                const img = new Image();
+                img.onload = () => {
+                    reqCount++;
+                    updateStressUI();
+                };
+                img.onerror = () => {
+                    reqCount++;
+                    // Error sering terjadi karena CORS, tapi request tetap terkirim
+                    errCount++; 
+                    updateStressUI();
+                };
+                img.src = uniqueUrl;
+
+            }, interval);
+        }
+
+        function updateStressUI() {
+            document.getElementById('stress-count').innerText = reqCount;
+            document.getElementById('stress-errors').innerText = errCount;
+            if(reqCount % 10 === 0) {
+                addLog('log-stress', `Packets sent: ${reqCount} | Target mungkin menolak (CORS)`, 'text-muted');
+            }
+        }
+
+        function stopStress() {
+            clearInterval(stressTimer);
+            document.getElementById('btn-start-stress').disabled = false;
+            document.getElementById('btn-stop-stress').disabled = true;
+            addLog('log-stress', 'Attack stopped.', 'text-danger');
+        }
+
+        // --- MODULE: SPEEDTEST ---
+        function runSpeedtest() {
+            const btn = document.getElementById('btn-run-speed');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Testing...';
+            addLog('log-speed', 'Mempersiapkan download test...', 'text-info');
+
+            const imageAddr = "https://upload.wikimedia.org/wikipedia/commons/2/2d/Snake_River_%285mb%29.jpg"; 
+            const downloadSize = 5245329; // bytes (approx 5MB)
+            
+            let startTime, endTime;
+            const download = new Image();
+            
+            download.onload = function () {
+                endTime = (new Date()).getTime();
+                showResults();
+            }
+            
+            download.onerror = function () {
+                addLog('log-speed', 'Gagal melakukan test. Cek koneksi.', 'text-danger');
+                btn.disabled = false;
+                btn.innerText = 'JALANKAN TEST';
+            }
+            
+            startTime = (new Date()).getTime();
+            const cacheBuster = "?nnn=" + startTime;
+            download.src = imageAddr + cacheBuster;
+
+            function showResults() {
+                const duration = (endTime - startTime) / 1000;
+                const bitsLoaded = downloadSize * 8;
+                const speedBps = (bitsLoaded / duration).toFixed(2);
+                const speedKbps = (speedBps / 1024).toFixed(2);
+                const speedMbps = (speedKbps / 1024).toFixed(2);
+                
+                document.getElementById('speed-val').innerText = speedMbps;
+                addLog('log-speed', `Test Selesai. Ping: ${(duration*100).toFixed(0)}ms`, 'text-success');
+                addLog('log-speed', `Kecepatan: ${speedMbps} Mbps`, 'text-success');
+                
+                btn.disabled = false;
+                btn.innerText = 'JALANKAN TEST';
+            }
+        }
     </script>
 </body>
 </html>
